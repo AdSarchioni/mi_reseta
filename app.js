@@ -14,14 +14,16 @@ app.set ('view engine', 'ejs');
 
 //seteamos la carpeta public para archivos estaticos
 app.use(express.static('public'));
-//para poder trabajar con las cookies
-app.use(cookieParser());
-
 //para procesar datos enviad0os de formularios
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 //seteamos las variables de entorno
 dotenv.config({path: './env/.env'})
+//para poder trabajar con las cookies
+app.use(cookieParser());
+
+
+
 //llamara nuestro enrutador
 app.use('/', require('./routes/router'));
 

@@ -3,7 +3,7 @@ const router = express.Router();
 const conexion = require('../database/db');
 
 const authController = require('../controllers/authController');
-
+const reseta_controller = require('../controllers/reseta_controller');
 
 //rutas para las vistas 
 router.get('/', authController.isAuthenticated, (req, res)=> {
@@ -25,5 +25,16 @@ router.get('/register', (req, res)=> {
 router.post('/register', authController.register);
 router.post('/login', authController.login);
 router.get('/logout',authController.logout);
+
+//rutas para metodos de crear reseta
+
+router.get('/crea_reseta',reseta_controller.crea_reseta);
+router.get('/buscaPa/:valorImput1',reseta_controller.paraListPas);
+router.get('/buscaProf/:valorImput1',reseta_controller.paraListProf);
+router.post('/reseta_save',reseta_controller.save);
+
+
+
+
 
 module.exports = router;
