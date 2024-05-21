@@ -16,22 +16,24 @@
 
     <form action="/reseta_save" method="post" >
 
+<br>
 
 
         <div class="container">
-            <div class="col-md-4">
-                <label for="nombre" class="form-label">NOMBRE</label>
-                <input type="text" class="form-control" name="nombre" id="nombre">
+            <div class="row g-3">
+                <div class="col-sm">
+                  <input type="text" class="form-control" placeholder="Nombre" aria-label="Nombre" name="nombre" id="nombre">
+                </div>
+                <div class="col-sm">
+                  <input type="text" class="form-control" placeholder="Apellido" aria-label="Apellido"name="apellido" id="apellido" >
+                </div>
+                <div class="col-sm">
+                  <input type="text" class="form-control" placeholder="Dni" aria-label="Dni"name="dni" id="dni" >
+                </div>
+                <div class="col-sm">
+                    <button onclick="cargarPas()" type="button" class="btn btn-success w-100 py-2">Buscar Pasciente</button> 
+                </div>
             </div>
-            <div class="col-md-4">
-                <label for="apellido" class="form-label">APELLIDO</label>
-                <input type="text" class="form-control" name="apellido" id="apellido">
-            </div>
-            <div class="col-md-4">
-                <label for="dni" class="form-label">DNI</label>
-                <input type="text" class="form-control" name="dni" id="dni">
-            </div>
-
         </div>
 
         <div class="container">
@@ -59,28 +61,25 @@
             </div>
         </div>
 
-        <div class="container">
-            <p class="d-inline-flex gap-1">
-                <button onclick="cargarPas()" type="button" class="btn btn-success w-100 py-2">Buscar Pasciente</button>
-            </p>
-            <br>
-            <br>
-        </div>
+      <br>
 
         <div class="container">
 
-            <div class="col-md-4">
-                <label for="nombre_prof" class="form-label">NOMBRE</label>
-                <input type="text" class="form-control" name="nombre_prof" id="nombre_prof">
+            <div class="row g-3">
+                <div class="col-sm">
+                  <input type="text" class="form-control" placeholder="Nombre" aria-label="Nombre" name="nombre_prof" id="nombre_prof">
+                </div>
+                <div class="col-sm">
+                  <input type="text" class="form-control" placeholder="Apellido" aria-label="Apellido"name="apellido_prof" id="apellido_prof" >
+                </div>
+                <div class="col-sm">
+                  <input type="text" class="form-control" placeholder="Dni" aria-label="Dni"name="dni_prof" id="dni_prof" >
+                </div>
+                <div class="col-sm">
+                    <button onclick="cargarProf()" type="button" class="btn btn-success w-100 py-2">Buscar Profesional</button> 
+                </div>
             </div>
-            <div class="col-md-4">
-                <label for="apellido_prof" class="form-label">APELLIDO</label>
-                <input type="text" class="form-control" name="apellido_prof" id="apellido_prof">
-            </div>
-            <div class="col-md-4">
-                <label for="dni_prof" class="form-label">DNI</label>
-                <input type="text" class="form-control" name="dni_prof" id="dni_prof">
-            </div>
+
         </div>
         <div class="container">
 
@@ -108,14 +107,7 @@
         </div>
 
         <div>
-            <div class="container">
-
-                <p class="d-inline-flex gap-1">
-
-                    <button onclick="cargarProf()" type="button" class="btn btn-success w-100 py-2">Buscar
-                        Profesional</button>
-                </p>
-            </div>
+           
             <div class="container">
 
                 <p class="d-inline-flex gap-1">

@@ -24,11 +24,6 @@ async function cargarPas() {
     });
 }
 
-
-
-
-
-
 async function cargarProf() {
     const valorImput1 = document.getElementById("nombre_prof").value;
 
