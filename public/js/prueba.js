@@ -48,7 +48,26 @@ async function cargarProf() {
     });
 }
 
-
+      // Función para cargar opciones del Combo Box 2
+      
+      async function cargarProf() {
+        const valorImput1 = document.getElementById("nombre_prof").value;
+    
+        const response = await fetch(`/buscaProf/${valorImput1}`);
+        const opcionesTabla = await response.json();
+    
+        // Obtener el elemento select
+        const selectElement = document.getElementById('resultadosSelect');
+        selectElement.innerHTML = ''; // Limpiar las opciones previas
+    
+        opcionesTabla.forEach(item => {
+            const option = document.createElement('option');
+            option.value = item.id_prof;
+            option.text = `${item.nombre_prof} ${item.apellido_prof} - DNI: ${item.dni_prof}`;
+            selectElement.appendChild(option);
+        });
+    }
+    
 
 
 
