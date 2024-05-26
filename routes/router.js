@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const conexion = require('../database/db');
+//const conexion = require('../database/db');
 
 const authController = require('../controllers/authController');
 const reseta_controller = require('../controllers/reseta_controller');
@@ -32,9 +32,11 @@ router.get('/crea_reseta',reseta_controller.crea_reseta);
 router.get('/buscaPa/:valorImput1',reseta_controller.paraListPas);
 router.get('/buscaProf/:valorImput1',reseta_controller.paraListProf);
 router.post('/reseta_save',reseta_controller.save);
+router.get('/medicamentos',reseta_controller.cargarMedDataList);
 
-
-
+router.get('/pre_reseta',(req, res)=> {
+      res.render('crear_reseta/pre_reseta');
+});
 
 
 module.exports = router;
