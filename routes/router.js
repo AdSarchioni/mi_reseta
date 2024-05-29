@@ -31,9 +31,17 @@ router.get('/logout',authController.logout);
 router.get('/crea_reseta',reseta_controller.crea_reseta);
 router.get('/buscaPa/:valorImput1',reseta_controller.paraListPas);
 router.get('/buscaProf/:valorImput1',reseta_controller.paraListProf);
-router.post('/reseta_save',reseta_controller.save);
-router.get('/medicamentos',reseta_controller.cargarMedDataList);
 
+
+
+router.post('/reseta_save',reseta_controller.save);
+router.get('/prestaciones',reseta_controller.getPrestaciones);
+router.get('/prestacionesId',reseta_controller.getPrestacionesId);
+router.get('/medicamentos',reseta_controller.cargarMedDataList);
+router.get('/dosis/dosisList', reseta_controller.getDosisList);
+router.get('/cantidad/cantidadList', reseta_controller.getCantidadList);
+router.get('/frecuencia/frecuenciaList', reseta_controller.getFrecuenciaList);
+router.get('/duracion/duracionList', reseta_controller.getDuracionList);
 router.get('/pre_reseta',(req, res)=> {
       res.render('crear_reseta/pre_reseta');
 });

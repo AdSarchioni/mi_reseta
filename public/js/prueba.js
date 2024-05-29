@@ -20,7 +20,7 @@ async function cargarPas() {
               <td>${item.nombre_pas}</td>
               <td>${item.apellido_pas}</td>
               <td>${item.dni_pas}</td>
-             <!-- Agrega más celdas según tu esquema de base de datos -->
+             
         `;
         tbody.appendChild(row);
     });
@@ -44,11 +44,96 @@ async function cargarProf() {
              <td>${item.nombre_prof}</td>
               <td>${item.apellido_prof}</td>
               <td>${item.dni_prof}</td>
-             <!-- Agrega más celdas según tu esquema de base de datos -->
+          
         `;
         tbody.appendChild(row);
     });
 }
+
+async function fetchPrestaciones(datalistId) {
+  try {
+    const response = await fetch('/prestaciones');
+    const data = await response.json();
+
+    const datalist = document.getElementById(datalistId);
+    datalist.innerHTML = ''; // Limpiar opciones existentes
+    data.forEach(item => {
+      const option = document.createElement('option');
+      option.value = `${item.id_presta}-${item.nombre}`;
+      datalist.appendChild(option);
+    });
+  } catch (error) {
+    console.error('Error fetching prestaciones:', error);
+  }
+}
+
+function checkPrestacionesSelection() {
+  const inputs = document.querySelectorAll('#contenedorBusquedaPrestaciones input[list]');
+  const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
+  const accordionButton = document.getElementById('accordionButtonPrestaciones');
+  
+  if (allFilled) {
+    accordionButton.style.backgroundColor = 'lightgreen';
+    accordionButton.innerText = 'Prestaciones Seleccionadas';
+  } else {
+    accordionButton.style.backgroundColor = '';
+    accordionButton.innerText = 'Buscar Prestación';
+  }
+}
+
+function agregarCamposBusquedaPrestaciones() {
+  const cantidadPrestaciones = document.getElementById('cantidadPrestaciones').value;
+  const contenedorBusquedaPrestaciones = document.getElementById('contenedorBusquedaPrestaciones');
+  
+  // Guardar valores existentes
+  const valoresExistentes = [];
+  const inputsExistentes = contenedorBusquedaPrestaciones.querySelectorAll('input[type="text"]');
+  inputsExistentes.forEach(input => {
+    valoresExistentes.push(input.value);
+  });
+  
+  // Limpiar contenedor antes de agregar nuevos campos
+  contenedorBusquedaPrestaciones.innerHTML = '';
+  
+  // Generar campos de búsqueda de prestaciones
+  for (let i = 0; i < cantidadPrestaciones; i++) {
+    const inputGroup = document.createElement('div');
+    inputGroup.classList.add('input-group', 'mb-3');
+    
+    const input = document.createElement('input');
+    input.classList.add('form-control');
+    input.setAttribute('type', 'text');
+    input.setAttribute('list', `datalistOptions${i}`);
+    input.setAttribute('placeholder', 'Escribe para buscar...');
+    input.name = `datalista${i}`;
+    
+    // Restaurar valor existente si está disponible
+    if (valoresExistentes[i]) {
+      input.value = valoresExistentes[i];
+    }
+    
+    const dataList = document.createElement('datalist');
+    dataList.id = `datalistOptions${i}`;
+    
+    inputGroup.appendChild(input);
+    inputGroup.appendChild(dataList);
+    contenedorBusquedaPrestaciones.appendChild(inputGroup);
+    
+    // Agregar evento para cargar el datalist al hacer clic en el input
+    input.addEventListener('focus', () => fetchPrestaciones(dataList.id));
+    
+    // Agregar evento para verificar si todos los campos están completos
+    input.addEventListener('input', checkPrestacionesSelection);
+  }
+}
+
+
+
+
+
+
+
+
 
    
     //funcion revisar los checks y poner en verde el boton del acordeon
@@ -82,13 +167,13 @@ async function cargarProf() {
         try {
           const response = await fetch('/medicamentos');
           const data = await response.json();
-          console.log('Received medicamentos:', JSON.stringify(data)); // Verificar los datos recibidos
+          
       
           const datalist = document.getElementById(datalistId);
           datalist.innerHTML = ''; // Limpiar opciones existentes
           data.forEach(item => {
             const option = document.createElement('option');
-            option.value = `${item.nombre_comercial}-${item.concentracion}-${item.forma_farma}`;
+            option.value = `${item.nombre}-${item.nombre_comercial}-${item.concentracion}-${item.forma_farma}`;
             datalist.appendChild(option);
           });
         } catch (error) {
@@ -157,13 +242,182 @@ async function cargarProf() {
       }
       
       document.addEventListener('DOMContentLoaded', () => {
-        const botonAgregar = document.querySelector('button[type="button"]');
-        botonAgregar.addEventListener('click', agregarCamposBusqueda);
+        const botonGenerarAdministracion = document.getElementById('btnGenerarCamposAdministracion');
+        botonGenerarAdministracion.addEventListener('click', agregarCamposAdministracion);
+    
+    
+        const botonGenerarAdPresta = document.getElementById('btnGenerarCamposAdPresta');
+        botonGenerarAdPresta.addEventListener('click', agregarCamposAdPresta);
+    
+    
       });
-      
-      
+
+
+
+    
+    
+    function agregarCamposAdministracion() {
+        const count = parseInt(document.getElementById('administrationCount').value);
+        const container = document.getElementById('inputsContainer');
+        
+        // Guardar valores existentes
+        const valoresExistentes = [];
+        const inputsExistentes = container.querySelectorAll('input');
+        inputsExistentes.forEach(input => {
+            valoresExistentes.push({ name: input.name, value: input.value });
+        });
+        
+        container.innerHTML = '';
+    
+        for (let i = 0; i < count; i++) {
+            const inputGroup = document.createElement('div');
+            inputGroup.className = 'row g-3 mb-3';
+            inputGroup.innerHTML = `
+                <div class="col-sm">
+                    <input type="text" class="form-control" name="medicamento${i}" placeholder="Medicamento ${i + 1}" aria-label="Medicamento" list="medicamentoList${i}" oninput="checkAllInputsFilled()">
+                    <datalist id="medicamentoList${i}"></datalist>
+                </div>
+                <div class="col-sm">
+                    <input type="text" class="form-control" name="dosis${i}" placeholder="Dosis" aria-label="Dosis" list="dosisList${i}" oninput="checkAllInputsFilled()">
+                    <datalist id="dosisList${i}"></datalist>
+                </div>
+                <div class="col-sm">
+                    <input type="text" class="form-control" name="cantidad${i}" placeholder="Cantidad" aria-label="Cantidad" list="cantidadList${i}" oninput="checkAllInputsFilled()">
+                    <datalist id="cantidadList${i}"></datalist>
+                </div>
+                <div class="col-sm">
+                    <input type="text" class="form-control" name="frecuencia${i}" placeholder="Frecuencia" aria-label="Frecuencia" list="frecuenciaList${i}" oninput="checkAllInputsFilled()">
+                    <datalist id="frecuenciaList${i}"></datalist>
+                </div>
+                <div class="col-sm">
+                    <input type="text" class="form-control" name="duracion${i}" placeholder="Duración" aria-label="Duración" list="duracionList${i}" oninput="checkAllInputsFilled()">
+                    <datalist id="duracionList${i}"></datalist>
+                </div>
+            `;
+            container.appendChild(inputGroup);
+    
+            // Restaurar valores existentes si están disponibles
+            valoresExistentes.forEach(({ name, value }) => {
+                const input = document.querySelector(`input[name="${name}"]`);
+                if (input) {
+                    input.value = value;
+                }
+            });
+    
+            // Populate each datalist with fetched data
+            populateDatalist('/medicamentos', `medicamentoList${i}`);
+            populateDatalist('/dosis/dosisList', `dosisList${i}`);
+            populateDatalist('/cantidad/cantidadList', `cantidadList${i}`);
+            populateDatalist('/frecuencia/frecuenciaList', `frecuenciaList${i}`);
+            populateDatalist('/duracion/duracionList', `duracionList${i}`);
+        }
+    }
     
 
+
+    function agregarCamposAdPresta() {
+      const count = parseInt(document.getElementById('adPrestaCount').value);
+      const container = document.getElementById('inputsContainer1');
+      
+      // Guardar valores existentes
+      const valoresExistentes = [];
+      const inputsExistentes = container.querySelectorAll('input');
+      inputsExistentes.forEach(input => {
+          valoresExistentes.push({ name: input.name, value: input.value });
+      });
+      
+      container.innerHTML = '';
+  
+      for (let i = 0; i < count; i++) {
+          const inputGroup = document.createElement('div');
+          inputGroup.className = 'row g-3 mb-3';
+          inputGroup.innerHTML = `
+              <div class="col-sm">
+                  <input type="text" class="form-control" name="prestacion${i}" placeholder="Prestación ${i + 1}" aria-label="Prestación" list="prestacionList${i}" oninput="checkAllInputsFilled('Prestacion')">
+                  <datalist id="prestacionList${i}"></datalist>
+              </div>
+         
+          <div class="col-sm">
+              <input type="text" class="form-control" name="cantidads${i}" placeholder="Cantidad" aria-label="Cantidad" list="cantidadList${i}" oninput="checkAllInputsFilled()">
+              <datalist id="cantidadList${i}"></datalist>
+          </div>
+          <div class="col-sm">
+              <input type="text" class="form-control" name="frecuencias${i}" placeholder="Frecuencia" aria-label="Frecuencia" list="frecuenciaList${i}" oninput="checkAllInputsFilled()">
+              <datalist id="frecuenciaList${i}"></datalist>
+          </div>
+          <div class="col-sm">
+              <input type="text" class="form-control" name="duracions${i}" placeholder="Duración" aria-label="Duración" list="duracionList${i}" oninput="checkAllInputsFilled()">
+              <datalist id="duracionLista${i}"></datalist>
+          </div>
+          `;
+          container.appendChild(inputGroup);
+  
+          // Restaurar valores existentes si están disponibles
+          valoresExistentes.forEach(({ name, value }) => {
+              const input = document.querySelector(`input[name="${name}"]`);
+              if (input) {
+                  input.value = value;
+              }
+          });
+  
+          // Populate each datalist with fetched data
+          populateDatalist('/prestacionesId', `prestacionList${i}`);
+          populateDatalist('/cantidad/cantidadList', `cantidadList${i}`);
+          populateDatalist('/frecuencia/frecuenciaList', `frecuenciaList${i}`);
+          populateDatalist('/duracion/duracionList', `duracionList${i}`);
+      }
+  }
+
+
+
+
+
+
+
+
+    async function populateDatalist(endpoint, datalistId) {
+        try {
+            const response = await fetch(endpoint);
+            const data = await response.json();
+    
+            const datalist = document.getElementById(datalistId);
+            datalist.innerHTML = ''; // Clear existing options
+            data.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.nombre;
+                datalist.appendChild(option);
+            });
+        } catch (error) {
+            console.error(`Error fetching data from ${endpoint}:`, error);
+        }
+    }
+    
+    function checkAllInputsFilled() {
+        const inputs = document.querySelectorAll('#inputsContainer input[list]');
+        const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
+        const accordionButton = document.getElementById('accordionButtonAdministracion');
+    
+        if (allFilled) {
+            accordionButton.style.backgroundColor = 'lightgreen';
+            accordionButton.innerText = 'Administracion Seleccionada';
+        } else {
+            accordionButton.style.backgroundColor = '';
+            accordionButton.innerText = 'Buscar Administracion';
+        }
+    }
+    
+    
+    document.getElementById('diagnostico').addEventListener('input', function () {
+      const text = this.value;
+      const cleanedText = text.replace(/\s/g, ''); // Remove all spaces
+      const button = document.getElementById('diagnosticoButton');
+  
+      if (cleanedText.length >= 20) {
+          button.style.backgroundColor = 'lightgreen';
+      } else {
+          button.style.backgroundColor = '';
+      }
+  });
 
 
 

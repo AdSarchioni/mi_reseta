@@ -85,3 +85,112 @@ async function fetchMedicamentos() {
       }
     });
   });
+
+
+
+  document.getElementById('administrationCount').addEventListener('input', function() {
+    const count = parseInt(this.value);
+    const container = document.getElementById('accordionContainer');
+    container.innerHTML = '';
+
+    for (let i = 0; i < count; i++) {
+        const accordionItem = document.createElement('div');
+        accordionItem.className = 'accordion-item';
+        accordionItem.innerHTML = `
+            <h2 class="accordion-header" id="heading${i}">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${i}" aria-expanded="false" aria-controls="collapse${i}">
+                    Administración ${i + 1}
+                </button>
+            </h2>
+            <div id="collapse${i}" class="accordion-collapse collapse" aria-labelledby="heading${i}" data-bs-parent="#accordionContainer">
+                <div class="accordion-body">
+                    <div class="row g-3">
+                        <div class="col-sm">
+                            <input type="text" class="form-control" placeholder="Dosis" aria-label="Dosis" list="dosisList${i}">
+                            <datalist id="dosisList${i}">
+                                <!-- Opciones de Dosis -->
+                                <option value="Dosis 1">
+                                <option value="Dosis 2">
+                            </datalist>
+                        </div>
+                        <div class="col-sm">
+                            <input type="text" class="form-control" placeholder="Cantidad" aria-label="Cantidad" list="cantidadList${i}">
+                            <datalist id="cantidadList${i}">
+                                <!-- Opciones de Cantidad -->
+                                <option value="Cantidad 1">
+                                <option value="Cantidad 2">
+                            </datalist>
+                        </div>
+                        <div class="col-sm">
+                            <input type="text" class="form-control" placeholder="Frecuencia" aria-label="Frecuencia" list="frecuenciaList${i}">
+                            <datalist id="frecuenciaList${i}">
+                                <!-- Opciones de Frecuencia -->
+                                <option value="Frecuencia 1">
+                                <option value="Frecuencia 2">
+                            </datalist>
+                        </div>
+                        <div class="col-sm">
+                            <input type="text" class="form-control" placeholder="Duración" aria-label="Duracion" list="duracionList${i}">
+                            <datalist id="duracionList${i}">
+                                <!-- Opciones de Duración -->
+                                <option value="Duración 1">
+                                <option value="Duración 2">
+                            </datalist>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        container.appendChild(accordionItem);
+    }
+});
+
+
+document.getElementById('administrationCount').addEventListener('input', function() {
+  const count = parseInt(this.value);
+  const container = document.getElementById('inputsContainer');
+  container.innerHTML = '';
+
+  for (let i = 0; i < count; i++) {
+      const inputGroup = document.createElement('div');
+      inputGroup.className = 'row g-3 mb-3';
+      inputGroup.innerHTML = `
+          <div class="col-sm">
+              <input type="text" class="form-control" placeholder="Medicamento ${i + 1}" aria-label="Medicamento">
+          </div>
+          <div class="col-sm">
+              <input type="text" class="form-control" placeholder="Dosis" aria-label="Dosis" list="dosisList${i}">
+              <datalist id="dosisList${i}">
+                  <!-- Opciones de Dosis -->
+                  <option value="Dosis 1">
+                  <option value="Dosis 2">
+              </datalist>
+          </div>
+          <div class="col-sm">
+              <input type="text" class="form-control" placeholder="Cantidad" aria-label="Cantidad" list="cantidadList${i}">
+              <datalist id="cantidadList${i}">
+                  <!-- Opciones de Cantidad -->
+                  <option value="Cantidad 1">
+                  <option value="Cantidad 2">
+              </datalist>
+          </div>
+          <div class="col-sm">
+              <input type="text" class="form-control" placeholder="Frecuencia" aria-label="Frecuencia" list="frecuenciaList${i}">
+              <datalist id="frecuenciaList${i}">
+                  <!-- Opciones de Frecuencia -->
+                  <option value="Frecuencia 1">
+                  <option value="Frecuencia 2">
+              </datalist>
+          </div>
+          <div class="col-sm">
+              <input type="text" class="form-control" placeholder="Duración" aria-label="Duración" list="duracionList${i}">
+              <datalist id="duracionList${i}">
+                  <!-- Opciones de Duración -->
+                  <option value="Duración 1">
+                  <option value="Duración 2">
+              </datalist>
+          </div>
+      `;
+      container.appendChild(inputGroup);
+  }
+});
