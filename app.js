@@ -27,6 +27,16 @@ app.use(cookieParser());
 //llamara nuestro enrutador
 app.use('/', require('./routes/router'));
 
+
+app.use(function(req, res, next){
+    if(!req.user){
+          res.header('cache-control', 'private, no-cache, no-store, must-revalidate');
+    next();
+    }
+})
+
+
+
 app.listen(4000, ()=> { 
     console.log('SERVER RUNNING EN PUERTO 4000 http://localhost:4000')
 });

@@ -28,8 +28,11 @@ router.get('/logout',authController.logout);
 
 //rutas para metodos de crear reseta
 
-router.get('/crea_reseta',reseta_controller.crea_reseta);
+router.get('/crea_reseta',authController.isAuthenticated,reseta_controller.crea_reseta);
 router.get('/buscaPa/:valorImput1',reseta_controller.paraListPas);
+router.get('/pasciente',reseta_controller.dataPasciente);
+
+
 router.get('/buscaProf/:valorImput1',reseta_controller.paraListProf);
 
 

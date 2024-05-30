@@ -1,5 +1,5 @@
 //funcion para cargar las tablas
-async function cargarPas() {
+async function cargarPas1() {
     const valorImput1 = document.getElementById("nombre").value;
 
     const response = await fetch(`/buscaPa/${valorImput1}`);
@@ -25,6 +25,56 @@ async function cargarPas() {
         tbody.appendChild(row);
     });
 }
+
+async function fetchBuscarPasientes() {
+  try {
+    
+      const response = await fetch(`/pasciente`);
+      const data = await response.json();
+
+      const datalist = document.getElementById('sugerenciasNombre_pas');
+      datalist.innerHTML = ''; // Limpiar opciones existentes
+      data.forEach(item => {
+          const option = document.createElement('option');
+          option.value = `${item.id_pas}-${item.nombre_pas}-${item.apellido_pas}-${item.dni_pas}-${item.fecha_nac_pas}-${item.sexo_pas}-${item.alta_pas}-${item.id_plan_obra_social}-${item.tipo_plan}-${item.nombre_obra}` 
+          datalist.appendChild(option);
+      });
+  } catch (error) {
+      console.error('Error fetching prestaciones:', error);
+  }
+}
+
+document.getElementById('nombre_pas').addEventListener('input', (event) => {
+  const query = event.target.value;
+  if (query.length >= 2) { 
+      fetchBuscarPasientes();
+  }
+});
+
+document.getElementById('nombre_pas').addEventListener('input', function () {
+  const text = this.value;
+  const cleanedText = text.replace(/\s/g, ''); // Remove all spaces
+  const button = document.getElementById('pascienteButton');
+
+  if (cleanedText.length >= 20) {
+      button.style.backgroundColor = 'lightgreen';
+  } else {
+      button.style.backgroundColor = '';
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 async function cargarProf() {
     const valorImput1 = document.getElementById("nombre_prof").value;
@@ -194,6 +244,29 @@ function agregarCamposBusquedaPrestaciones() {
           accordionButton.innerText = 'Buscar Medicamento';
         }
       }
+
+      function checkAllInputsFilled() {
+        const inputs = document.querySelectorAll('#inputsContainer input[list]');
+        const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
+        const accordionButton = document.getElementById('accordionButtonAdministracion');
+    
+        if (allFilled) {
+            accordionButton.style.backgroundColor = 'lightgreen';
+            accordionButton.innerText = 'Administracion Seleccionada';
+        } else {
+            accordionButton.style.backgroundColor = '';
+            accordionButton.innerText = 'Buscar Administracion';
+        }
+    }
+
+
+
+
+
+
+
+
+
       
       function agregarCamposBusqueda() {
         const cantidadMedicamentos = document.getElementById('cantidadMedicamentos').value;
@@ -347,7 +420,7 @@ function agregarCamposBusquedaPrestaciones() {
           </div>
           <div class="col-sm">
               <input type="text" class="form-control" name="duracions${i}" placeholder="Duración" aria-label="Duración" list="duracionList${i}" oninput="checkAllInputsFilled()">
-              <datalist id="duracionLista${i}"></datalist>
+              <datalist id="duracionList${i}"></datalist>
           </div>
           `;
           container.appendChild(inputGroup);
@@ -386,25 +459,16 @@ function agregarCamposBusquedaPrestaciones() {
                 const option = document.createElement('option');
                 option.value = item.nombre;
                 datalist.appendChild(option);
+
+
+
             });
         } catch (error) {
             console.error(`Error fetching data from ${endpoint}:`, error);
         }
     }
     
-    function checkAllInputsFilled() {
-        const inputs = document.querySelectorAll('#inputsContainer input[list]');
-        const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
-        const accordionButton = document.getElementById('accordionButtonAdministracion');
-    
-        if (allFilled) {
-            accordionButton.style.backgroundColor = 'lightgreen';
-            accordionButton.innerText = 'Administracion Seleccionada';
-        } else {
-            accordionButton.style.backgroundColor = '';
-            accordionButton.innerText = 'Buscar Administracion';
-        }
-    }
+ 
     
     
     document.getElementById('diagnostico').addEventListener('input', function () {
