@@ -1,30 +1,4 @@
-//funcion para cargar las tablas
-async function cargarPas1() {
-    const valorImput1 = document.getElementById("nombre").value;
 
-    const response = await fetch(`/buscaPa/${valorImput1}`);
-    const opcionesTabla = await response.json();
-
-
-    // Llenar la tabla con los datos obtenidos
-    const tbody = document.getElementById('resultadosTabla').querySelector('tbody');
-    tbody.innerHTML = ''; // Limpiar el contenido previo de la tabla
-
-    opcionesTabla.forEach(item => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-
-        
-        <td><input type="checkbox" name="id_pas" value="${item.id_pas}" onclick="checkSelection()"></td>
-             <td>${item.id_pas}</td>
-              <td>${item.nombre_pas}</td>
-              <td>${item.apellido_pas}</td>
-              <td>${item.dni_pas}</td>
-             
-        `;
-        tbody.appendChild(row);
-    });
-}
 
 async function fetchBuscarPasientes() {
   try {
