@@ -38,20 +38,8 @@ document.getElementById('nombre_pas').addEventListener('input', function () {
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 async function cargarProf() {
-    const valorImput1 = document.getElementById("nombre_prof").value;
+    const valorImput1 = document.getElementById("dni_prof").value;
 
     const response = await fetch(`/buscaProf/${valorImput1}`);
     const opcionesTabla = await response.json();
@@ -64,11 +52,17 @@ async function cargarProf() {
         const row = document.createElement('tr');
         row.innerHTML = `
         <td><input type="checkbox" name="id_prof" value="${item.id_prof}" onclick="checkSelection1()"></td>
+            
+            <td>${item.id_refer}</td> 
              <td>${item.id_prof}</td>  
              <td>${item.nombre_prof}</td>
               <td>${item.apellido_prof}</td>
               <td>${item.dni_prof}</td>
-          
+              <td>${item.domicilio_prof}</td>  
+             <td>${item.mail_prof}</td>
+              <td>${item.matricula}</td>
+              <td>${item.tel_prof}</td>
+              <td>${item.tipo_esp}</td>
         `;
         tbody.appendChild(row);
     });

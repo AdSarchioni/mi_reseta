@@ -8,7 +8,7 @@ const reseta_controller = require('../controllers/reseta_controller');
 //rutas para las vistas 
 router.get('/', authController.isAuthenticated, (req, res)=> {
     //Sconexion();
-      res.render('index',{user: req.user});
+      res.render('index',{user: req.user, alert: false });
 });
 
 router.get('/login', (req, res)=>{
@@ -16,7 +16,7 @@ router.get('/login', (req, res)=>{
 });
 
 router.get('/register', (req, res)=> {
-      res.render('register');
+      res.render('register',{alert: false} );
 });
 
 
@@ -28,7 +28,7 @@ router.get('/logout',authController.logout);
 
 //rutas para metodos de crear reseta
 
-router.get('/crea_reseta',authController.isAuthenticated,reseta_controller.crea_reseta);
+router.get('/crea_reseta',authController.isAuthenticated,authController.esProf,reseta_controller.crea_reseta);
 router.get('/buscaPa/:valorImput1',reseta_controller.paraListPas);
 router.get('/pasciente',reseta_controller.dataPasciente);
 

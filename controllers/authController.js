@@ -9,22 +9,52 @@ const { promisify } = require('util');
 
 exports.register = async (req, res) => {
       try {
-            const name = req.body.name
-            const user = req.body.user
-            const pass = req.body.pass
-            let passHash = await bcryptjs.hash(pass, 8);
-
-            //console.log(passHash)
-            conexion.query('INSERT INTO users SET ?', { user: user, name: name, pass: passHash }, (error, result) => {
-                  if (error) {
-                        console.log(error);
-                  }
-                  res.redirect('/')
-            })
+            const todo= req.body;
+          const name = req.body.name;
+          const user = req.body.user;
+          const dni= req.body.dni;
+          const mail = req.body.mail;
+          const rol = req.body.rol;
+          const pass = req.body.pass;
+          let passHash = await bcryptjs.hash(pass, 8);
+  
+          // Verificar si el usuario ya existe
+          conexion.query('SELECT * FROM users WHERE user = ?', [user], (error, results) => {
+              if (error) {
+                  console.log(error);
+                  res.status(500).send('Error en la consulta de la base de datos');
+                  return;
+              }
+  
+              if (results.length > 0) {
+                  // El usuario ya existe
+                  res.render('register', {
+                        alert: true,
+                        alertTitle: "advertencia",
+                        alertMessage: "el usuario, dni o mail ya existe",
+                        alertIcon: 'info',
+                        showConfirmButton: true,
+                        timer: false,
+                        ruta: 'register'
+                  })
+              } else {
+                  // El usuario no existe, proceder con la inserción
+                  conexion.query('INSERT INTO users SET ?', { user: user, name: name, pass: passHash, dni:dni, mail: mail, rol: rol }, (error, result) => {
+                      if (error) {
+                          console.log(error);
+                          res.status(500).send('Error al registrar el usuario');
+                      } else {
+                          res.redirect('/');
+                          console.log(todo)
+                      }
+                  });
+              }
+          });
       } catch (error) {
-            console.log(error);
+          console.log(error);
+          res.status(500).send('Error en el servidor');
       }
-}
+  };
 exports.login = async (req, res) => {
       try {
             const user = req.body.user
@@ -102,6 +132,41 @@ exports.isAuthenticated = async (req, res, next)=> {
             
       }
 }
+
+exports.esAdmin = (req, res, next)=>{
+      const rol = req.user.rol;
+      if(rol !== "Administrador"){
+            res.render('index', {
+                  alert: true,
+                  alertTitle: "error",
+                  alertMessage: "no tiene permisos de administrador",
+                  alertIcon: 'error',
+                  showConfirmButton: true,
+                  timer: false,
+                  ruta: '/'
+            })
+      }else{
+            next();
+      }
+}
+exports.esProf = (req, res, next)=>{
+      const rol = req.user.rol;
+      if(rol !== "Profesional"){
+            res.render('index', {
+                  alert: true,
+                  alertTitle: "error",
+                  alertMessage: "no tiene permisos de profesional",
+                  alertIcon: 'error',
+                  showConfirmButton: true,
+                  timer: false,
+                  ruta: '/'
+            })
+      }else{
+            next();
+      }
+}
+
+
 
 exports.logout = (req, res) => {
       res.clearCookie('jwt')
