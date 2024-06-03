@@ -68,7 +68,7 @@ async function cargarProf() {
     });
 }
 
-async function fetchPrestaciones(datalistId) {
+async function fetchPrestaciones(datalistId, idInputName) {
   try {
     const response = await fetch('/prestaciones');
     const data = await response.json();
@@ -77,25 +77,22 @@ async function fetchPrestaciones(datalistId) {
     datalist.innerHTML = ''; // Limpiar opciones existentes
     data.forEach(item => {
       const option = document.createElement('option');
-      option.value = `${item.id_presta}-${item.nombre}`;
+      option.value = item.nombre;
+      option.setAttribute('data-id', item.id_presta);
       datalist.appendChild(option);
+    });
+
+    // Agregar evento para actualizar el ID input cuando se selecciona una opción
+    const input = document.querySelector(`input[list="${datalistId}"]`);
+    input.addEventListener('input', (event) => {
+      const selectedOption = Array.from(datalist.options).find(option => option.value === event.target.value);
+      if (selectedOption && idInputName) {
+        const idInput = document.querySelector(`input[name="${idInputName}"]`);
+        idInput.value = selectedOption.getAttribute('data-id');
+      }
     });
   } catch (error) {
     console.error('Error fetching prestaciones:', error);
-  }
-}
-
-function checkPrestacionesSelection() {
-  const inputs = document.querySelectorAll('#contenedorBusquedaPrestaciones input[list]');
-  const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
-  const accordionButton = document.getElementById('accordionButtonPrestaciones');
-  
-  if (allFilled) {
-    accordionButton.style.backgroundColor = 'lightgreen';
-    accordionButton.innerText = 'Prestaciones Seleccionadas';
-  } else {
-    accordionButton.style.backgroundColor = '';
-    accordionButton.innerText = 'Buscar Prestación';
   }
 }
 
@@ -117,6 +114,13 @@ function agregarCamposBusquedaPrestaciones() {
   for (let i = 0; i < cantidadPrestaciones; i++) {
     const inputGroup = document.createElement('div');
     inputGroup.classList.add('input-group', 'mb-3');
+
+    const idInput = document.createElement('input');
+    idInput.classList.add('form-control-color');
+    idInput.setAttribute('type', 'text');
+    idInput.setAttribute('placeholder', `ID Prestación ${i + 1}`);
+    idInput.name = `idPrestacion${i}`;
+    idInput.readOnly = true;
     
     const input = document.createElement('input');
     input.classList.add('form-control');
@@ -133,12 +137,13 @@ function agregarCamposBusquedaPrestaciones() {
     const dataList = document.createElement('datalist');
     dataList.id = `datalistOptions${i}`;
     
+    inputGroup.appendChild(idInput);
     inputGroup.appendChild(input);
     inputGroup.appendChild(dataList);
     contenedorBusquedaPrestaciones.appendChild(inputGroup);
     
     // Agregar evento para cargar el datalist al hacer clic en el input
-    input.addEventListener('focus', () => fetchPrestaciones(dataList.id));
+    input.addEventListener('focus', () => fetchPrestaciones(dataList.id, idInput.name));
     
     // Agregar evento para verificar si todos los campos están completos
     input.addEventListener('input', checkPrestacionesSelection);
@@ -146,6 +151,21 @@ function agregarCamposBusquedaPrestaciones() {
 }
 
 
+
+
+function checkPrestacionesSelection() {
+  const inputs = document.querySelectorAll('#contenedorBusquedaPrestaciones input[list]');
+  const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
+  const accordionButton = document.getElementById('accordionButtonPrestaciones');
+  
+  if (allFilled) {
+    accordionButton.style.backgroundColor = 'lightgreen';
+    accordionButton.innerText = 'Prestaciones Seleccionadas';
+  } else {
+    accordionButton.style.backgroundColor = '';
+    accordionButton.innerText = 'Buscar Prestación';
+  }
+}
 
 
 
@@ -179,26 +199,117 @@ function agregarCamposBusquedaPrestaciones() {
           accordionButton.innerText = 'Buscar Profesional';
         }
       } 
-
-
-      async function fetchMedicamentos(datalistId) {
-        try {
-          const response = await fetch('/medicamentos');
-          const data = await response.json();
-          
-      
-          const datalist = document.getElementById(datalistId);
-          datalist.innerHTML = ''; // Limpiar opciones existentes
-          data.forEach(item => {
-            const option = document.createElement('option');
-            option.value = `${item.nombre}-${item.nombre_comercial}-${item.concentracion}-${item.forma_farma}`;
-            datalist.appendChild(option);
-          });
-        } catch (error) {
-          console.error('Error fetching medicamentos:', error);
+ 
+      function agregarCamposBusqueda() {
+        const cantidadMedicamentos = document.getElementById('cantidadMedicamentos').value;
+        const contenedorBusquedaMedicamentos = document.getElementById('contenedorBusquedaMedicamentos');
+        
+        // Guardar valores existentes
+        const valoresExistentes = [];
+        const inputsExistentes = contenedorBusquedaMedicamentos.querySelectorAll('input[type="text"]');
+        inputsExistentes.forEach(input => {
+            valoresExistentes.push(input.value);
+        });
+        
+        // Limpiar contenedor antes de agregar nuevos campos
+        contenedorBusquedaMedicamentos.innerHTML = '';
+        
+        // Generar campos de búsqueda de medicamentos
+        for (let i = 0; i < cantidadMedicamentos; i++) {
+            const inputGroup = document.createElement('div');
+            inputGroup.classList.add('input-group', 'mb-3');
+            
+            // Crear input para el ID del medicamento
+            const inputId = document.createElement('input');
+            inputId.classList.add('form-control-color', 'id-med-input');
+            inputId.setAttribute('type', 'text');
+            inputId.setAttribute('placeholder', `ID ${i + 1}`);
+            inputId.name = `id_med${i}`;
+            inputId.readOnly = true;
+            
+            // Crear input para el resto de los datos del medicamento
+            const input = document.createElement('input');
+            input.classList.add('form-control');
+            input.setAttribute('type', 'text');
+            input.setAttribute('list', `datalistOptions${i}`);
+            input.setAttribute('placeholder', 'Escribe para buscar...');
+            input.name = `datalist${i}`;
+            
+            // Restaurar valor existente si está disponible
+            if (valoresExistentes[i]) {
+                input.value = valoresExistentes[i];
+            }
+            
+            const dataList = document.createElement('datalist');
+            dataList.id = `datalistOptions${i}`;
+            
+            inputGroup.appendChild(inputId);
+            inputGroup.appendChild(input);
+            inputGroup.appendChild(dataList);
+            contenedorBusquedaMedicamentos.appendChild(inputGroup);
+            
+            // Agregar evento para cargar el datalist al hacer clic en el input
+            input.addEventListener('focus', () => fetchMedicamentos(dataList.id, inputId));
+            
+            // Agregar evento para verificar si todos los campos están completos y para llenar el ID
+            input.addEventListener('input', (event) => {
+                checkMedicamentosSelection();
+                fillMedicamentoId(inputId, input.value, dataList.id);
+            });
         }
-      }
+    }
+    
+    async function fetchMedicamentos(datalistId, inputId) {
+        try {
+            const response = await fetch('/medicamentos');
+            const data = await response.json();
+            
+            const datalist = document.getElementById(datalistId);
+            datalist.innerHTML = ''; // Limpiar opciones existentes
+            data.forEach(item => {
+                const option = document.createElement('option');
+                option.value = `${item.nombre}-${item.concentracion}-${item.forma_farma}`;
+                option.dataset.idMed = item.id;
+                datalist.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Error fetching medicamentos:', error);
+        }
+    }
+    
+    function fillMedicamentoId(inputId, value, datalistId) {
+        const datalist = document.getElementById(datalistId);
+        const selectedOption = Array.from(datalist.options).find(option => option.value === value);
+        if (selectedOption) {
+            inputId.value = selectedOption.dataset.idMed;
+        }
+    }
+    
+    function checkMedicamentosSelection() {
+        // Implementa la lógica para verificar si todos los campos están completos
+    }
+    
+
+
+
+
+
+    function fillMedicamentoId(inputId, value) {
+        const datalist = inputId.nextElementSibling.nextElementSibling;
+        const option = Array.from(datalist.options).find(option => `${option.value}` === value);
+        if (option) {
+            inputId.value = option.dataset.idMed;
+        }
+    }
+
+    function checkMedicamentosSelection() {
+        // Implementa la lógica de verificación si es necesario
+    }
+    
+    
       
+ 
+
       function checkMedicamentosSelection() {
         const inputs = document.querySelectorAll('#contenedorBusquedaMedicamentos input[list]');
         const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
@@ -227,60 +338,6 @@ function agregarCamposBusquedaPrestaciones() {
         }
     }
 
-
-
-
-
-
-
-
-
-      
-      function agregarCamposBusqueda() {
-        const cantidadMedicamentos = document.getElementById('cantidadMedicamentos').value;
-        const contenedorBusquedaMedicamentos = document.getElementById('contenedorBusquedaMedicamentos');
-        
-        // Guardar valores existentes
-        const valoresExistentes = [];
-        const inputsExistentes = contenedorBusquedaMedicamentos.querySelectorAll('input[type="text"]');
-        inputsExistentes.forEach(input => {
-          valoresExistentes.push(input.value);
-        });
-        
-        // Limpiar contenedor antes de agregar nuevos campos
-        contenedorBusquedaMedicamentos.innerHTML = '';
-        
-        // Generar campos de búsqueda de medicamentos
-        for (let i = 0; i < cantidadMedicamentos; i++) {
-          const inputGroup = document.createElement('div');
-          inputGroup.classList.add('input-group', 'mb-3');
-          
-          const input = document.createElement('input');
-          input.classList.add('form-control');
-          input.setAttribute('type', 'text');
-          input.setAttribute('list', `datalistOptions${i}`);
-          input.setAttribute('placeholder', 'Escribe para buscar...');
-          input.name = `datalist${i}`;
-          
-          // Restaurar valor existente si está disponible
-          if (valoresExistentes[i]) {
-            input.value = valoresExistentes[i];
-          }
-          
-          const dataList = document.createElement('datalist');
-          dataList.id = `datalistOptions${i}`;
-          
-          inputGroup.appendChild(input);
-          inputGroup.appendChild(dataList);
-          contenedorBusquedaMedicamentos.appendChild(inputGroup);
-          
-          // Agregar evento para cargar el datalist al hacer clic en el input
-          input.addEventListener('focus', () => fetchMedicamentos(dataList.id));
-          
-          // Agregar evento para verificar si todos los campos están completos
-          input.addEventListener('input', checkMedicamentosSelection);
-        }
-      }
       
       document.addEventListener('DOMContentLoaded', () => {
         const botonGenerarAdministracion = document.getElementById('btnGenerarCamposAdministracion');
@@ -293,11 +350,7 @@ function agregarCamposBusquedaPrestaciones() {
     
       });
 
-
-
-    
-    
-    function agregarCamposAdministracion() {
+      function agregarCamposAdministracion() {
         const count = parseInt(document.getElementById('administrationCount').value);
         const container = document.getElementById('inputsContainer');
         
@@ -315,22 +368,35 @@ function agregarCamposBusquedaPrestaciones() {
             inputGroup.className = 'row g-3 mb-3';
             inputGroup.innerHTML = `
                 <div class="col-sm">
+                    <input type="text" class="form-control-color" name="medicamentoId${i}"  placeholder="ID Medicamento ${i + 1}" aria-label="ID Medicamento" readonly>
+
                     <input type="text" class="form-control" name="medicamento${i}" placeholder="Medicamento ${i + 1}" aria-label="Medicamento" list="medicamentoList${i}" oninput="checkAllInputsFilled()">
                     <datalist id="medicamentoList${i}"></datalist>
                 </div>
+
                 <div class="col-sm">
+                    <input type="text" class="form-control-color" name="dosisId${i}"  placeholder="ID Dosis" aria-label="ID Dosis" readonly>
+               
                     <input type="text" class="form-control" name="dosis${i}" placeholder="Dosis" aria-label="Dosis" list="dosisList${i}" oninput="checkAllInputsFilled()">
                     <datalist id="dosisList${i}"></datalist>
                 </div>
+
                 <div class="col-sm">
+                    <input type="text" class="form-control-color" name="cantidadId${i}"  placeholder="ID Cantidad" aria-label="ID Cantidad" readonly>
+                
                     <input type="text" class="form-control" name="cantidad${i}" placeholder="Cantidad" aria-label="Cantidad" list="cantidadList${i}" oninput="checkAllInputsFilled()">
                     <datalist id="cantidadList${i}"></datalist>
                 </div>
                 <div class="col-sm">
+                    <input type="text" class="form-control-color" name="frecuenciaId${i}"  placeholder="ID Frecuencia" aria-label="ID Frecuencia" readonly>
+                
                     <input type="text" class="form-control" name="frecuencia${i}" placeholder="Frecuencia" aria-label="Frecuencia" list="frecuenciaList${i}" oninput="checkAllInputsFilled()">
                     <datalist id="frecuenciaList${i}"></datalist>
                 </div>
+
                 <div class="col-sm">
+                    <input type="text" class="form-control-color" name="duracionId${i}"  placeholder="ID Duración" aria-label="ID Duración" readonly>
+               
                     <input type="text" class="form-control" name="duracion${i}" placeholder="Duración" aria-label="Duración" list="duracionList${i}" oninput="checkAllInputsFilled()">
                     <datalist id="duracionList${i}"></datalist>
                 </div>
@@ -346,77 +412,15 @@ function agregarCamposBusquedaPrestaciones() {
             });
     
             // Populate each datalist with fetched data
-            populateDatalist('/medicamentos', `medicamentoList${i}`);
-            populateDatalist('/dosis/dosisList', `dosisList${i}`);
-            populateDatalist('/cantidad/cantidadList', `cantidadList${i}`);
-            populateDatalist('/frecuencia/frecuenciaList', `frecuenciaList${i}`);
-            populateDatalist('/duracion/duracionList', `duracionList${i}`);
+            populateDatalist('/medicamentos', `medicamentoList${i}`, `medicamentoId${i}`);
+            populateDatalist('/dosis/dosisList', `dosisList${i}`, `dosisId${i}`);
+            populateDatalist('/cantidad/cantidadList', `cantidadList${i}`, `cantidadId${i}`);
+            populateDatalist('/frecuencia/frecuenciaList', `frecuenciaList${i}`, `frecuenciaId${i}`);
+            populateDatalist('/duracion/duracionList', `duracionList${i}`, `duracionId${i}`);
         }
     }
     
-
-
-    function agregarCamposAdPresta() {
-      const count = parseInt(document.getElementById('adPrestaCount').value);
-      const container = document.getElementById('inputsContainer1');
-      
-      // Guardar valores existentes
-      const valoresExistentes = [];
-      const inputsExistentes = container.querySelectorAll('input');
-      inputsExistentes.forEach(input => {
-          valoresExistentes.push({ name: input.name, value: input.value });
-      });
-      
-      container.innerHTML = '';
-  
-      for (let i = 0; i < count; i++) {
-          const inputGroup = document.createElement('div');
-          inputGroup.className = 'row g-3 mb-3';
-          inputGroup.innerHTML = `
-              <div class="col-sm">
-                  <input type="text" class="form-control" name="prestacion${i}" placeholder="Prestación ${i + 1}" aria-label="Prestación" list="prestacionList${i}" oninput="checkAllInputsFilled('Prestacion')">
-                  <datalist id="prestacionList${i}"></datalist>
-              </div>
-         
-          <div class="col-sm">
-              <input type="text" class="form-control" name="cantidads${i}" placeholder="Cantidad" aria-label="Cantidad" list="cantidadList${i}" oninput="checkAllInputsFilled()">
-              <datalist id="cantidadList${i}"></datalist>
-          </div>
-          <div class="col-sm">
-              <input type="text" class="form-control" name="frecuencias${i}" placeholder="Frecuencia" aria-label="Frecuencia" list="frecuenciaList${i}" oninput="checkAllInputsFilled()">
-              <datalist id="frecuenciaList${i}"></datalist>
-          </div>
-          <div class="col-sm">
-              <input type="text" class="form-control" name="duracions${i}" placeholder="Duración" aria-label="Duración" list="duracionList${i}" oninput="checkAllInputsFilled()">
-              <datalist id="duracionList${i}"></datalist>
-          </div>
-          `;
-          container.appendChild(inputGroup);
-  
-          // Restaurar valores existentes si están disponibles
-          valoresExistentes.forEach(({ name, value }) => {
-              const input = document.querySelector(`input[name="${name}"]`);
-              if (input) {
-                  input.value = value;
-              }
-          });
-  
-          // Populate each datalist with fetched data
-          populateDatalist('/prestacionesId', `prestacionList${i}`);
-          populateDatalist('/cantidad/cantidadList', `cantidadList${i}`);
-          populateDatalist('/frecuencia/frecuenciaList', `frecuenciaList${i}`);
-          populateDatalist('/duracion/duracionList', `duracionList${i}`);
-      }
-  }
-
-
-
-
-
-
-
-
-    async function populateDatalist(endpoint, datalistId) {
+    async function populateDatalist(endpoint, datalistId, idInputName) {
         try {
             const response = await fetch(endpoint);
             const data = await response.json();
@@ -426,15 +430,28 @@ function agregarCamposBusquedaPrestaciones() {
             data.forEach(item => {
                 const option = document.createElement('option');
                 option.value = item.nombre;
+                option.setAttribute('data-id', item.id);
                 datalist.appendChild(option);
-
-
-
+            });
+    
+            // Add event listener to the input to update the ID input when an option is selected
+            const input = document.querySelector(`input[list="${datalistId}"]`);
+            input.addEventListener('input', (event) => {
+                const selectedOption = Array.from(datalist.options).find(option => option.value === event.target.value);
+                if (selectedOption && idInputName) {
+                    const idInput = document.querySelector(`input[name="${idInputName}"]`);
+                    idInput.value = selectedOption.getAttribute('data-id');
+                }
             });
         } catch (error) {
             console.error(`Error fetching data from ${endpoint}:`, error);
         }
     }
+    
+
+    
+    
+
     
  
     

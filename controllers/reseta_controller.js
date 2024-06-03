@@ -116,7 +116,7 @@ controller.getPrestacionesId = (req, res) => {
 
 
 controller.cargarMedDataList = (req, res) => {
-    const query = 'SELECT m.id_med AS nombre,m.nombre_generico AS nombre_generico, m.nombre_comercial AS nombre_comercial, m.id_concent AS id_concent, c.concentracion AS concentracion, m.id_for_fa AS id_for_fa, f.forma_fa AS forma_farma FROM medicamentos m LEFT JOIN concentracion c ON m.id_concent = c.id_conc LEFT JOIN forma_farma f ON m.id_for_fa = f.id_for_fa;';
+    const query = 'SELECT m.id_med AS id,m.nombre_comercial AS nombre, m.nombre_generico AS nombre_generico, m.nombre_comercial AS nombre_comercial, m.id_concent AS id_concent, c.concentracion AS concentracion, m.id_for_fa AS id_for_fa, f.forma_fa AS forma_farma FROM medicamentos m LEFT JOIN concentracion c ON m.id_concent = c.id_conc LEFT JOIN forma_farma f ON m.id_for_fa = f.id_for_fa;';
     conexion.query(query, (err, results) => {
         if (err) {
             res.status(500).send('Error querying the database');
@@ -129,7 +129,7 @@ controller.cargarMedDataList = (req, res) => {
     });
 };
 controller.getDosisList = (req, res) => {
-    conexion.query('SELECT nombre FROM dosis', (err, results) => {
+    conexion.query('SELECT id_dosis AS id, nombre FROM dosis', (err, results) => {
         if (err) {
             res.status(500).json({ error: err.message });
             return;
@@ -139,7 +139,7 @@ controller.getDosisList = (req, res) => {
 };
 
 controller.getCantidadList = (req, res) => {
-    conexion.query('SELECT nombre FROM cantidad', (err, results) => {
+    conexion.query('SELECT id_cantidad AS id, nombre FROM cantidad', (err, results) => {
         if (err) {
             res.status(500).json({ error: err.message });
             return;
@@ -149,7 +149,7 @@ controller.getCantidadList = (req, res) => {
 };
 
 controller.getFrecuenciaList = (req, res) => {
-    conexion.query('SELECT nombre FROM frecuencia', (err, results) => {
+    conexion.query('SELECT id_frecuencia AS id, nombre FROM frecuencia', (err, results) => {
         if (err) {
             res.status(500).json({ error: err.message });
             return;
@@ -159,7 +159,7 @@ controller.getFrecuenciaList = (req, res) => {
 };
 
 controller.getDuracionList = (req, res) => {
-    conexion.query('SELECT nombre FROM duracion', (err, results) => {
+    conexion.query('SELECT id_duracion AS id, nombre FROM duracion', (err, results) => {
         if (err) {
             res.status(500).json({ error: err.message });
             return;
@@ -168,7 +168,45 @@ controller.getDuracionList = (req, res) => {
     });
 };
 
+controller.cargarPresc = async (req, res) => {
+    const { diagnostico, fecha_pres, vigencia, id_prof, id_pas, id_med, administraciones } = req.body;
 
+    try {
+        // Iniciar la transacción
+        await db.beginTransaction();
+
+        // Paso 1: Insertar la prescripción en la tabla `prescripcion`
+        const [prescriptionResult] = await db.query(
+            'INSERT INTO prescripcion (diagnostico, fecha_pres, vigencia, id_prof, id_pas) VALUES (?, ?, ?, ?, ?)',
+            [diagnostico, fecha_pres, vigencia, id_prof, id_pas]
+        );
+        const id_presc = prescriptionResult.insertId;
+
+        // Paso 2 y 3: Insertar las administraciones y las asociaciones en `presc_admin`
+        for (let admin of administraciones) {
+            const [adminResult] = await db.query(
+                'INSERT INTO administracion (id_dosis, id_frecuencia, id_cantidad, id_duracion,id_med) VALUES (?, ?, ?, ?,?)',
+                [admin.id_dosis, admin.id_frecuencia, admin.id_cantidad, admin.id_duracion, admin.id_med]
+            );
+            const id_admin = adminResult.insertId;
+
+            await db.query(
+                'INSERT INTO presc_admin (id_presc, id_admin) VALUES (?, ?)',
+                [id_presc, id_admin]
+
+            );
+        }
+
+        // Confirmar la transacción
+        await db.commit();
+
+        res.status(201).json({ message: 'Prescripción y administraciones creadas exitosamente' });
+    } catch (error) {
+        // Revertir la transacción en caso de error
+        await db.rollback();
+        res.status(500).json({ message: 'Error al crear la prescripción', error });
+    }
+};
 
 
 
