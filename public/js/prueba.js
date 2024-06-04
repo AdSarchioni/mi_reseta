@@ -1,8 +1,9 @@
 
 
-async function fetchBuscarPasientes() {
+
+
+async function fetchBuscarPacientes() {
   try {
-    
       const response = await fetch(`/pasciente`);
       const data = await response.json();
 
@@ -10,20 +11,55 @@ async function fetchBuscarPasientes() {
       datalist.innerHTML = ''; // Limpiar opciones existentes
       data.forEach(item => {
           const option = document.createElement('option');
-          option.value = `${item.id_pas}-${item.nombre_pas}-${item.apellido_pas}-${item.dni_pas}-${item.fecha_nac_pas}-${item.sexo_pas}-${item.alta_pas}-${item.id_plan_obra_social}-${item.tipo_plan}-${item.nombre_obra}` 
+          option.value = `${item.nombre_pas}-${item.apellido_pas}-${item.dni_pas}-${item.fecha_nac_pas}-${item.sexo_pas}-${item.alta_pas}-${item.id_plan_obra_social}-${item.tipo_plan}-${item.nombre_obra}`;
+          option.dataset.idPas = item.id_pas;
           datalist.appendChild(option);
       });
   } catch (error) {
-      console.error('Error fetching prestaciones:', error);
+      console.error('Error fetching pacientes:', error);
   }
 }
 
 document.getElementById('nombre_pas').addEventListener('input', (event) => {
   const query = event.target.value;
-  if (query.length >= 2) { 
-      fetchBuscarPasientes();
+  if (query.length >= 2) {
+      fetchBuscarPacientes();
   }
 });
+
+document.getElementById('nombre_pas').addEventListener('input', (event) => {
+  const input = event.target;
+  const datalist = document.getElementById('sugerenciasNombre_pas');
+  const idPasInput = document.getElementById('id_pas');
+
+  const selectedOption = Array.from(datalist.options).find(option => option.value === input.value);
+  if (selectedOption) {
+      idPasInput.value = selectedOption.dataset.idPas;
+  } else {
+      idPasInput.value = ''; // Limpiar el campo si no coincide ninguna opción
+  }
+});
+
+// Crear el nuevo input para mostrar el id_pas
+const nombrePasInput = document.getElementById('nombre_pas');
+const idPasInput = document.createElement('input');
+idPasInput.setAttribute('type', 'text');
+idPasInput.setAttribute('id', 'id_pas');
+idPasInput.setAttribute('name', 'id_pas');
+idPasInput.setAttribute('placeholder', 'ID Paciente');
+idPasInput.classList.add('form-control-color');
+idPasInput.readOnly = true;
+
+// Insertar el nuevo input antes del input de nombre_pas
+nombrePasInput.parentNode.insertBefore(idPasInput, nombrePasInput);
+
+
+
+
+
+
+
+
 
 document.getElementById('nombre_pas').addEventListener('input', function () {
   const text = this.value;

@@ -48,6 +48,6 @@ router.get('/duracion/duracionList', reseta_controller.getDuracionList);
 router.get('/pre_reseta',(req, res)=> {
       res.render('crear_reseta/pre_reseta');
 });
-
+router.post('/caragarPresc',reseta_controller.cargarPresc);
 
 module.exports = router;

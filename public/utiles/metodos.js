@@ -50,3 +50,28 @@ function agregarCamposAdPresta() {
       populateDatalist('/duracion/duracionList', `duracionList${i}`);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+ // Paso 2 y 3: Insertar las administraciones y las asociaciones en `presc_admin`
+ for (let admin of administraciones) {
+    const [adminResult] = await conexion.query(
+        'INSERT INTO administracion (id_dosis, id_frecuencia, id_cantidad, id_duracion, id_med) VALUES (?, ?, ?, ?, ?)',
+        [admin.id_dosis, admin.id_frecuencia, admin.id_cantidad, admin.id_duracion, admin.id_med]
+    );
+    const id_admin = adminResult.insertId;
+
+    await conexion.query(
+        'INSERT INTO presc_admin (id_presc, id_admin) VALUES (?, ?)',
+        [id_presc, id_admin]
+    );
+}

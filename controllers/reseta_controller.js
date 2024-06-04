@@ -169,44 +169,150 @@ controller.getDuracionList = (req, res) => {
 };
 
 controller.cargarPresc = async (req, res) => {
-    const { diagnostico, fecha_pres, vigencia, id_prof, id_pas, id_med, administraciones } = req.body;
+    const diagnostico = req.body.diagnostico;
+    const id_prof = req.body.id_prof;
+    const id_pas = req.body.id_pas;
+    const body = req.body;
+    const fecha_pres = new Date().toISOString().split('T')[0]; // Fecha actual en formato YYYY-MM-DD
+    const vigencia = '1 mes';
+    const administraciones = [];
+
+    const prestaciones = [];
+   
+   
+   
+
+    const keys = Object.keys(body);
+    
+    const ids = keys.filter(key => key.startsWith('medicamentoId'));
+    const idsP =keys.filter(key => key.startsWith('idPrestacion'));
+
+    idsP.forEach(idKeyP => {
+        const indexP = idKeyP.replace('idPrestacion', '');
+        const prestacion = {
+            id_presta: body[`idPrestacion${indexP}`],
+            nomPrest:body[`datalista${indexP}`]
+        };
+        prestaciones.push(prestacion);
+     
+    });
+    console.log("Resultados prestaciones:", JSON.stringify(prestaciones, null, 2));
+    ids.forEach(idKey => {
+        const index = idKey.replace('medicamentoId', '');
+        const administracion = {
+            id_med: body[`medicamentoId${index}`],
+            id_dosis: body[`dosisId${index}`],
+            id_cantidad: body[`cantidadId${index}`],
+            id_frecuencia: body[`frecuenciaId${index}`],
+            id_duracion: body[`duracionId${index}`]
+        };
+        administraciones.push(administracion);
+     
+    });
+
+
+
+    console.log("Resultados del submit:", JSON.stringify(body, null, 2));
 
     try {
         // Iniciar la transacción
-        await db.beginTransaction();
+        await conexion.beginTransaction();
 
         // Paso 1: Insertar la prescripción en la tabla `prescripcion`
-        const [prescriptionResult] = await db.query(
-            'INSERT INTO prescripcion (diagnostico, fecha_pres, vigencia, id_prof, id_pas) VALUES (?, ?, ?, ?, ?)',
-            [diagnostico, fecha_pres, vigencia, id_prof, id_pas]
-        );
-        const id_presc = prescriptionResult.insertId;
+        const result = await new Promise((resolve, reject) => {
+            conexion.query(
+                'INSERT INTO prescripcion (diagnostico, fecha_pres, vigencia, id_prof, id_pas) VALUES (?, ?, ?, ?, ?)',
+                [diagnostico, fecha_pres, vigencia, id_prof, id_pas],
+                (error, results) => {
+                    if (error) return reject(error);
+                    resolve(results);
+                }
+            );
+        });
+
+        const id_presc = result.insertId;
+        console.log("Prescripción insertada con ID:", id_presc);
 
         // Paso 2 y 3: Insertar las administraciones y las asociaciones en `presc_admin`
-        for (let admin of administraciones) {
-            const [adminResult] = await db.query(
-                'INSERT INTO administracion (id_dosis, id_frecuencia, id_cantidad, id_duracion,id_med) VALUES (?, ?, ?, ?,?)',
-                [admin.id_dosis, admin.id_frecuencia, admin.id_cantidad, admin.id_duracion, admin.id_med]
-            );
-            const id_admin = adminResult.insertId;
+       if(administraciones){
+        for (const admin of administraciones) {
+            try {
+                const resultAdmin = await new Promise((resolve, reject) => {
+                    conexion.query(
+                        'INSERT INTO administracion (id_dosis, id_frecuencia, id_cantidad, id_duracion, id_med) VALUES (?, ?, ?, ?, ?)',
+                        [admin.id_dosis, admin.id_frecuencia, admin.id_cantidad, admin.id_duracion, admin.id_med],
+                        (error, results) => {
+                            if (error) return reject(error);
+                            resolve(results);
+                        }
+                    );
+                });
 
-            await db.query(
-                'INSERT INTO presc_admin (id_presc, id_admin) VALUES (?, ?)',
-                [id_presc, id_admin]
+                const id_admin = resultAdmin.insertId;
 
-            );
+                await new Promise((resolve, reject) => {
+                    conexion.query(
+                        'INSERT INTO presc_admin (id_presc, id_admin) VALUES (?, ?)',
+                        [id_presc, id_admin],
+                        (error, results) => {
+                            if (error) return reject(error);
+                            resolve(results);
+                        }
+                    );
+                });
+
+            } catch (error) {
+                // Si hay un error, registrar y revertir la transacción
+                console.error('Error al insertar administración:', error);
+                await conexion.rollback();
+                res.status(500).json({ message: 'Error al crear la prescripción', error });
+                return; // Salir del bucle si hay un error
+            }
         }
+    }
+    if(prestaciones){
+        for (const presta of prestaciones) {
+            try {
+            
+
+                await new Promise((resolve, reject) => {
+                    conexion.query(
+                        'INSERT INTO prescripcion_prestacion (id_presc, id_presta) VALUES (?, ?)',
+                        [id_presc, presta.id_presta],
+                        (error, results) => {
+                            if (error) return reject(error);
+                            resolve(results);
+                        }
+                    );
+                });
+
+            } catch (error) {
+                // Si hay un error, registrar y revertir la transacción
+                console.error('Error al insertar administración:', error);
+                await conexion.rollback();
+                res.status(500).json({ message: 'Error al crear la prestacion', error });
+                return; // Salir del bucle si hay un error
+            }
+        }
+    }
 
         // Confirmar la transacción
-        await db.commit();
+        await conexion.commit();
 
         res.status(201).json({ message: 'Prescripción y administraciones creadas exitosamente' });
     } catch (error) {
         // Revertir la transacción en caso de error
-        await db.rollback();
+        await conexion.rollback();
+        console.error('Error al crear la prescripción:', error);
         res.status(500).json({ message: 'Error al crear la prescripción', error });
     }
 };
+
+
+
+
+
+
 
 
 
