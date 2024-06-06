@@ -125,6 +125,7 @@ async function fetchPrestaciones(datalistId, idInputName) {
       if (selectedOption && idInputName) {
         const idInput = document.querySelector(`input[name="${idInputName}"]`);
         idInput.value = selectedOption.getAttribute('data-id');
+        checkPrestacionesSelection();
       }
     });
   } catch (error) {
@@ -138,9 +139,12 @@ function agregarCamposBusquedaPrestaciones() {
   
   // Guardar valores existentes
   const valoresExistentes = [];
-  const inputsExistentes = contenedorBusquedaPrestaciones.querySelectorAll('input[type="text"]');
-  inputsExistentes.forEach(input => {
+  const idsExistentes = [];
+  const inputsExistentes = contenedorBusquedaPrestaciones.querySelectorAll('input[type="text"].form-control');
+  const idsExistentesInputs = contenedorBusquedaPrestaciones.querySelectorAll('input[type="text"].form-control-color');
+  inputsExistentes.forEach((input, index) => {
     valoresExistentes.push(input.value);
+    idsExistentes.push(idsExistentesInputs[index] ? idsExistentesInputs[index].value : '');
   });
   
   // Limpiar contenedor antes de agregar nuevos campos
@@ -168,6 +172,7 @@ function agregarCamposBusquedaPrestaciones() {
     // Restaurar valor existente si está disponible
     if (valoresExistentes[i]) {
       input.value = valoresExistentes[i];
+      idInput.value = idsExistentes[i];
     }
     
     const dataList = document.createElement('datalist');
@@ -182,32 +187,44 @@ function agregarCamposBusquedaPrestaciones() {
     input.addEventListener('focus', () => fetchPrestaciones(dataList.id, idInput.name));
     
     // Agregar evento para verificar si todos los campos están completos
-    input.addEventListener('input', checkPrestacionesSelection);
+    input.addEventListener('input', () => {
+      checkPrestacionesSelection();
+    });
   }
 }
-
-
-
 
 function checkPrestacionesSelection() {
   const inputs = document.querySelectorAll('#contenedorBusquedaPrestaciones input[list]');
   const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
+  const ids = document.querySelectorAll('#contenedorBusquedaPrestaciones input.form-control-color');
+  const idValues = Array.from(ids).map(input => input.value).filter(value => value.trim() !== '');
+  const idCounts = {};
+  
+  let hasDuplicates = false;
+  idValues.forEach(id => {
+    if (idCounts[id]) {
+      idCounts[id]++;
+      if (idCounts[id] > 1) {
+        hasDuplicates = true;
+      }
+    } else {
+      idCounts[id] = 1;
+    }
+  });
+  
   const accordionButton = document.getElementById('accordionButtonPrestaciones');
   
-  if (allFilled) {
+  if (allFilled && !hasDuplicates) {
     accordionButton.style.backgroundColor = 'lightgreen';
     accordionButton.innerText = 'Prestaciones Seleccionadas';
+  } else if (hasDuplicates) {
+    accordionButton.style.backgroundColor = 'red';
+    accordionButton.innerText = 'IDs Duplicados';
   } else {
     accordionButton.style.backgroundColor = '';
     accordionButton.innerText = 'Buscar Prestación';
   }
 }
-
-
-
-
-
-
 
    
     //funcion revisar los checks y poner en verde el boton del acordeon
@@ -236,15 +253,19 @@ function checkPrestacionesSelection() {
         }
       } 
  
+
       function agregarCamposBusqueda() {
         const cantidadMedicamentos = document.getElementById('cantidadMedicamentos').value;
         const contenedorBusquedaMedicamentos = document.getElementById('contenedorBusquedaMedicamentos');
         
-        // Guardar valores existentes
+        // Guardar valores existentes y IDs
         const valoresExistentes = [];
-        const inputsExistentes = contenedorBusquedaMedicamentos.querySelectorAll('input[type="text"]');
-        inputsExistentes.forEach(input => {
+        const idsExistentes = [];
+        const inputsExistentes = contenedorBusquedaMedicamentos.querySelectorAll('input[type="text"].form-control');
+        const idsExistentesInputs = contenedorBusquedaMedicamentos.querySelectorAll('input[type="text"].id-med-input');
+        inputsExistentes.forEach((input, index) => {
             valoresExistentes.push(input.value);
+            idsExistentes.push(idsExistentesInputs[index].value);
         });
         
         // Limpiar contenedor antes de agregar nuevos campos
@@ -271,9 +292,10 @@ function checkPrestacionesSelection() {
             input.setAttribute('placeholder', 'Escribe para buscar...');
             input.name = `datalist${i}`;
             
-            // Restaurar valor existente si está disponible
+            // Restaurar valores existentes si están disponibles
             if (valoresExistentes[i]) {
                 input.value = valoresExistentes[i];
+                inputId.value = idsExistentes[i];
             }
             
             const dataList = document.createElement('datalist');
@@ -288,21 +310,25 @@ function checkPrestacionesSelection() {
             input.addEventListener('focus', () => fetchMedicamentos(dataList.id, inputId));
             
             // Agregar evento para verificar si todos los campos están completos y para llenar el ID
-            input.addEventListener('input', (event) => {
-                checkMedicamentosSelection();
+            input.addEventListener('input', () => {
                 fillMedicamentoId(inputId, input.value, dataList.id);
+                checkMedicamentosSelection();
             });
         }
     }
     
+
+
     async function fetchMedicamentos(datalistId, inputId) {
         try {
             const response = await fetch('/medicamentos');
             const data = await response.json();
-            
+            // Limpiar opciones existentes en el datalist
             const datalist = document.getElementById(datalistId);
-            datalist.innerHTML = ''; // Limpiar opciones existentes
-            data.forEach(item => {
+            datalist.innerHTML = ''; 
+           
+           // Población del datalist con los datos obtenidos
+           data.forEach(item => {
                 const option = document.createElement('option');
                 option.value = `${item.nombre}-${item.concentracion}-${item.forma_farma}`;
                 option.dataset.idMed = item.id;
@@ -318,61 +344,88 @@ function checkPrestacionesSelection() {
         const selectedOption = Array.from(datalist.options).find(option => option.value === value);
         if (selectedOption) {
             inputId.value = selectedOption.dataset.idMed;
-        }
+        } else {
+            inputId.value = ''; 
+        }// Limpiar el inputId si no se encuentra coincidencia
     }
-    
-    function checkMedicamentosSelection() {
-        // Implementa la lógica para verificar si todos los campos están completos
-    }
-    
-
-
-
-
-
-    function fillMedicamentoId(inputId, value) {
-        const datalist = inputId.nextElementSibling.nextElementSibling;
-        const option = Array.from(datalist.options).find(option => `${option.value}` === value);
-        if (option) {
-            inputId.value = option.dataset.idMed;
-        }
-    }
+    //revisar imputs llenados o id duplicada
 
     function checkMedicamentosSelection() {
-        // Implementa la lógica de verificación si es necesario
-    }
-    
-    
-      
- 
-
-      function checkMedicamentosSelection() {
         const inputs = document.querySelectorAll('#contenedorBusquedaMedicamentos input[list]');
         const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
+        const ids = document.querySelectorAll('#contenedorBusquedaMedicamentos input.id-med-input');
+        const idValues = Array.from(ids).map(input => input.value).filter(value => value.trim() !== '');
+        const idCounts = {};
+        
+        let idDuplicadas = false;
+        idValues.forEach(id => {
+            if (idCounts[id]) {
+                idCounts[id]++;
+                if (idCounts[id] > 1) {
+                    idDuplicadas = true;
+                }
+            } else {
+                idCounts[id] = 1;
+            }
+        });
+        
         const accordionButton = document.getElementById('accordionButtonMedicamentos');
         
-        if (allFilled) {
-          accordionButton.style.backgroundColor = 'lightgreen';
-          accordionButton.innerText = 'Medicamentos Seleccionados';
-        } else {
-          accordionButton.style.backgroundColor = '';
-          accordionButton.innerText = 'Buscar Medicamento';
-        }
-      }
-
-      function checkAllInputsFilled() {
-        const inputs = document.querySelectorAll('#inputsContainer input[list]');
-        const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
-        const accordionButton = document.getElementById('accordionButtonAdministracion');
-    
-        if (allFilled) {
+        if (allFilled && !idDuplicadas) {
             accordionButton.style.backgroundColor = 'lightgreen';
-            accordionButton.innerText = 'Administracion Seleccionada';
+            accordionButton.innerText = 'Medicamentos Seleccionados';
+        } else if (idDuplicadas) {
+            accordionButton.style.backgroundColor = 'red';
+            accordionButton.innerText = 'Medicamentos Duplicados';
         } else {
             accordionButton.style.backgroundColor = '';
-            accordionButton.innerText = 'Buscar Administracion';
+            accordionButton.innerText = 'Buscar Medicamento';
         }
     }
+    
+    function checkAllInputsFilled() {
+      // Obtener los valores de los inputs medicamentoId0 y medicamentoId1
+      const medicamentoId0Value = document.querySelector('input[name="medicamentoId0"]').value.trim();
+      const medicamentoId1Value = document.querySelector('input[name="medicamentoId1"]').value.trim();
+    
+      // Verificar si ambos valores son diferentes de vacío
+      const allFilled = medicamentoId0Value !== '' && medicamentoId1Value !== '';
+      // Verificar si los valores son iguales
+      const idDuplicadas = allFilled && medicamentoId0Value === medicamentoId1Value;
+    
+      // Obtener el botón de acordeón con ID 'accordionButtonAdministracion'
+      const accordionButton = document.getElementById('accordionButtonAdministracion');
+    
+      // Cambiar el color de fondo y el texto del botón según las condiciones
+      if (allFilled && !idDuplicadas) {
+        accordionButton.style.backgroundColor = 'lightgreen';
+        accordionButton.innerText = 'Administracion Seleccionada';
+      } else if (idDuplicadas) {
+        accordionButton.style.backgroundColor = 'red';
+        accordionButton.innerText = 'Nombres de campos Duplicados';
+      } else {
+        accordionButton.style.backgroundColor = '';
+        accordionButton.innerText = 'Buscar Administracion';
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      // Obtener todos los inputs dentro del contenedor 'inputsContainer'
+      const allInputs = document.querySelectorAll('#inputsContainer input');
+    
+      // Agregar el evento 'input' a cada input
+      allInputs.forEach(input => {
+        input.addEventListener('input', checkAllInputsFilled);
+      });
+    });
+    
+    
+
+  
+
+
+
+
 
       
       document.addEventListener('DOMContentLoaded', () => {
@@ -470,7 +523,7 @@ function checkPrestacionesSelection() {
                 datalist.appendChild(option);
             });
     
-            // Add event listener to the input to update the ID input when an option is selected
+            // Agregue un detector de eventos a la entrada para actualizar la entrada de ID cuando se selecciona una opción
             const input = document.querySelector(`input[list="${datalistId}"]`);
             input.addEventListener('input', (event) => {
                 const selectedOption = Array.from(datalist.options).find(option => option.value === event.target.value);

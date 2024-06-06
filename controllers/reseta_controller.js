@@ -170,6 +170,7 @@ controller.getDuracionList = (req, res) => {
 
 controller.cargarPresc = async (req, res) => {
     const diagnostico = req.body.diagnostico;
+    const indicacion = req.body.indicacion;
     const id_prof = req.body.id_prof;
     const id_pas = req.body.id_pas;
     const body = req.body;
@@ -221,8 +222,8 @@ controller.cargarPresc = async (req, res) => {
         // Paso 1: Insertar la prescripción en la tabla `prescripcion`
         const result = await new Promise((resolve, reject) => {
             conexion.query(
-                'INSERT INTO prescripcion (diagnostico, fecha_pres, vigencia, id_prof, id_pas) VALUES (?, ?, ?, ?, ?)',
-                [diagnostico, fecha_pres, vigencia, id_prof, id_pas],
+                'INSERT INTO prescripcion (diagnostico, indicacion, fecha_pres, vigencia, id_prof, id_pas) VALUES (?, ?, ?, ?, ?, ?)',
+                [diagnostico,indicacion, fecha_pres, vigencia, id_prof, id_pas],
                 (error, results) => {
                     if (error) return reject(error);
                     resolve(results);

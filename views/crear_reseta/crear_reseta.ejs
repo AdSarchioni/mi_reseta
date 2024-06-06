@@ -202,6 +202,11 @@
               <div class="accordion-body">
                 <!-- Aquí se agregarán dinámicamente los campos de búsqueda de prestaciones -->
                 <div class="row g-4">
+                 
+                  <div class="mb-3" class="container">
+                    <label for="indicacion" class="form-label">Indicaciones Prestacion</label>
+                    <textarea class="form-control" id="indicacion" rows="3" name="indicacion"></textarea>
+                  </div>
                   <div class="col-auto">
                     <label for="cantidadPrestaciones" class="visually-hidden">Cantidad Prestaciones</label>
                     <input type="number" class="form-control" min="1" placeholder="Cant Prestaciones"
@@ -211,6 +216,9 @@
                     <button type="button" class="btn btn-primary mb-3"
                       onclick="agregarCamposBusquedaPrestaciones()">Generar Campos</button>
                   </div>
+
+                  
+
                   <div class="container" id="contenedorBusquedaPrestaciones">
                     <!-- Aquí se agregarán dinámicamente los campos de búsqueda de prestaciones -->
                   </div>
