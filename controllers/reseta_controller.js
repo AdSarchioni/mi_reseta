@@ -179,14 +179,8 @@ controller.cargarPresc = async (req, res) => {
     const fecha_pres = new Date().toISOString().split('T')[0]; // Fecha actual en formato YYYY-MM-DD
     const vigencia = '1 mes';
     const administraciones = [];
-
     const prestaciones = [];
-   
-   
-   
-
     const keys = Object.keys(body);
-    
     const ids = keys.filter(key => key.startsWith('medicamentoId'));
     const idsP =keys.filter(key => key.startsWith('idPrestacion'));
 
@@ -199,7 +193,7 @@ controller.cargarPresc = async (req, res) => {
         prestaciones.push(prestacion);
      
     });
-    console.log("Resultados prestaciones:", JSON.stringify(prestaciones, null, 2));
+ 
     ids.forEach(idKey => {
         const index = idKey.replace('medicamentoId', '');
         const administracion = {
@@ -268,8 +262,15 @@ controller.cargarPresc = async (req, res) => {
                 // Si hay un error, registrar y revertir la transacción
                 console.error('Error al insertar administración:', error);
                 await conexion.rollback();
-                res.status(500).json({ message: 'Error al crear la prescripción', error });
-                return; // Salir del bucle si hay un error
+                res.render('crear_reseta/crear_reseta', {
+                    alert: true,
+                    alertTitle: "ERROR AL CARGAR ADMINISTRACION",
+                    alertMessage: "FORMULARIO INCOMPLETO ¡",
+                    alertIcon: 'error',
+                    showConfirmButton: false,
+                    timer: 800,
+                    ruta: 'crea_reseta'
+              })
             }
         }
     }
@@ -293,67 +294,57 @@ controller.cargarPresc = async (req, res) => {
                 // Si hay un error, registrar y revertir la transacción
                 console.error('Error al insertar administración:', error);
                 await conexion.rollback();
-                res.status(500).json({ message: 'Error al crear la prestacion', error });
-                return; // Salir del bucle si hay un error
+                res.render('crear_reseta/crear_reseta', {
+                    alert: true,
+                    alertTitle: "ERROR AL CARGAR FORMULARIO",
+                    alertMessage: "ERROR AL CARGAR ADMINISTRACION ¡",
+                    alertIcon: 'error',
+                    showConfirmButton: false,
+                    timer: 800,
+                    ruta: 'crea_reseta'
+              })
             }
         }
     }
 
         // Confirmar la transacción
         await conexion.commit();
-
-        res.status(201).json({ message: 'Prescripción y administraciones creadas exitosamente' });
+        res.render('crear_reseta/crear_reseta', {
+            alert: true,
+            alertTitle: "SE A CARGADO EL FORMULARIO",
+            alertMessage: "FORMULARIO CARGADO ¡",
+            alertIcon: 'access',
+            showConfirmButton: false,
+            timer: 800,
+            ruta: 'crea_reseta'
+      })
+        
+   
     } catch (error) {
         // Revertir la transacción en caso de error
         await conexion.rollback();
         console.error('Error al crear la prescripción:', error);
-        res.status(500).json({ message: 'Error al crear la prescripción', error });
+        res.render('crear_reseta/crear_reseta', {
+            alert: true,
+            alertTitle: "ERROR AL CARGAR FORMULARIO",
+            alertMessage: "FORMULARIO INCOMPLETO ¡",
+            alertIcon: 'error',
+            showConfirmButton: false,
+            timer: 800,
+            ruta: 'crea_reseta'
+      })
     }
 };
 
 
-controller.imprimirReceta1 = async (req, res) => {
-   
-const doc = new PDF();
-doc.text('Acá estamos de vuelta');
-    
-// Obtener la ruta completa de la carpeta "public/libs"
-const folderPath = path.resolve(__dirname, '..', 'public', 'libs');
-
-// Verificar si la carpeta existe, si no existe, crearla
-if (!fs.existsSync(folderPath)) {
-    fs.mkdirSync(folderPath, { recursive: true });
-}
-
-// Crear un flujo de escritura hacia el archivo reseta.pdf en la carpeta "public/libs"
-const writeStream = fs.createWriteStream(path.join(folderPath, 'reseta.pdf'));
-
-// Pipe el contenido del documento PDF al flujo de escritura
-doc.pipe(writeStream);
-
-// Finalizar la escritura del documento
-doc.end();
-
-// Manejar eventos de error y finalización del flujo de escritura
-writeStream.on('finish', () => {
-    console.log('¡Archivo guardado correctamente!');
-    res.send('¡Archivo guardado correctamente!');
-});
-writeStream.on('error', (err) => {
-    console.error('Error al guardar el archivo:', err);
-    res.status(500).send('Error al guardar el archivo');
-});
 
 
-};
+
 
 controller.imprimirReceta = async (req, res) => {
-    const { nombre_prof, nombre_pas } = req.body;
+    const { nombre_pas, diagnostico, indicacion, medicamentos, administraciones, datosProfesional, prestaciones } = req.body;
 
-    // Verificar si los datos se han capturado correctamente
-    console.log("Nombre del Profesor:", nombre_prof);
-    console.log("Materia:", nombre_pas);
-    // Puedes agregar más variables según los campos del formulario
+
 
     const filename = `reseta${Date.now()}.pdf`;
     const doc = new PDF({ bufferPages: true });
@@ -369,12 +360,48 @@ controller.imprimirReceta = async (req, res) => {
     doc.on('end', () => { res.end(); });
 
     // Agregar contenido al PDF
-    doc.text(`Nombre del Profesor: ${nombre_prof}`);
-    doc.text(`Materia: ${nombre_pas}`);
-    // Puedes agregar más texto según los campos del formulario
+    doc.fontSize(20).text('Receta Médica', { align: 'center' });
+    doc.moveDown();
+
+    doc.fontSize(12).text(`Nombre del Profesional: ${datosProfesional.nombre_prof} ${datosProfesional.apellido_prof}`);
+    doc.text(`ID Profesional: ${datosProfesional.id_prof}`);
+    doc.text(`DNI Profesional: ${datosProfesional.dni_prof}`);
+    doc.text(`Matrícula: ${datosProfesional.matricula}`);
+    doc.text(`Teléfono: ${datosProfesional.tel_prof}`);
+    doc.text(`Especialidad: ${datosProfesional.tipo_esp}`);
+    doc.moveDown();
+
+    doc.text(`Nombre del Paciente: ${nombre_pas}`);
+    doc.moveDown();
+
+    doc.text(`Diagnóstico: ${diagnostico}`);
+    doc.moveDown();
+
+    doc.text(`Indicaciones: ${indicacion}`);
+    doc.moveDown();
+
+    doc.text('Medicamentos:');
+    medicamentos.forEach((medicamento, index) => {
+        doc.text(`${index + 1}. ${medicamento}`);
+    });
+    doc.moveDown();
+
+    doc.text('Administraciones:');
+    administraciones.forEach((admin, index) => {
+        doc.text(`${index + 1}. Medicamento: ${admin.medicamento}, Dosis: ${admin.dosis}, Cantidad: ${admin.cantidad}, Frecuencia: ${admin.frecuencia}, Duración: ${admin.duracion}`);
+    });
+    doc.moveDown();
+
+    doc.text('Prestaciones:');
+    prestaciones.forEach((prestacion, index) => {
+        doc.text(`${index + 1}. ${prestacion}`);
+    });
 
     doc.end();
 };
+
+
+
 
 
 

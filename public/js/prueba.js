@@ -1,7 +1,4 @@
 
-
-
-
 async function fetchBuscarPacientes() {
   try {
       const response = await fetch(`/pasciente`);
@@ -53,23 +50,17 @@ idPasInput.readOnly = true;
 // Insertar el nuevo input antes del input de nombre_pas
 nombrePasInput.parentNode.insertBefore(idPasInput, nombrePasInput);
 
-
-
-
-
-
-
-
-
 document.getElementById('nombre_pas').addEventListener('input', function () {
   const text = this.value;
   const cleanedText = text.replace(/\s/g, ''); // Remove all spaces
   const button = document.getElementById('pascienteButton');
-
+ 
   if (cleanedText.length >= 20) {
       button.style.backgroundColor = 'lightgreen';
+     
   } else {
       button.style.backgroundColor = '';
+    
   }
 });
 
@@ -168,7 +159,7 @@ function agregarCamposBusquedaPrestaciones() {
     input.setAttribute('list', `datalistOptions${i}`);
     input.setAttribute('placeholder', 'Escribe para buscar...');
     input.name = `datalista${i}`;
-    
+    input.id = `datalista${i}`;
     // Restaurar valor existente si está disponible
     if (valoresExistentes[i]) {
       input.value = valoresExistentes[i];
@@ -213,45 +204,25 @@ function checkPrestacionesSelection() {
   });
   
   const accordionButton = document.getElementById('accordionButtonPrestaciones');
-  
+  const submitBtn = document.getElementById('submitBtn');
+
   if (allFilled && !hasDuplicates) {
     accordionButton.style.backgroundColor = 'lightgreen';
     accordionButton.innerText = 'Prestaciones Seleccionadas';
+    submitBtn.disabled = false;
   } else if (hasDuplicates) {
     accordionButton.style.backgroundColor = 'red';
     accordionButton.innerText = 'IDs Duplicados';
+    submitBtn.disabled = true;
   } else {
     accordionButton.style.backgroundColor = '';
     accordionButton.innerText = 'Buscar Prestación';
+    submitBtn.disabled = false;
   }
 }
 
    
-    //funcion revisar los checks y poner en verde el boton del acordeon
-    function checkSelection() {
-        const checkboxes = document.querySelectorAll('#resultadosTabla tbody input[type="checkbox"]');
-        const selected = Array.from(checkboxes).some(checkbox => checkbox.checked);
-        const accordionButton = document.getElementById('accordionButton');
-        if (selected) {
-          accordionButton.style.backgroundColor = 'lightgreen';
-          accordionButton.innerText = 'Pasiente Seleccionado';
-        } else {
-          accordionButton.style.backgroundColor = '';
-          accordionButton.innerText = 'Buscar Pasiente';
-        }
-      }
-      function checkSelection1() {
-        const checkboxes = document.querySelectorAll('#resultadosTabla1 tbody input[type="checkbox"]');
-        const selected = Array.from(checkboxes).some(checkbox => checkbox.checked);
-        const accordionButton = document.getElementById('accordionButton1');
-        if (selected) {
-          accordionButton.style.backgroundColor = 'lightgreen';
-          accordionButton.innerText = 'Profesional Seleccionado';
-        } else {
-          accordionButton.style.backgroundColor = '';
-          accordionButton.innerText = 'Buscar Profesional';
-        }
-      } 
+  
  
 
       function agregarCamposBusqueda() {
@@ -291,7 +262,7 @@ function checkPrestacionesSelection() {
             input.setAttribute('list', `datalistOptions${i}`);
             input.setAttribute('placeholder', 'Escribe para buscar...');
             input.name = `datalist${i}`;
-            
+            input.id = `datalist${i}`;
             // Restaurar valores existentes si están disponibles
             if (valoresExistentes[i]) {
                 input.value = valoresExistentes[i];
@@ -370,16 +341,19 @@ function checkPrestacionesSelection() {
         });
         
         const accordionButton = document.getElementById('accordionButtonMedicamentos');
-        
+        const submitBtn = document.getElementById('submitBtn');
         if (allFilled && !idDuplicadas) {
             accordionButton.style.backgroundColor = 'lightgreen';
             accordionButton.innerText = 'Medicamentos Seleccionados';
+            submitBtn.disabled = false;
         } else if (idDuplicadas) {
             accordionButton.style.backgroundColor = 'red';
             accordionButton.innerText = 'Medicamentos Duplicados';
+            submitBtn.disabled = true; 
         } else {
             accordionButton.style.backgroundColor = '';
             accordionButton.innerText = 'Buscar Medicamento';
+            submitBtn.disabled = false;
         }
     }
     
@@ -411,27 +385,27 @@ function checkPrestacionesSelection() {
           inputGroup.innerHTML = `
               <div class="col-sm">
                   <input type="text" class="form-control-color id-med-input" name="medicamentoId${i}" placeholder="ID Medicamento ${i + 1}" aria-label="ID Medicamento" readonly>
-                  <input type="text" class="form-control" name="medicamento${i}" placeholder="Medicamento ${i + 1}" aria-label="Medicamento" list="medicamentoList${i}" oninput="checkAllInputsFilled()">
+                  <input type="text" class="form-control" name="medicamento${i}" id="medicamento${i}" placeholder="Medicamento ${i + 1}" aria-label="Medicamento" list="medicamentoList${i}" oninput="checkAllInputsFilled()">
                   <datalist id="medicamentoList${i}"></datalist>
               </div>
               <div class="col-sm">
                   <input type="text" class="form-control-color" name="dosisId${i}" placeholder="ID Dosis" aria-label="ID Dosis" readonly>
-                  <input type="text" class="form-control" name="dosis${i}" placeholder="Dosis" aria-label="Dosis" list="dosisList${i}" oninput="checkAllInputsFilled()">
+                  <input type="text" class="form-control" name="dosis${i}" id="dosis${i}" placeholder="Dosis" aria-label="Dosis" list="dosisList${i}" oninput="checkAllInputsFilled()">
                   <datalist id="dosisList${i}"></datalist>
               </div>
               <div class="col-sm">
                   <input type="text" class="form-control-color" name="cantidadId${i}" placeholder="ID Cantidad" aria-label="ID Cantidad" readonly>
-                  <input type="text" class="form-control" name="cantidad${i}" placeholder="Cantidad" aria-label="Cantidad" list="cantidadList${i}" oninput="checkAllInputsFilled()">
+                  <input type="text" class="form-control" name="cantidad${i}" id="cantidad${i}" placeholder="Cantidad" aria-label="Cantidad" list="cantidadList${i}" oninput="checkAllInputsFilled()">
                   <datalist id="cantidadList${i}"></datalist>
               </div>
               <div class="col-sm">
                   <input type="text" class="form-control-color" name="frecuenciaId${i}" placeholder="ID Frecuencia" aria-label="ID Frecuencia" readonly>
-                  <input type="text" class="form-control" name="frecuencia${i}" placeholder="Frecuencia" aria-label="Frecuencia" list="frecuenciaList${i}" oninput="checkAllInputsFilled()">
+                  <input type="text" class="form-control" name="frecuencia${i}" id="frecuencia${i}" placeholder="Frecuencia" aria-label="Frecuencia" list="frecuenciaList${i}" oninput="checkAllInputsFilled()">
                   <datalist id="frecuenciaList${i}"></datalist>
               </div>
               <div class="col-sm">
                   <input type="text" class="form-control-color" name="duracionId${i}" placeholder="ID Duración" aria-label="ID Duración" readonly>
-                  <input type="text" class="form-control" name="duracion${i}" placeholder="Duración" aria-label="Duración" list="duracionList${i}" oninput="checkAllInputsFilled()">
+                  <input type="text" class="form-control" name="duracion${i}" id="duracion${i}" placeholder="Duración" aria-label="Duración" list="duracionList${i}" oninput="checkAllInputsFilled()">
                   <datalist id="duracionList${i}"></datalist>
               </div>
           `;
@@ -511,53 +485,122 @@ function checkPrestacionesSelection() {
   
       // Obtener el botón de acordeón con ID 'accordionButtonAdministracion'
       const accordionButton = document.getElementById('accordionButtonAdministracion');
-  
+      const submitBtn = document.getElementById('submitBtn');
       // Cambiar el color de fondo y el texto del botón según las condiciones
       if (allFilled && !idDuplicadas) {
           accordionButton.style.backgroundColor = 'lightgreen';
           accordionButton.innerText = 'Administracion Seleccionada';
+          submitBtn.disabled = false;
       } else if (idDuplicadas) {
           accordionButton.style.backgroundColor = 'red';
           accordionButton.innerText = 'Nombres de campos Duplicados';
+          submitBtn.disabled = true;
       } else {
           accordionButton.style.backgroundColor = '';
           accordionButton.innerText = 'Buscar Administracion';
+          submitBtn.disabled = false;
       }
   }
   
-    
-    
-    
-    
-  
-     
-
-    
- 
-    
-    
     document.getElementById('diagnostico').addEventListener('input', function () {
       const text = this.value;
       const cleanedText = text.replace(/\s/g, ''); // Remove all spaces
       const button = document.getElementById('diagnosticoButton');
-  
+      const submitBtn = document.getElementById('submitBtn');
+      
       if (cleanedText.length >= 20) {
           button.style.backgroundColor = 'lightgreen';
+          submitBtn.disabled = false; // Enable the submit button
       } else {
           button.style.backgroundColor = '';
+          submitBtn.disabled = true; // Disable the submit button
       }
   });
 
-  document.getElementById('printButton').addEventListener('click', function() {
-    const nombre_prof = document.getElementById('nombre_prof').value;
-    const nombre_pas = document.getElementById('nombre_pas').value;
+  let datosProfesional = null;
 
+  function checkSelection1() {
+      const checkboxes = document.querySelectorAll('#resultadosTabla1 tbody input[type="checkbox"]');
+      const selectedCheckbox = Array.from(checkboxes).find(checkbox => checkbox.checked);
+      const accordionButton = document.getElementById('accordionButton1');
+  
+      if (selectedCheckbox) {
+          accordionButton.style.backgroundColor = 'lightgreen';
+          accordionButton.innerText = 'Profesional Seleccionado';
+  
+          // Capturar la fila seleccionada y extraer los datos del profesional
+          const row = selectedCheckbox.closest('tr');
+          datosProfesional = {
+              id_prof: row.cells[2].innerText,
+              id_refer: row.cells[1].innerText,
+              nombre_prof: row.cells[3].innerText,
+              apellido_prof: row.cells[4].innerText,
+              dni_prof: row.cells[5].innerText,
+              domicilio_prof: row.cells[6].innerText,
+              mail_prof: row.cells[7].innerText,
+              matricula: row.cells[8].innerText,
+              tel_prof: row.cells[9].innerText,
+              tipo_esp: row.cells[10].innerText
+          };
+      } else {
+          accordionButton.style.backgroundColor = '';
+          accordionButton.innerText = 'Buscar Profesional';
+          datosProfesional = null;
+      }
+  }
+
+  document.getElementById('printButton').addEventListener('click', function() {
+    const nombre_pas = document.getElementById('nombre_pas').value;
+    const diagnostico = document.getElementById('diagnostico').value; // Captura otro valor
+    const indicacion = document.getElementById('indicacion').value; // Captura otro valor
+
+    // Capturar todos los campos dinámicos de "medicamento"
+    let medicamentos = [];
+    let i = 0;
+    while (document.getElementById('datalist' + i)) {
+        medicamentos.push(document.getElementById('datalist' + i).value);
+        i++;
+    }
+       // Capturar todos los campos dinámicos de "prestaciones"
+       let prestaciones = [];
+       let j = 0;
+       while (document.getElementById('datalista' + j)) {
+           prestaciones.push(document.getElementById('datalista' + j).value);
+           j++;
+       }
+     // Capturar todos los campos dinámicos de "medicamento", "dosis", "cantidad", "frecuencia" y "duracion"
+     let administraciones = [];
+     let z = 0;
+     while (document.getElementById('medicamento' + z)) {
+         let administracion = {
+             medicamento: document.getElementById('medicamento' + z).value,
+             dosis: document.getElementById('dosis' + z).value,
+             cantidad: document.getElementById('cantidad' + z).value,
+             frecuencia: document.getElementById('frecuencia' + z).value,
+             duracion: document.getElementById('duracion' + z).value
+         };
+         administraciones.push(administracion);
+         z++;
+     }
+     if (!datosProfesional) {
+      alert('Por favor, seleccione un profesional antes de imprimir el PDF.');
+      return;
+  }
+   
     fetch('/invoice', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ nombre_prof: nombre_prof, nombre_pas: nombre_pas })
+        body: JSON.stringify({  
+            nombre_pas: nombre_pas,
+            diagnostico: diagnostico,
+            indicacion: indicacion,
+            medicamentos: medicamentos, // Añadir el array de medicamentos
+            administraciones:administraciones,
+            datosProfesional:datosProfesional,
+            prestaciones: prestaciones
+          })
     })
     .then(response => response.blob())
     .then(blob => {
@@ -572,5 +615,4 @@ function checkPrestacionesSelection() {
     })
     .catch(error => console.error('Error:', error));
 });
-
 

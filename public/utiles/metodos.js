@@ -75,3 +75,37 @@ function agregarCamposAdPresta() {
         [id_presc, id_admin]
     );
 }
+controller.imprimirReceta1 = async (req, res) => {
+   
+    const doc = new PDF();
+    doc.text('Acá estamos de vuelta');
+        
+    // Obtener la ruta completa de la carpeta "public/libs"
+    const folderPath = path.resolve(__dirname, '..', 'public', 'libs');
+    
+    // Verificar si la carpeta existe, si no existe, crearla
+    if (!fs.existsSync(folderPath)) {
+        fs.mkdirSync(folderPath, { recursive: true });
+    }
+    
+    // Crear un flujo de escritura hacia el archivo reseta.pdf en la carpeta "public/libs"
+    const writeStream = fs.createWriteStream(path.join(folderPath, 'reseta.pdf'));
+    
+    // Pipe el contenido del documento PDF al flujo de escritura
+    doc.pipe(writeStream);
+    
+    // Finalizar la escritura del documento
+    doc.end();
+    
+    // Manejar eventos de error y finalización del flujo de escritura
+    writeStream.on('finish', () => {
+        console.log('¡Archivo guardado correctamente!');
+        res.send('¡Archivo guardado correctamente!');
+    });
+    writeStream.on('error', (err) => {
+        console.error('Error al guardar el archivo:', err);
+        res.status(500).send('Error al guardar el archivo');
+    });
+    
+    
+    };
