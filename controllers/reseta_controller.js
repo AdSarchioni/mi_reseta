@@ -1,5 +1,7 @@
 const conexion = require('../database/db');
-
+const PDF = require('pdfkit');
+const fs = require('fs');
+const path = require('path');
 const controller = {};
 
 
@@ -253,7 +255,7 @@ controller.cargarPresc = async (req, res) => {
 
                 await new Promise((resolve, reject) => {
                     conexion.query(
-                        'INSERT INTO presc_admin (id_presc, id_admin) VALUES (?, ?)',
+                        'INSERT INTO  presc_admin (id_presc, id_admin) VALUES (?, ?)',
                         [id_presc, id_admin],
                         (error, results) => {
                             if (error) return reject(error);
@@ -310,9 +312,69 @@ controller.cargarPresc = async (req, res) => {
 };
 
 
+controller.imprimirReceta1 = async (req, res) => {
+   
+const doc = new PDF();
+doc.text('Acá estamos de vuelta');
+    
+// Obtener la ruta completa de la carpeta "public/libs"
+const folderPath = path.resolve(__dirname, '..', 'public', 'libs');
+
+// Verificar si la carpeta existe, si no existe, crearla
+if (!fs.existsSync(folderPath)) {
+    fs.mkdirSync(folderPath, { recursive: true });
+}
+
+// Crear un flujo de escritura hacia el archivo reseta.pdf en la carpeta "public/libs"
+const writeStream = fs.createWriteStream(path.join(folderPath, 'reseta.pdf'));
+
+// Pipe el contenido del documento PDF al flujo de escritura
+doc.pipe(writeStream);
+
+// Finalizar la escritura del documento
+doc.end();
+
+// Manejar eventos de error y finalización del flujo de escritura
+writeStream.on('finish', () => {
+    console.log('¡Archivo guardado correctamente!');
+    res.send('¡Archivo guardado correctamente!');
+});
+writeStream.on('error', (err) => {
+    console.error('Error al guardar el archivo:', err);
+    res.status(500).send('Error al guardar el archivo');
+});
 
 
+};
 
+controller.imprimirReceta = async (req, res) => {
+    const { nombre_prof, nombre_pas } = req.body;
+
+    // Verificar si los datos se han capturado correctamente
+    console.log("Nombre del Profesor:", nombre_prof);
+    console.log("Materia:", nombre_pas);
+    // Puedes agregar más variables según los campos del formulario
+
+    const filename = `reseta${Date.now()}.pdf`;
+    const doc = new PDF({ bufferPages: true });
+
+    // Configurar la respuesta para el navegador
+    res.writeHead(200, {
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': `attachment;filename=${filename}`
+    });
+
+    // Crear el PDF
+    doc.on('data', (data) => { res.write(data); });
+    doc.on('end', () => { res.end(); });
+
+    // Agregar contenido al PDF
+    doc.text(`Nombre del Profesor: ${nombre_prof}`);
+    doc.text(`Materia: ${nombre_pas}`);
+    // Puedes agregar más texto según los campos del formulario
+
+    doc.end();
+};
 
 
 

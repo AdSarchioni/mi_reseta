@@ -4,7 +4,6 @@ const router = express.Router();
 
 const authController = require('../controllers/authController');
 const reseta_controller = require('../controllers/reseta_controller');
-
 //rutas para las vistas 
 router.get('/', authController.isAuthenticated, (req, res)=> {
     //Sconexion();
@@ -49,5 +48,15 @@ router.get('/pre_reseta',(req, res)=> {
       res.render('crear_reseta/pre_reseta');
 });
 router.post('/caragarPresc',reseta_controller.cargarPresc);
+router.post('/inprimir',reseta_controller.imprimirReceta);
+
+
+
+
+router.post('/invoice',reseta_controller.imprimirReceta);
+
+
+
+
 
 module.exports = router;

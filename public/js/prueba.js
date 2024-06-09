@@ -383,163 +383,154 @@ function checkPrestacionesSelection() {
         }
     }
     
-    function checkAllInputsFilled() {
-      // Obtener los valores de los inputs medicamentoId0 y medicamentoId1
-      const medicamentoId0Value = document.querySelector('input[name="medicamentoId0"]').value.trim();
-      const medicamentoId1Value = document.querySelector('input[name="medicamentoId1"]').value.trim();
-    
-      // Verificar si ambos valores son diferentes de vacío
-      const allFilled = medicamentoId0Value !== '' && medicamentoId1Value !== '';
-      // Verificar si los valores son iguales
-      const idDuplicadas = allFilled && medicamentoId0Value === medicamentoId1Value;
-    
+  
+    document.addEventListener('DOMContentLoaded', () => {
+      const botonGenerarAdministracion = document.getElementById('btnGenerarCamposAdministracion');
+      botonGenerarAdministracion.addEventListener('click', agregarCamposAdministracion);
+  
+      const botonGenerarAdPresta = document.getElementById('btnGenerarCamposAdPresta');
+      botonGenerarAdPresta.addEventListener('click', agregarCamposAdPresta);
+  });
+  
+  function agregarCamposAdministracion() {
+      const count = parseInt(document.getElementById('administrationCount').value);
+      const container = document.getElementById('inputsContainer');
+      
+      // Guardar valores existentes
+      const valoresExistentes = [];
+      const inputsExistentes = container.querySelectorAll('input');
+      inputsExistentes.forEach(input => {
+          valoresExistentes.push({ name: input.name, value: input.value });
+      });
+      
+      container.innerHTML = '';
+  
+      for (let i = 0; i < count; i++) {
+          const inputGroup = document.createElement('div');
+          inputGroup.className = 'row g-3 mb-3';
+          inputGroup.innerHTML = `
+              <div class="col-sm">
+                  <input type="text" class="form-control-color id-med-input" name="medicamentoId${i}" placeholder="ID Medicamento ${i + 1}" aria-label="ID Medicamento" readonly>
+                  <input type="text" class="form-control" name="medicamento${i}" placeholder="Medicamento ${i + 1}" aria-label="Medicamento" list="medicamentoList${i}" oninput="checkAllInputsFilled()">
+                  <datalist id="medicamentoList${i}"></datalist>
+              </div>
+              <div class="col-sm">
+                  <input type="text" class="form-control-color" name="dosisId${i}" placeholder="ID Dosis" aria-label="ID Dosis" readonly>
+                  <input type="text" class="form-control" name="dosis${i}" placeholder="Dosis" aria-label="Dosis" list="dosisList${i}" oninput="checkAllInputsFilled()">
+                  <datalist id="dosisList${i}"></datalist>
+              </div>
+              <div class="col-sm">
+                  <input type="text" class="form-control-color" name="cantidadId${i}" placeholder="ID Cantidad" aria-label="ID Cantidad" readonly>
+                  <input type="text" class="form-control" name="cantidad${i}" placeholder="Cantidad" aria-label="Cantidad" list="cantidadList${i}" oninput="checkAllInputsFilled()">
+                  <datalist id="cantidadList${i}"></datalist>
+              </div>
+              <div class="col-sm">
+                  <input type="text" class="form-control-color" name="frecuenciaId${i}" placeholder="ID Frecuencia" aria-label="ID Frecuencia" readonly>
+                  <input type="text" class="form-control" name="frecuencia${i}" placeholder="Frecuencia" aria-label="Frecuencia" list="frecuenciaList${i}" oninput="checkAllInputsFilled()">
+                  <datalist id="frecuenciaList${i}"></datalist>
+              </div>
+              <div class="col-sm">
+                  <input type="text" class="form-control-color" name="duracionId${i}" placeholder="ID Duración" aria-label="ID Duración" readonly>
+                  <input type="text" class="form-control" name="duracion${i}" placeholder="Duración" aria-label="Duración" list="duracionList${i}" oninput="checkAllInputsFilled()">
+                  <datalist id="duracionList${i}"></datalist>
+              </div>
+          `;
+          container.appendChild(inputGroup);
+  
+          // Restaurar valores existentes si están disponibles
+          valoresExistentes.forEach(({ name, value }) => {
+              const input = document.querySelector(`input[name="${name}"]`);
+              if (input) {
+                  input.value = value;
+              }
+          });
+  
+          // Populate each datalist with fetched data
+          populateDatalist('/medicamentos', `medicamentoList${i}`, `medicamentoId${i}`);
+          populateDatalist('/dosis/dosisList', `dosisList${i}`, `dosisId${i}`);
+          populateDatalist('/cantidad/cantidadList', `cantidadList${i}`, `cantidadId${i}`);
+          populateDatalist('/frecuencia/frecuenciaList', `frecuenciaList${i}`, `frecuenciaId${i}`);
+          populateDatalist('/duracion/duracionList', `duracionList${i}`, `duracionId${i}`);
+      }
+  }
+  
+  async function populateDatalist(endpoint, datalistId, idInputName) {
+      try {
+          const response = await fetch(endpoint);
+          const data = await response.json();
+  
+          const datalist = document.getElementById(datalistId);
+          datalist.innerHTML = ''; // Clear existing options
+          data.forEach(item => {
+              const option = document.createElement('option');
+              option.value = item.nombre;
+              option.setAttribute('data-id', item.id);
+              datalist.appendChild(option);
+          });
+  
+          // Agregue un detector de eventos a la entrada para actualizar la entrada de ID cuando se selecciona una opción
+          const input = document.querySelector(`input[list="${datalistId}"]`);
+          input.addEventListener('input', (event) => {
+              const selectedOption = Array.from(datalist.options).find(option => option.value === event.target.value);
+              if (selectedOption && idInputName) {
+                  const idInput = document.querySelector(`input[name="${idInputName}"]`);
+                  idInput.value = selectedOption.getAttribute('data-id');
+                  checkAllInputsFilled(); // Verificar los inputs después de actualizar el valor
+              }
+          });
+      } catch (error) {
+          console.error(`Error fetching data from ${endpoint}:`, error);
+      }
+  }
+  
+  function checkAllInputsFilled() {
+      // Obtener todos los inputs dentro del contenedor 'inputsContainer'
+      const inputs = document.querySelectorAll('#inputsContainer input');
+  
+      // Verificar si todos los inputs están llenos
+      const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
+  
+      // Obtener los valores de los inputs medicamentoId*
+      const medicamentoIdInputs = document.querySelectorAll('input[name^="medicamentoId"]');
+      const idValues = Array.from(medicamentoIdInputs).map(input => input.value.trim()).filter(value => value !== '');
+  
+      // Crear un diccionario para contar las ocurrencias de cada valor
+      const idCounts = {};
+      let idDuplicadas = false;
+  
+      idValues.forEach(id => {
+          if (idCounts[id]) {
+              idCounts[id]++;
+              if (idCounts[id] > 1) {
+                  idDuplicadas = true;
+              }
+          } else {
+              idCounts[id] = 1;
+          }
+      });
+  
       // Obtener el botón de acordeón con ID 'accordionButtonAdministracion'
       const accordionButton = document.getElementById('accordionButtonAdministracion');
-    
+  
       // Cambiar el color de fondo y el texto del botón según las condiciones
       if (allFilled && !idDuplicadas) {
-        accordionButton.style.backgroundColor = 'lightgreen';
-        accordionButton.innerText = 'Administracion Seleccionada';
+          accordionButton.style.backgroundColor = 'lightgreen';
+          accordionButton.innerText = 'Administracion Seleccionada';
       } else if (idDuplicadas) {
-        accordionButton.style.backgroundColor = 'red';
-        accordionButton.innerText = 'Nombres de campos Duplicados';
+          accordionButton.style.backgroundColor = 'red';
+          accordionButton.innerText = 'Nombres de campos Duplicados';
       } else {
-        accordionButton.style.backgroundColor = '';
-        accordionButton.innerText = 'Buscar Administracion';
+          accordionButton.style.backgroundColor = '';
+          accordionButton.innerText = 'Buscar Administracion';
       }
-    }
-    
-    document.addEventListener('DOMContentLoaded', () => {
-      // Obtener todos los inputs dentro del contenedor 'inputsContainer'
-      const allInputs = document.querySelectorAll('#inputsContainer input');
-    
-      // Agregar el evento 'input' a cada input
-      allInputs.forEach(input => {
-        input.addEventListener('input', checkAllInputsFilled);
-      });
-    });
-    
-    
-
+  }
   
-
-
-
-
-
-      
-      document.addEventListener('DOMContentLoaded', () => {
-        const botonGenerarAdministracion = document.getElementById('btnGenerarCamposAdministracion');
-        botonGenerarAdministracion.addEventListener('click', agregarCamposAdministracion);
     
     
-        const botonGenerarAdPresta = document.getElementById('btnGenerarCamposAdPresta');
-        botonGenerarAdPresta.addEventListener('click', agregarCamposAdPresta);
     
     
-      });
-
-      function agregarCamposAdministracion() {
-        const count = parseInt(document.getElementById('administrationCount').value);
-        const container = document.getElementById('inputsContainer');
-        
-        // Guardar valores existentes
-        const valoresExistentes = [];
-        const inputsExistentes = container.querySelectorAll('input');
-        inputsExistentes.forEach(input => {
-            valoresExistentes.push({ name: input.name, value: input.value });
-        });
-        
-        container.innerHTML = '';
-    
-        for (let i = 0; i < count; i++) {
-            const inputGroup = document.createElement('div');
-            inputGroup.className = 'row g-3 mb-3';
-            inputGroup.innerHTML = `
-                <div class="col-sm">
-                    <input type="text" class="form-control-color" name="medicamentoId${i}"  placeholder="ID Medicamento ${i + 1}" aria-label="ID Medicamento" readonly>
-
-                    <input type="text" class="form-control" name="medicamento${i}" placeholder="Medicamento ${i + 1}" aria-label="Medicamento" list="medicamentoList${i}" oninput="checkAllInputsFilled()">
-                    <datalist id="medicamentoList${i}"></datalist>
-                </div>
-
-                <div class="col-sm">
-                    <input type="text" class="form-control-color" name="dosisId${i}"  placeholder="ID Dosis" aria-label="ID Dosis" readonly>
-               
-                    <input type="text" class="form-control" name="dosis${i}" placeholder="Dosis" aria-label="Dosis" list="dosisList${i}" oninput="checkAllInputsFilled()">
-                    <datalist id="dosisList${i}"></datalist>
-                </div>
-
-                <div class="col-sm">
-                    <input type="text" class="form-control-color" name="cantidadId${i}"  placeholder="ID Cantidad" aria-label="ID Cantidad" readonly>
-                
-                    <input type="text" class="form-control" name="cantidad${i}" placeholder="Cantidad" aria-label="Cantidad" list="cantidadList${i}" oninput="checkAllInputsFilled()">
-                    <datalist id="cantidadList${i}"></datalist>
-                </div>
-                <div class="col-sm">
-                    <input type="text" class="form-control-color" name="frecuenciaId${i}"  placeholder="ID Frecuencia" aria-label="ID Frecuencia" readonly>
-                
-                    <input type="text" class="form-control" name="frecuencia${i}" placeholder="Frecuencia" aria-label="Frecuencia" list="frecuenciaList${i}" oninput="checkAllInputsFilled()">
-                    <datalist id="frecuenciaList${i}"></datalist>
-                </div>
-
-                <div class="col-sm">
-                    <input type="text" class="form-control-color" name="duracionId${i}"  placeholder="ID Duración" aria-label="ID Duración" readonly>
-               
-                    <input type="text" class="form-control" name="duracion${i}" placeholder="Duración" aria-label="Duración" list="duracionList${i}" oninput="checkAllInputsFilled()">
-                    <datalist id="duracionList${i}"></datalist>
-                </div>
-            `;
-            container.appendChild(inputGroup);
-    
-            // Restaurar valores existentes si están disponibles
-            valoresExistentes.forEach(({ name, value }) => {
-                const input = document.querySelector(`input[name="${name}"]`);
-                if (input) {
-                    input.value = value;
-                }
-            });
-    
-            // Populate each datalist with fetched data
-            populateDatalist('/medicamentos', `medicamentoList${i}`, `medicamentoId${i}`);
-            populateDatalist('/dosis/dosisList', `dosisList${i}`, `dosisId${i}`);
-            populateDatalist('/cantidad/cantidadList', `cantidadList${i}`, `cantidadId${i}`);
-            populateDatalist('/frecuencia/frecuenciaList', `frecuenciaList${i}`, `frecuenciaId${i}`);
-            populateDatalist('/duracion/duracionList', `duracionList${i}`, `duracionId${i}`);
-        }
-    }
-    
-    async function populateDatalist(endpoint, datalistId, idInputName) {
-        try {
-            const response = await fetch(endpoint);
-            const data = await response.json();
-    
-            const datalist = document.getElementById(datalistId);
-            datalist.innerHTML = ''; // Clear existing options
-            data.forEach(item => {
-                const option = document.createElement('option');
-                option.value = item.nombre;
-                option.setAttribute('data-id', item.id);
-                datalist.appendChild(option);
-            });
-    
-            // Agregue un detector de eventos a la entrada para actualizar la entrada de ID cuando se selecciona una opción
-            const input = document.querySelector(`input[list="${datalistId}"]`);
-            input.addEventListener('input', (event) => {
-                const selectedOption = Array.from(datalist.options).find(option => option.value === event.target.value);
-                if (selectedOption && idInputName) {
-                    const idInput = document.querySelector(`input[name="${idInputName}"]`);
-                    idInput.value = selectedOption.getAttribute('data-id');
-                }
-            });
-        } catch (error) {
-            console.error(`Error fetching data from ${endpoint}:`, error);
-        }
-    }
-    
-
-    
-    
+  
+     
 
     
  
@@ -557,6 +548,29 @@ function checkPrestacionesSelection() {
       }
   });
 
+  document.getElementById('printButton').addEventListener('click', function() {
+    const nombre_prof = document.getElementById('nombre_prof').value;
+    const nombre_pas = document.getElementById('nombre_pas').value;
 
+    fetch('/invoice', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ nombre_prof: nombre_prof, nombre_pas: nombre_pas })
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'reseta.pdf';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+    })
+    .catch(error => console.error('Error:', error));
+});
 
 
