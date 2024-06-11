@@ -42,7 +42,15 @@ exports.register = async (req, res) => {
                   conexion.query('INSERT INTO users SET ?', { user: user, name: name, pass: passHash, dni:dni, mail: mail, rol: rol }, (error, result) => {
                       if (error) {
                           console.log(error);
-                          res.status(500).send('Error al registrar el usuario');
+                          res.render('register', {
+                              alert: true,
+                              alertTitle: "advertencia",
+                              alertMessage: "error al registrar usuario",
+                              alertIcon: 'error',
+                              showConfirmButton: true,
+                              timer: false,
+                              ruta: 'register'
+                        })
                       } else {
                           res.redirect('/');
                           console.log(todo)
