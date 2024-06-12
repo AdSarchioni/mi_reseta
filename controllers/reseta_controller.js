@@ -118,7 +118,26 @@ controller.getPrestacionesId = (req, res) => {
 
 
 controller.cargarMedDataList = (req, res) => {
-    const query = 'SELECT m.id_med AS id,m.nombre_comercial AS nombre, m.nombre_generico AS nombre_generico, m.nombre_comercial AS nombre_comercial, m.id_concent AS id_concent, c.concentracion AS concentracion, m.id_for_fa AS id_for_fa, f.forma_fa AS forma_farma FROM medicamentos m LEFT JOIN concentracion c ON m.id_concent = c.id_conc LEFT JOIN forma_farma f ON m.id_for_fa = f.id_for_fa;';
+    const query = `SELECT
+     m.id_med AS id,
+     m.nombre_comercial AS nombre,
+      m.nombre_generico AS nombre_generico,
+       m.nombre_comercial AS nombre_comercial,
+        m.id_concent AS id_concent, 
+        c.concentracion AS concentracion,
+         m.id_for_fa AS id_for_fa,
+          f.forma_fa AS forma_farma,
+          p.presentacion AS presentacion,
+           l.familia AS familia
+           FROM medicamentos m 
+           LEFT JOIN concentracion c
+            ON m.id_concent = c.id_conc
+             LEFT JOIN forma_farma f 
+             ON m.id_for_fa = f.id_for_fa
+                LEFT JOIN presentacion p 
+             ON m.id_present = p.id_present
+               LEFT JOIN familia l 
+             ON m.id_fam = l.id_fam;`;
     conexion.query(query, (err, results) => {
         if (err) {
             res.status(500).send('Error querying the database');

@@ -301,7 +301,7 @@ function checkPrestacionesSelection() {
            // Población del datalist con los datos obtenidos
            data.forEach(item => {
                 const option = document.createElement('option');
-                option.value = `${item.nombre}-${item.concentracion}-${item.forma_farma}`;
+                option.value = `${item.nombre}-${item.concentracion}-${item.forma_farma}-${item.nombre_generico}-${item.presentacion}-${item.familia}`;
                 option.dataset.idMed = item.id;
                 datalist.appendChild(option);
             });
@@ -508,7 +508,7 @@ function checkPrestacionesSelection() {
       const button = document.getElementById('diagnosticoButton');
       const submitBtn = document.getElementById('submitBtn');
       
-      if (cleanedText.length >= 20) {
+      if (cleanedText.length >= 10) {
           button.style.backgroundColor = 'lightgreen';
           submitBtn.disabled = false; // Enable the submit button
       } else {

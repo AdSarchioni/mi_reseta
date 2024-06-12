@@ -72,7 +72,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link active" aria-current="page" href="#"><%= new Date().toLocaleDateString() %></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Crear Prescripcion</a>
@@ -109,15 +109,15 @@
                       <div class="col-sm">
                         <input type="text" class="form-control" placeholder="Nombre" aria-label="Nombre"
                           name="nombre_prof" value="<%= typeof data !== 'undefined' ? data.nombre : '' %>"
-                          id="nombre_prof">
+                          id="nombre_prof" readonly="true">
                       </div>
                       <div class="col-sm">
                         <input type="text" class="form-control" placeholder="Usuario" aria-label="user"
-                          value="<%= typeof data !== 'undefined' ? data.user : '' %>" name="user" id="user">
+                          value="<%= typeof data !== 'undefined' ? data.user : '' %>" name="user" id="user"readonly="true">
                       </div>
                       <div class="col-sm">
                         <input type="text" class="form-control" placeholder="Dni" aria-label="dni_prof" name="dni_prof"
-                          value="<%= typeof data !== 'undefined' ? data.dni : '' %>" id="dni_prof">
+                          value="<%= typeof data !== 'undefined' ? data.dni : '' %>" id="dni_prof" readonly="true">
 
                       </div>
 
@@ -335,10 +335,11 @@
       <div class="card text-bg-dark">
         <img src="./img/reseta.PNG" class="card-img" alt="...">
         <div class="card-img-overlay">
-          <h3 class="card-title">Mi Reseta </h3>
-          <p class="card-text"></p>
-          <br>
-          <p class="card-text"><%= new Date().toLocaleDateString() %></p>
+          <h5 class="card-title">Mi Reseta </h5>
+          <p class="card-text">aparecera el profesinal logueado y dara la posibilidad</p> 
+          <p>de elgir una de sus matriculas si posee mas de una </p>
+          
+          <p class="card-text">Adrian E. Sarchioni</p>
         </div>
 
     </div>
