@@ -287,7 +287,7 @@ function checkPrestacionesSelection() {
             });
         }
     }
-    
+   
 
 
     async function fetchMedicamentos(datalistId, inputId) {
@@ -383,7 +383,7 @@ function checkPrestacionesSelection() {
           const inputGroup = document.createElement('div');
           inputGroup.className = 'row g-3 mb-3';
           inputGroup.innerHTML = `
-              <div class="col-sm">
+              <div class="col-md-6">
                   <input type="text" class="form-control-color id-med-input" name="medicamentoId${i}" placeholder="ID Medicamento ${i + 1}" aria-label="ID Medicamento" readonly>
                   <input type="text" class="form-control" name="medicamento${i}" id="medicamento${i}" placeholder="Medicamento ${i + 1}" aria-label="Medicamento" list="medicamentoList${i}" oninput="checkAllInputsFilled()">
                   <datalist id="medicamentoList${i}"></datalist>
@@ -420,14 +420,41 @@ function checkPrestacionesSelection() {
           });
   
           // Populate each datalist with fetched data
-          populateDatalist('/medicamentos', `medicamentoList${i}`, `medicamentoId${i}`);
+          populateDatalist1('/medicamentos', `medicamentoList${i}`, `medicamentoId${i}`);
           populateDatalist('/dosis/dosisList', `dosisList${i}`, `dosisId${i}`);
           populateDatalist('/cantidad/cantidadList', `cantidadList${i}`, `cantidadId${i}`);
           populateDatalist('/frecuencia/frecuenciaList', `frecuenciaList${i}`, `frecuenciaId${i}`);
           populateDatalist('/duracion/duracionList', `duracionList${i}`, `duracionId${i}`);
       }
   }
-  
+  async function populateDatalist1(endpoint, datalistId, idInputName) {
+    try {
+        const response = await fetch(endpoint);
+        const data = await response.json();
+
+        const datalist = document.getElementById(datalistId);
+        datalist.innerHTML = ''; // Clear existing options
+        data.forEach(item => {
+            const option = document.createElement('option');
+            option.value =  `${item.nombre}-${item.concentracion}-${item.forma_farma}-${item.nombre_generico}-${item.presentacion}-${item.familia}`;
+            option.setAttribute('data-id', item.id);
+            datalist.appendChild(option);
+        });
+
+        // Agregue un detector de eventos a la entrada para actualizar la entrada de ID cuando se selecciona una opción
+        const input = document.querySelector(`input[list="${datalistId}"]`);
+        input.addEventListener('input', (event) => {
+            const selectedOption = Array.from(datalist.options).find(option => option.value === event.target.value);
+            if (selectedOption && idInputName) {
+                const idInput = document.querySelector(`input[name="${idInputName}"]`);
+                idInput.value = selectedOption.getAttribute('data-id');
+                checkAllInputsFilled(); // Verificar los inputs después de actualizar el valor
+            }
+        });
+    } catch (error) {
+        console.error(`Error fetching data from ${endpoint}:`, error);
+    }
+}
   async function populateDatalist(endpoint, datalistId, idInputName) {
       try {
           const response = await fetch(endpoint);
@@ -441,7 +468,7 @@ function checkPrestacionesSelection() {
               option.setAttribute('data-id', item.id);
               datalist.appendChild(option);
           });
-  
+
           // Agregue un detector de eventos a la entrada para actualizar la entrada de ID cuando se selecciona una opción
           const input = document.querySelector(`input[list="${datalistId}"]`);
           input.addEventListener('input', (event) => {

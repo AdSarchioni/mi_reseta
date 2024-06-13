@@ -109,7 +109,7 @@ exports.login = async (req, res) => {
                                     alertTitle: "conexion exitosa",
                                     alertMessage: "!LOGIN CORRECTO ¡",
                                     alertIcon: 'success',
-                                    showConfirmButton: false,
+                                    showConfirmButton: true,
                                     timer: 800,
                                     ruta: ''
                               })
