@@ -396,8 +396,7 @@ controller.imprimirReceta = async (req, res) => {
     doc.text(`Diagnóstico: ${diagnostico}`);
     doc.moveDown();
 
-    doc.text(`Indicaciones: ${indicacion}`);
-    doc.moveDown();
+   
 
   
 
@@ -405,6 +404,9 @@ controller.imprimirReceta = async (req, res) => {
     administraciones.forEach((admin, index) => {
         doc.text(`${index + 1}. Medicamento: ${admin.medicamento}, Dosis: ${admin.dosis}, Cantidad: ${admin.cantidad}, Frecuencia: ${admin.frecuencia}, Duración: ${admin.duracion}`);
     });
+    doc.moveDown();
+   
+    doc.text(`Indicaciones: ${indicacion}`);
     doc.moveDown();
 
     doc.text('Prestaciones:');
