@@ -4,6 +4,7 @@ const router = express.Router();
 
 const authController = require('../controllers/authController');
 const reseta_controller = require('../controllers/reseta_controller');
+const pasienteController = require('../controllers/pasienteController');
 //rutas para las vistas 
 router.get('/', authController.isAuthenticated, (req, res)=> {
     //Sconexion();
@@ -30,12 +31,7 @@ router.get('/logout',authController.logout);
 router.get('/crea_reseta',authController.isAuthenticated,authController.esProf,reseta_controller.crea_reseta);
 router.get('/buscaPa/:valorImput1',reseta_controller.paraListPas);
 router.get('/pasciente',reseta_controller.dataPasciente);
-
-
 router.get('/buscaProf/:valorImput1',reseta_controller.paraListProf);
-
-
-
 router.post('/reseta_save',reseta_controller.save);
 router.get('/prestaciones',reseta_controller.getPrestaciones);
 router.get('/prestacionesId',reseta_controller.getPrestacionesId);
@@ -49,13 +45,17 @@ router.get('/pre_reseta',(req, res)=> {
 });
 router.post('/caragarPresc',reseta_controller.cargarPresc);
 router.post('/inprimir',reseta_controller.imprimirReceta);
-
-
-
-
 router.post('/invoice',reseta_controller.imprimirReceta);
 
-
+//rutas Pasiente
+router.get('/crea_pasiente',(req, res)=> {
+      res.render('pasiente/crear_pasiente',{alert: false});
+});
+router.post('/guardar_pas', pasienteController.create);
+router.get('/buscar_pas', pasienteController.findAll);
+router.get('/buscarPas/:id', pasienteController.findById);
+router.put('/updatePas/:id', pasienteController.update);
+router.delete('/borrarPas/:id', pasienteController.delete);
 
 
 

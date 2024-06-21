@@ -201,18 +201,18 @@ controller.cargarPresc = async (req, res) => {
     const prestaciones = [];
     const keys = Object.keys(body);
     const ids = keys.filter(key => key.startsWith('medicamentoId'));
-    const idsP =keys.filter(key => key.startsWith('idPrestacion'));
+    const idsP = keys.filter(key => key.startsWith('idPrestacion'));
 
     idsP.forEach(idKeyP => {
         const indexP = idKeyP.replace('idPrestacion', '');
         const prestacion = {
             id_presta: body[`idPrestacion${indexP}`],
-            nomPrest:body[`datalista${indexP}`]
+            nomPrest: body[`datalista${indexP}`]
         };
         prestaciones.push(prestacion);
-     
+
     });
- 
+
     ids.forEach(idKey => {
         const index = idKey.replace('medicamentoId', '');
         const administracion = {
@@ -223,7 +223,7 @@ controller.cargarPresc = async (req, res) => {
             id_duracion: body[`duracionId${index}`]
         };
         administraciones.push(administracion);
-     
+
     });
 
 
@@ -238,7 +238,7 @@ controller.cargarPresc = async (req, res) => {
         const result = await new Promise((resolve, reject) => {
             conexion.query(
                 'INSERT INTO prescripcion (diagnostico, indicacion, fecha_pres, vigencia, id_prof, id_pas) VALUES (?, ?, ?, ?, ?, ?)',
-                [diagnostico,indicacion, fecha_pres, vigencia, id_prof, id_pas],
+                [diagnostico, indicacion, fecha_pres, vigencia, id_prof, id_pas],
                 (error, results) => {
                     if (error) return reject(error);
                     resolve(results);
@@ -250,81 +250,81 @@ controller.cargarPresc = async (req, res) => {
         console.log("Prescripción insertada con ID:", id_presc);
 
         // Paso 2 y 3: Insertar las administraciones y las asociaciones en `presc_admin`
-       if(administraciones){
-        for (const admin of administraciones) {
-            try {
-                const resultAdmin = await new Promise((resolve, reject) => {
-                    conexion.query(
-                        'INSERT INTO administracion (id_dosis, id_frecuencia, id_cantidad, id_duracion, id_med) VALUES (?, ?, ?, ?, ?)',
-                        [admin.id_dosis, admin.id_frecuencia, admin.id_cantidad, admin.id_duracion, admin.id_med],
-                        (error, results) => {
-                            if (error) return reject(error);
-                            resolve(results);
-                        }
-                    );
-                });
+        if (administraciones) {
+            for (const admin of administraciones) {
+                try {
+                    const resultAdmin = await new Promise((resolve, reject) => {
+                        conexion.query(
+                            'INSERT INTO administracion (id_dosis, id_frecuencia, id_cantidad, id_duracion, id_med) VALUES (?, ?, ?, ?, ?)',
+                            [admin.id_dosis, admin.id_frecuencia, admin.id_cantidad, admin.id_duracion, admin.id_med],
+                            (error, results) => {
+                                if (error) return reject(error);
+                                resolve(results);
+                            }
+                        );
+                    });
 
-                const id_admin = resultAdmin.insertId;
+                    const id_admin = resultAdmin.insertId;
 
-                await new Promise((resolve, reject) => {
-                    conexion.query(
-                        'INSERT INTO  presc_admin (id_presc, id_admin) VALUES (?, ?)',
-                        [id_presc, id_admin],
-                        (error, results) => {
-                            if (error) return reject(error);
-                            resolve(results);
-                        }
-                    );
-                });
+                    await new Promise((resolve, reject) => {
+                        conexion.query(
+                            'INSERT INTO  presc_admin (id_presc, id_admin) VALUES (?, ?)',
+                            [id_presc, id_admin],
+                            (error, results) => {
+                                if (error) return reject(error);
+                                resolve(results);
+                            }
+                        );
+                    });
 
-            } catch (error) {
-                // Si hay un error, registrar y revertir la transacción
-                console.error('Error al insertar administración:', error);
-                await conexion.rollback();
-                res.render('crear_reseta/crear_reseta', {
-                    alert: true,
-                    alertTitle: "ERROR AL CARGAR ADMINISTRACION",
-                    alertMessage: "FORMULARIO INCOMPLETO ¡",
-                    alertIcon: 'error',
-                    showConfirmButton: false,
-                    timer: 800,
-                    ruta: 'crea_reseta'
-              })
+                } catch (error) {
+                    // Si hay un error, registrar y revertir la transacción
+                    console.error('Error al insertar administración:', error);
+                    await conexion.rollback();
+                    res.render('crear_reseta/crear_reseta', {
+                        alert: true,
+                        alertTitle: "ERROR AL CARGAR ADMINISTRACION",
+                        alertMessage: "FORMULARIO INCOMPLETO ¡",
+                        alertIcon: 'error',
+                        showConfirmButton: false,
+                        timer: 800,
+                        ruta: 'crea_reseta'
+                    })
+                }
             }
         }
-    }
-    if(prestaciones){
-        for (const presta of prestaciones) {
-            try {
-            
+        if (prestaciones) {
+            for (const presta of prestaciones) {
+                try {
 
-                await new Promise((resolve, reject) => {
-                    conexion.query(
-                        'INSERT INTO prescripcion_prestacion (id_presc, id_presta) VALUES (?, ?)',
-                        [id_presc, presta.id_presta],
-                        (error, results) => {
-                            if (error) return reject(error);
-                            resolve(results);
-                        }
-                    );
-                });
 
-            } catch (error) {
-                // Si hay un error, registrar y revertir la transacción
-                console.error('Error al insertar administración:', error);
-                await conexion.rollback();
-                res.render('crear_reseta/crear_reseta', {
-                    alert: true,
-                    alertTitle: "ERROR AL CARGAR FORMULARIO",
-                    alertMessage: "ERROR AL CARGAR ADMINISTRACION ¡",
-                    alertIcon: 'error',
-                    showConfirmButton: false,
-                    timer: 800,
-                    ruta: 'crea_reseta'
-              })
+                    await new Promise((resolve, reject) => {
+                        conexion.query(
+                            'INSERT INTO prescripcion_prestacion (id_presc, id_presta) VALUES (?, ?)',
+                            [id_presc, presta.id_presta],
+                            (error, results) => {
+                                if (error) return reject(error);
+                                resolve(results);
+                            }
+                        );
+                    });
+
+                } catch (error) {
+                    // Si hay un error, registrar y revertir la transacción
+                    console.error('Error al insertar administración:', error);
+                    await conexion.rollback();
+                    res.render('crear_reseta/crear_reseta', {
+                        alert: true,
+                        alertTitle: "ERROR AL CARGAR FORMULARIO",
+                        alertMessage: "ERROR AL CARGAR ADMINISTRACION ¡",
+                        alertIcon: 'error',
+                        showConfirmButton: false,
+                        timer: 800,
+                        ruta: 'crea_reseta'
+                    })
+                }
             }
         }
-    }
 
         // Confirmar la transacción
         await conexion.commit();
@@ -336,9 +336,9 @@ controller.cargarPresc = async (req, res) => {
             showConfirmButton: false,
             timer: 800,
             ruta: 'crea_reseta'
-      })
-        
-   
+        })
+
+
     } catch (error) {
         // Revertir la transacción en caso de error
         await conexion.rollback();
@@ -351,7 +351,7 @@ controller.cargarPresc = async (req, res) => {
             showConfirmButton: false,
             timer: 800,
             ruta: 'crea_reseta'
-      })
+        })
     }
 };
 
@@ -396,16 +396,16 @@ controller.imprimirReceta = async (req, res) => {
     doc.text(`Diagnóstico: ${diagnostico}`);
     doc.moveDown();
 
-   
 
-  
+
+
 
     doc.text('Medicamentos y Administraciones:');
     administraciones.forEach((admin, index) => {
         doc.text(`${index + 1}. Medicamento: ${admin.medicamento}, Dosis: ${admin.dosis}, Cantidad: ${admin.cantidad}, Frecuencia: ${admin.frecuencia}, Duración: ${admin.duracion}`);
     });
     doc.moveDown();
-   
+
     doc.text(`Indicaciones: ${indicacion}`);
     doc.moveDown();
 
