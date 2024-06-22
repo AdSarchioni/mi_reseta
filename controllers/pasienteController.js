@@ -71,6 +71,16 @@ const pasienteController = {
             res.json(result);
         });
     },
+    findAllPlans: (req, res) => {
+        Pasiente.findAllPlans((err, results) => {
+            if (err) {
+                return res.status(500).send(err);
+            }
+            res.json(results);
+        });
+    },
+
+
     update: (req, res) => {
         const { id } = req.params;
         const { nombre, apellido, dni, fecha_nac, sexo, alta, id_plan } = req.body;

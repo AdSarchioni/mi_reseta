@@ -53,6 +53,7 @@ router.get('/crea_pasiente',(req, res)=> {
 });
 router.post('/guardar_pas', pasienteController.create);
 router.get('/buscar_pas', pasienteController.findAll);
+router.get('/buscarObraPas', pasienteController.findAllPlans);
 router.get('/buscarPas/:id', pasienteController.findById);
 router.put('/updatePas/:id', pasienteController.update);
 router.delete('/borrarPas/:id', pasienteController.delete);
