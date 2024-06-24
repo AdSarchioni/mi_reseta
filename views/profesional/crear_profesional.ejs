@@ -11,10 +11,6 @@
     .dt-center {
         text-align: center;
     }
-    .inactive {
-        opacity: 0.5; /* Reduce la opacidad para hacer la fila menos prominente */
-    }
-
   </style>
   <title>Mi Reseta</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
@@ -54,9 +50,8 @@
       <div class="col-md-2">
         <label for="name" class="form-label">Nombre</label>
         <input type="text" class="form-control" id="nombre" name="nombre" required>
-       
         <div class="valid-feedback">
-         
+
         </div>
       </div>
       <div class="col-md-2">
@@ -77,7 +72,8 @@
         </div>
       </div>
       <div class="col-md">
-        <label for="fecha_nac" class="form-label">Fecha Nacimiento</label>
+        <label for="fecha_nac
+    " class="form-label">Fecha Nacimiento</label>
         <input type="date" class="form-control" id="fecha_nac" name="fecha_nac" required>
         <div class="invalid-feedback">
 
@@ -97,7 +93,7 @@
       <div class="col-md">
         <label for="rol" class="form-label">Alta</label>
         <select class="form-select" id="alta" name="alta" required>
-          <option  value=""> </option>
+          <option selected disabled value="">Elegir...</option>
           <option>0</option>
           <option>1</option>
 
@@ -109,7 +105,7 @@
       <div class="col-md">
 
         <label for="tipo_obra" class="form-label">Obra Social</label>
-        <input type="text" class="form-control" id="tipo_obra" name="tipo_obra" list="sugerenciasNombre_obra" autocomplete="off"  required>
+        <input type="text" class="form-control" id="tipo_obra" name="tipo_obra" list="sugerenciasNombre_obra" required>
         <datalist id="sugerenciasNombre_obra"></datalist>
         <input type="hidden" id="id_plan" name="id_plan">
 
@@ -120,66 +116,11 @@
    
       <div class="col-12">
         <button class="btn btn-success" type="submit">Guardar Pasiente</button>
-        <a type="button" href="/altaBorrado" class="btn btn-info">Alta Borrados</a>
-        <a id="guardarBtn" type="button" href="#" class="btn btn-primary">Guardar Modificado</a>
         <a type="button" href="/" class="btn btn-warning">Volver</a>
         <a type="button" href="logout" class="btn btn-danger">Logout</a>
       </div>
     </form>
-  
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form  id="formularioActualizar"  method="POST">
-              <div class="mb-3">
-                <label for="nomEdit" class="col-form-label">Nombre</label>
-                <input type="text" class="form-control" id="nomEdit" name="nomEdit" >
-              </div>
-              <div class="mb-3">
-                <label for="apellEdit" class="col-form-label">Apellido</label>
-                <input type="text" class="form-control" id="apellEdit" name="apellEdit" >
-              </div>
-              <div class="mb-3">
-                <label for="dniEdit" class="col-form-label">Dni</label>
-                <input type="text" class="form-control" id="dniEdit" name="dniEdit" >
-              </div>
-              <div class="mb-3">
-                <label for="fechaEdit" class="col-form-label">Fecha Nacimiento</label>
-                <input type="date" class="form-control" id="fechaEdit" name="fechaEdit" >
-              </div>
-              <div class="mb-3">
-                <label for="sexoEdit" class="col-form-label">sexo</label>
-                <input type="text" class="form-control" id="sexoEdit" name="sexoEdit" >
-              </div>
-              <div class="col-md">
 
-                <label for="tipo_obraE" class="form-label">Obra Social</label>
-                <input type="text" class="form-control" id="tipo_obraE" name="tipo_obraE" list="sugerenciasNombre_obraE" autocomplete="off"  required>
-                <datalist id="sugerenciasNombre_obraE"></datalist>
-                <input type="hidden" id="id_planE" name="id_planE">
-        
-        
-        
-                </div>
-                <button type="submit" class="btn btn-primary">Send message</button>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          
-          </div>
-        </div>
-      </div>
-    </div>
-
-    
-    
-   
 
 
 
@@ -197,8 +138,6 @@
             <th scope="col">ALTA</th>
             <th scope="col">PLAN OS</th>
             <th scope="col">OBRA SOCIAL</th>
-            <th scope="col">MODIFICAR</th>
-            <th scope="col">ELIMINAR</th>
           </tr>
         </thead>
 
@@ -210,23 +149,7 @@
     </div>
 
 
-
-
-
-
-
-
   </main>
-
-
-
-
-
-
-
-
-
-
 
 
   <script src="https://code.jquery.com/jquery-3.7.1.js"></script>

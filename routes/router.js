@@ -51,13 +51,17 @@ router.post('/invoice',reseta_controller.imprimirReceta);
 router.get('/crea_pasiente',(req, res)=> {
       res.render('pasiente/crear_pasiente',{alert: false});
 });
+router.get('/altaBorrado',(req, res)=> {
+      res.render('pasiente/altaPasBorrado',{alert: false});
+});
 router.post('/guardar_pas', pasienteController.create);
 router.get('/buscar_pas', pasienteController.findAll);
+router.get('/buscar_pas0', pasienteController.findAll0);
 router.get('/buscarObraPas', pasienteController.findAllPlans);
 router.get('/buscarPas/:id', pasienteController.findById);
-router.put('/updatePas/:id', pasienteController.update);
-router.delete('/borrarPas/:id', pasienteController.delete);
-
-
+router.post('/updatePas/:id', pasienteController.update);
+router.get('/borrarPas/:id', pasienteController.delete);
+router.get('/altaPas/:id', pasienteController.altaPas);
+//
 
 module.exports = router;
