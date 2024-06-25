@@ -62,6 +62,11 @@ router.get('/buscarPas/:id', pasienteController.findById);
 router.post('/updatePas/:id', pasienteController.update);
 router.get('/borrarPas/:id', pasienteController.delete);
 router.get('/altaPas/:id', pasienteController.altaPas);
-//
+
+//rutas medicamentos
+router.get('/crea_medicamento',(req, res)=> {
+      res.render('medicamento/crear_medicamento',{alert: false});
+});
+
 
 module.exports = router;

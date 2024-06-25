@@ -120,10 +120,12 @@ controller.getPrestacionesId = (req, res) => {
 controller.cargarMedDataList = (req, res) => {
     const query = `SELECT
      m.id_med AS id,
+     m.id_reg_nac AS id_reg_nac,
      m.nombre_comercial AS nombre,
       m.nombre_generico AS nombre_generico,
        m.nombre_comercial AS nombre_comercial,
-        m.id_concent AS id_concent, 
+       m.alta_med AS alta_med,
+       m.id_concent AS id_concent,  
         c.concentracion AS concentracion,
          m.id_for_fa AS id_for_fa,
           f.forma_fa AS forma_farma,
