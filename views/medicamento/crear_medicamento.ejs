@@ -91,7 +91,9 @@
 
       <div class="col-md">
         <label for="concentracion" class="form-label">Concentracion</label>
-        <input type="text" class="form-control" id="concentracion" name="concentracion" required>
+        <input type="text" class="form-control" id="concentracion" name="concentracion" list="sugerenciasConcentracion" required>
+        <datalist id="sugerenciasConcentracion"></datalist>
+        <input type="hidden" id="id_concentracion" name="id_concentracion">
         <div class="invalid-feedback">
 
         </div>
@@ -99,14 +101,18 @@
 
       <div class="col-md">
         <label for="familia" class="form-label">Familia</label>
-        <input type="text" class="form-control" id="familia" name="familia" required>
+        <input type="text" class="form-control" id="familia" name="familia" list="sugerenciasFamilia" required>
+        <datalist id="sugerenciasFamilia"></datalist>
+        <input type="hidden" id="id_familia" name="id_familia">
         <div class="invalid-feedback">
 
         </div>
       </div>
       <div class="col-md">
         <label for="presentacion" class="form-label">Presentacion</label>
-        <input type="text" class="form-control" id="presentacion" name="familia" required>
+        <input type="text" class="form-control" id="presentacion" name="familia" list="sugerenciasPresentacion" required>
+        <datalist id="sugerenciasPresentacion"></datalist>
+        <input type="hidden" id="id_presentacion" name="id_presentacion">
         <div class="invalid-feedback">
 
         </div>
@@ -118,6 +124,7 @@
         <button class="btn btn-success" type="submit">Guardar Medicamento</button>
         <a type="button" href="/altaBorrado" class="btn btn-info">Alta Borrados</a>
         <a type="button" href="/" class="btn btn-warning">Volver</a>
+        <a href="/pre_reseta" type="button" class="btn btn-secondary">Atributos</a>
         <a type="button" href="logout" class="btn btn-danger">Logout</a>
       </div>
     </form>

@@ -18,7 +18,9 @@ router.get('/login', (req, res)=>{
 router.get('/register', (req, res)=> {
       res.render('register',{alert: false} );
 });
-
+router.get('/preReseta', (req, res)=> {
+      res.render('crear_reseta/pre_reseta',{alert: false} );
+});
 
 
 //rutas para metodos controller autorizacion

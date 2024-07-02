@@ -4,46 +4,486 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 10px;
+            height: 100vh;
+            width: 100vw;
+            box-sizing: border-box;
+            padding: 10px;
+        }
+
+        .grid-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            overflow: auto;
+            background-size: cover;
+            background-position: center;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 0.8em;
+            /* Reduce font size */
+        }
+
+        .grid-item table.dataTable {
+            font-size: 1.0em;
+            /* Reduce font size */
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 0.2em 0.5em;
+            /* Reduce pagination button size */
+        }
+
+        .dataTables_wrapper .dataTables_length select,
+        .dataTables_wrapper .dataTables_filter input {
+            height: 1.2em;
+            /* Adjust input height */
+            font-size: 0.8em;
+            /* Adjust input font size */
+        }
+
+        .dataTables_wrapper .dataTables_info {
+            font-size: 0.8em;
+            /* Adjust info font size */
+        }
+
+
+        .grid-item {
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        background-blend-mode: darken; /* Mezcla la imagen de fondo con el color */
+        background-color: rgba(0, 0, 0, 0.5); /* Ajusta el color y la opacidad para atenuar */
+    }
+
+
+        .quadrant-1 {
+            background-image: url('./img/forma_farma.PNG');
+        }
+
+        .quadrant-2 {
+            background-image: url('./img/forma_farma1.PNG');
+        }
+
+        .quadrant-3 {
+            background-image: url('./img/forma_farma2.PNG');
+        }
+
+        .quadrant-4 {
+            background-image: url('./img/forma_farma3.PNG');
+            
+        }
+
+        .quadrant-1 h4 {
+            color: #77f0ee;
+            /* Color para el primer cuadrante */
+        }
+
+        .quadrant-2 h4 {
+            color: #77f0ee;
+            /* Color para el segundo cuadrante */
+        }
+
+        .quadrant-3 h4 {
+            color: #77f0ee;
+            /* Color para el tercer cuadrante */
+        }
+
+        .quadrant-4 h4 {
+            color: #77f0ee;
+            /* Color para el cuarto cuadrante */
+        }
+    </style>
+
     <title>Document</title>
 </head>
 
 <body>
+    <div class="grid-container">
+        <!-- Quadrant 1 -->
+        <div class="grid-item quadrant-1">
+            <h4>Gestionar Concentracion</h4>
+            <form id="form1" class="row g-3 needs-validation" novalidate action="/guardar_pas" method="POST">
+                <div class="col-md">
 
+                    <input type="text" class="form-control" placeholder="Reg Nac" id="dni1" name="dni" required>
+                    <div class="invalid-feedback"></div>
+                </div>
+                <div class="col-md">
 
-    <div class="container">
-        <table id="myTable" name="myTable" class="table table-striped" style="width:100%">
+                    <input type="text" class="form-control" placeholder="Nombre Comercial" id="nombre_comercial1"
+                        name="nombre_comercial" required>
+                    <div class="valid-feedback"></div>
+                </div>
+                <div class="col-md">
 
-            <thead>
-                <tr class="bg-primary text-white">
+                    <div class="input-group has-validation">
+                        <input type="text" class="form-control" placeholder="Nombre Generico" id="nombre_generico1"
+                            name="nombre_generico" required>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-dark" type="submit">Guardar Concentracion</button>
+                    <a type="button" href="/altaBorrado" class="btn btn-dark">Alta Borrados</a>
+                    <a type="button" href="/" class="btn btn-dark">Volver</a>
+                    <a type="button" href="logout" class="btn btn-danger">Logout</a>
+                </div>
+            </form>
+            <table id="datatable1" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Position</th>
+                        <th>Office</th>
+                        <th>Age</th>
+                        <th>Start date</th>
+                        <th>Salary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data for table 1 -->
+                    <tr>
+                        <td>Tiger Nixon</td>
+                        <td>System Architect</td>
+                        <td>Edinburgh</td>
+                        <td>61</td>
+                        <td>2011/04/25</td>
+                        <td>$320,800</td>
+                    </tr>
+                    <tr>
+                        <td>Garrett Winters</td>
+                        <td>Accountant</td>
+                        <td>Tokyo</td>
+                        <td>63</td>
+                        <td>2011/07/25</td>
+                        <td>$170,750</td>
+                    </tr>
+                    <tr>
+                        <td>Ashton Cox</td>
+                        <td>Junior Technical Author</td>
+                        <td>San Francisco</td>
+                        <td>66</td>
+                        <td>2009/01/12</td>
+                        <td>$86,000</td>
+                    </tr>
+                    <tr>
+                        <td>Cedric Kelly</td>
+                        <td>Senior Javascript Developer</td>
+                        <td>Edinburgh</td>
+                        <td>22</td>
+                        <td>2012/03/29</td>
+                        <td>$433,060</td>
+                    </tr>
+                    <tr>
+                        <td>Airi Satou</td>
+                        <td>Accountant</td>
+                        <td>Tokyo</td>
+                        <td>33</td>
+                        <td>2008/11/28</td>
+                        <td>$162,700</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-                    <th scope="col">ID</th>
-                    <th scope="col">NOMBRE</th>
-                    <th scope="col">APELLIDO</th>
-                    <th scope="col">DNI</th>
-                    <th scope="col">FECHA NAC</th>
-                    <th scope="col">SEXO</th>
-                    <th scope="col">ALTA</th>
-                    <th scope="col">PLAN OS</th>
+        <!-- Quadrant 2 -->
+        <div class="grid-item quadrant-2">
+            <h4>Gestionar Forma Farmacologica</h4>
+            <form id="form2" class="row g-3 needs-validation" novalidate action="/guardar_pas" method="POST">
+                <div class="col-md">
 
-                </tr>
-            </thead>
+                    <input type="text" class="form-control" placeholder="Reg Nac" id="dni1" name="dni" required>
+                    <div class="invalid-feedback"></div>
+                </div>
+                <div class="col-md">
 
-            <tbody>
+                    <input type="text" class="form-control" placeholder="Nombre Comercial" id="nombre_comercial1"
+                        name="nombre_comercial" required>
+                    <div class="valid-feedback"></div>
+                </div>
+                <div class="col-md">
 
-            </tbody>
+                    <div class="input-group has-validation">
+                        <input type="text" class="form-control" placeholder="Nombre Generico" id="nombre_generico1"
+                            name="nombre_generico" required>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-dark" type="submit">Guardar Forma Far</button>
+                    <a type="button" href="/altaBorrado" class="btn btn-dark">Alta Borrados</a>
+                    <a type="button" href="/" class="btn btn-dark">Volver</a>
+                    <a type="button" href="logout" class="btn btn-danger">Logout</a>
+                </div>
+            </form>
+            <table id="datatable2" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Position</th>
+                        <th>Office</th>
+                        <th>Age</th>
+                        <th>Start date</th>
+                        <th>Salary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data for table 2 -->
+                    <tr>
+                        <td>Tiger Nixon</td>
+                        <td>System Architect</td>
+                        <td>Edinburgh</td>
+                        <td>61</td>
+                        <td>2011/04/25</td>
+                        <td>$320,800</td>
+                    </tr>
+                    <tr>
+                        <td>Garrett Winters</td>
+                        <td>Accountant</td>
+                        <td>Tokyo</td>
+                        <td>63</td>
+                        <td>2011/07/25</td>
+                        <td>$170,750</td>
+                    </tr>
+                    <tr>
+                        <td>Ashton Cox</td>
+                        <td>Junior Technical Author</td>
+                        <td>San Francisco</td>
+                        <td>66</td>
+                        <td>2009/01/12</td>
+                        <td>$86,000</td>
+                    </tr>
+                    <tr>
+                        <td>Cedric Kelly</td>
+                        <td>Senior Javascript Developer</td>
+                        <td>Edinburgh</td>
+                        <td>22</td>
+                        <td>2012/03/29</td>
+                        <td>$433,060</td>
+                    </tr>
+                    <tr>
+                        <td>Airi Satou</td>
+                        <td>Accountant</td>
+                        <td>Tokyo</td>
+                        <td>33</td>
+                        <td>2008/11/28</td>
+                        <td>$162,700</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-        </table>
+        <!-- Quadrant 3 -->
+        <div class="grid-item quadrant-3">
+            <h4>Gestionar Familia</h4>
+            <form id="form2" class="row g-3 needs-validation" novalidate action="/guardar_pas" method="POST">
+                <div class="col-md">
 
+                    <input type="text" class="form-control" placeholder="Reg Nac" id="dni1" name="dni" required>
+                    <div class="invalid-feedback"></div>
+                </div>
+                <div class="col-md">
+
+                    <input type="text" class="form-control" placeholder="Nombre Comercial" id="nombre_comercial1"
+                        name="nombre_comercial" required>
+                    <div class="valid-feedback"></div>
+                </div>
+                <div class="col-md">
+
+                    <div class="input-group has-validation">
+                        <input type="text" class="form-control" placeholder="Nombre Generico" id="nombre_generico1"
+                            name="nombre_generico" required>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-dark" type="submit">Guardar Familia</button>
+                    <a type="button" href="/altaBorrado" class="btn btn-dark">Alta Borrados</a>
+                    <a type="button" href="/" class="btn btn-dark">Volver</a>
+                    <a type="button" href="logout" class="btn btn-danger">Logout</a>
+                </div>
+            </form>
+            <table id="datatable3" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Position</th>
+                        <th>Office</th>
+                        <th>Age</th>
+                        <th>Start date</th>
+                        <th>Salary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data for table 2 -->
+                    <tr>
+                        <td>Tiger Nixon</td>
+                        <td>System Architect</td>
+                        <td>Edinburgh</td>
+                        <td>61</td>
+                        <td>2011/04/25</td>
+                        <td>$320,800</td>
+                    </tr>
+                    <tr>
+                        <td>Garrett Winters</td>
+                        <td>Accountant</td>
+                        <td>Tokyo</td>
+                        <td>63</td>
+                        <td>2011/07/25</td>
+                        <td>$170,750</td>
+                    </tr>
+                    <tr>
+                        <td>Ashton Cox</td>
+                        <td>Junior Technical Author</td>
+                        <td>San Francisco</td>
+                        <td>66</td>
+                        <td>2009/01/12</td>
+                        <td>$86,000</td>
+                    </tr>
+                    <tr>
+                        <td>Cedric Kelly</td>
+                        <td>Senior Javascript Developer</td>
+                        <td>Edinburgh</td>
+                        <td>22</td>
+                        <td>2012/03/29</td>
+                        <td>$433,060</td>
+                    </tr>
+                    <tr>
+                        <td>Airi Satou</td>
+                        <td>Accountant</td>
+                        <td>Tokyo</td>
+                        <td>33</td>
+                        <td>2008/11/28</td>
+                        <td>$162,700</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Quadrant 4 -->
+        <div class="grid-item quadrant-4">
+            <h4>Gestionar Presentacion</h4>
+        
+            <form id="form2" class="row g-3 needs-validation" novalidate action="/guardar_pas" method="POST">
+                <div class="col-md">
+
+                    <input type="text" class="form-control" placeholder="Reg Nac" id="dni1" name="dni" required>
+                    <div class="invalid-feedback"></div>
+                </div>
+                <div class="col-md">
+
+                    <input type="text" class="form-control" placeholder="Nombre Comercial" id="nombre_comercial1"
+                        name="nombre_comercial" required>
+                    <div class="valid-feedback"></div>
+                </div>
+                <div class="col-md">
+
+                    <div class="input-group has-validation">
+                        <input type="text" class="form-control" placeholder="Nombre Generico" id="nombre_generico1"
+                            name="nombre_generico" required>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-dark" type="submit">Guardar Presentcion</button>
+                    <a type="button" href="/altaBorrado" class="btn btn-dark">Alta Borrados</a>
+                    <a type="button" href="/" class="btn btn-dark">Volver</a>
+                    <a type="button" href="logout" class="btn btn-danger">Logout</a>
+                </div>
+            </form>
+            <table id="datatable4" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Position</th>
+                        <th>Office</th>
+                        <th>Age</th>
+                        <th>Start date</th>
+                        <th>Salary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data for table 2 -->
+                    <tr>
+                        <td>Tiger Nixon</td>
+                        <td>System Architect</td>
+                        <td>Edinburgh</td>
+                        <td>61</td>
+                        <td>2011/04/25</td>
+                        <td>$320,800</td>
+                    </tr>
+                    <tr>
+                        <td>Garrett Winters</td>
+                        <td>Accountant</td>
+                        <td>Tokyo</td>
+                        <td>63</td>
+                        <td>2011/07/25</td>
+                        <td>$170,750</td>
+                    </tr>
+                    <tr>
+                        <td>Ashton Cox</td>
+                        <td>Junior Technical Author</td>
+                        <td>San Francisco</td>
+                        <td>66</td>
+                        <td>2009/01/12</td>
+                        <td>$86,000</td>
+                    </tr>
+                    <tr>
+                        <td>Cedric Kelly</td>
+                        <td>Senior Javascript Developer</td>
+                        <td>Edinburgh</td>
+                        <td>22</td>
+                        <td>2012/03/29</td>
+                        <td>$433,060</td>
+                    </tr>
+                    <tr>
+                        <td>Airi Satou</td>
+                        <td>Accountant</td>
+                        <td>Tokyo</td>
+                        <td>33</td>
+                        <td>2008/11/28</td>
+                        <td>$162,700</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
-   
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
-    <script src="./js/datatable.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+    <script src="./js/preReseta.js"></script>
+
+
+
+
 </body>
 
 </html>
