@@ -70,12 +70,14 @@
 
 
         .grid-item {
-        position: relative;
-        background-size: cover;
-        background-position: center;
-        background-blend-mode: darken; /* Mezcla la imagen de fondo con el color */
-        background-color: rgba(0, 0, 0, 0.5); /* Ajusta el color y la opacidad para atenuar */
-    }
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: darken;
+            /* Mezcla la imagen de fondo con el color */
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Ajusta el color y la opacidad para atenuar */
+        }
 
 
         .quadrant-1 {
@@ -92,7 +94,7 @@
 
         .quadrant-4 {
             background-image: url('./img/forma_farma3.PNG');
-            
+
         }
 
         .quadrant-1 h4 {
@@ -124,29 +126,16 @@
         <!-- Quadrant 1 -->
         <div class="grid-item quadrant-1">
             <h4>Gestionar Concentracion</h4>
-            <form id="form1" class="row g-3 needs-validation" novalidate action="/guardar_pas" method="POST">
-                <div class="col-md">
+            <form id="form1" class="row g-3 needs-validation" novalidate action="/guardar_conc" method="POST">
+                <div class="col-md-4">
 
-                    <input type="text" class="form-control" placeholder="Reg Nac" id="dni1" name="dni" required>
+                    <input type="text" class="form-control" placeholder=" Nueva Concentracion" id="concentracion" name="concentracion" required>
                     <div class="invalid-feedback"></div>
                 </div>
-                <div class="col-md">
 
-                    <input type="text" class="form-control" placeholder="Nombre Comercial" id="nombre_comercial1"
-                        name="nombre_comercial" required>
-                    <div class="valid-feedback"></div>
-                </div>
-                <div class="col-md">
-
-                    <div class="input-group has-validation">
-                        <input type="text" class="form-control" placeholder="Nombre Generico" id="nombre_generico1"
-                            name="nombre_generico" required>
-                        <div class="invalid-feedback"></div>
-                    </div>
-                </div>
                 <div class="col-12">
                     <button class="btn btn-dark" type="submit">Guardar Concentracion</button>
-                    <a type="button" href="/altaBorrado" class="btn btn-dark">Alta Borrados</a>
+                    <a type="button" onclick="cargaConcent0()" class="btn btn-dark">Alta Borrados</a>
                     <a type="button" href="/" class="btn btn-dark">Volver</a>
                     <a type="button" href="logout" class="btn btn-danger">Logout</a>
                 </div>
@@ -156,39 +145,82 @@
                     <tr>
                         <th>Id Concentracion</th>
                         <th>Concentracion</th>
-                   
+                        <th>Modificar</th>
+                        <th>Eliminar</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Data for table 1 -->
-                   
+
                 </tbody>
             </table>
         </div>
+
+<!-- modal modificar --     -->   
+        <div class="modal fade" id="concModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar Concentracion</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body bg-body-secondary">
+                  <form  id="concentracionActualizar"  method="POST">
+                    <div class="mb-3">
+                      <label for="concentracionEdit" class="col-form-label">Concentracion</label>
+                      <input type="text" class="form-control" id="concentracionEdit" name="concentracionEdit" >
+                    </div>
+              
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Guardar Modificacion</button>
+                      </div>
+                  </form>
+                </div>
+              
+              </div>
+            </div>
+          </div>
+ <!-- modal alta borrado -->
+ <div class="modal fade" id="concAltaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar Concentracion</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body bg-body-secondary">
+            <table id="datatable5" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Id Concentracion</th>
+                        <th>Concentracion</th>
+                        <th>Dar Alta</th>
+                      
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data for table 1 -->
+
+                </tbody>
+            </table>
+        </div>
+      
+      </div>
+    </div>
+  </div>
+    
 
         <!-- Quadrant 2 -->
         <div class="grid-item quadrant-2">
             <h4>Gestionar Forma Farmacologica</h4>
             <form id="form2" class="row g-3 needs-validation" novalidate action="/guardar_pas" method="POST">
-                <div class="col-md">
+                <div class="col-md-4">
 
-                    <input type="text" class="form-control" placeholder="Reg Nac" id="dni1" name="dni" required>
+                    <input type="text" class="form-control" placeholder="Nueva Forma Farmacologica" id="forma_fa" name="forma_fa" required>
                     <div class="invalid-feedback"></div>
                 </div>
-                <div class="col-md">
-
-                    <input type="text" class="form-control" placeholder="Nombre Comercial" id="nombre_comercial1"
-                        name="nombre_comercial" required>
-                    <div class="valid-feedback"></div>
-                </div>
-                <div class="col-md">
-
-                    <div class="input-group has-validation">
-                        <input type="text" class="form-control" placeholder="Nombre Generico" id="nombre_generico1"
-                            name="nombre_generico" required>
-                        <div class="invalid-feedback"></div>
-                    </div>
-                </div>
+              
                 <div class="col-12">
                     <button class="btn btn-dark" type="submit">Guardar Forma Far</button>
                     <a type="button" href="/altaBorrado" class="btn btn-dark">Alta Borrados</a>
@@ -201,12 +233,13 @@
                     <tr>
                         <th>Id Forma Far</th>
                         <th>Forma Fa</th>
-                      
+                        <th>Modificar</th>
+                        <th>Eliminar</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Data for table 2 -->
-             
+
                 </tbody>
             </table>
         </div>
@@ -215,25 +248,12 @@
         <div class="grid-item quadrant-3">
             <h4>Gestionar Familia</h4>
             <form id="form2" class="row g-3 needs-validation" novalidate action="/guardar_pas" method="POST">
-                <div class="col-md">
+                <div class="col-md-4">
 
-                    <input type="text" class="form-control" placeholder="Reg Nac" id="dni1" name="dni" required>
+                    <input type="text" class="form-control" placeholder="Nueva Familia" id="familia" name="familia" required>
                     <div class="invalid-feedback"></div>
                 </div>
-                <div class="col-md">
-
-                    <input type="text" class="form-control" placeholder="Nombre Comercial" id="nombre_comercial1"
-                        name="nombre_comercial" required>
-                    <div class="valid-feedback"></div>
-                </div>
-                <div class="col-md">
-
-                    <div class="input-group has-validation">
-                        <input type="text" class="form-control" placeholder="Nombre Generico" id="nombre_generico1"
-                            name="nombre_generico" required>
-                        <div class="invalid-feedback"></div>
-                    </div>
-                </div>
+               
                 <div class="col-12">
                     <button class="btn btn-dark" type="submit">Guardar Familia</button>
                     <a type="button" href="/altaBorrado" class="btn btn-dark">Alta Borrados</a>
@@ -246,12 +266,13 @@
                     <tr>
                         <th>Id Familia</th>
                         <th>Familia</th>
-                    
+                        <th>Modificar</th>
+                        <th>Eliminar</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Data for table 2 -->
-                  
+
                 </tbody>
             </table>
         </div>
@@ -259,27 +280,14 @@
         <!-- Quadrant 4 -->
         <div class="grid-item quadrant-4">
             <h4>Gestionar Presentacion</h4>
-        
-            <form id="form2" class="row g-3 needs-validation" novalidate action="/guardar_pas" method="POST">
-                <div class="col-md">
 
-                    <input type="text" class="form-control" placeholder="Reg Nac" id="dni1" name="dni" required>
+            <form id="form2" class="row g-3 needs-validation" novalidate action="/guardar_pas" method="POST">
+                <div class="col-md-4">
+
+                    <input type="text" class="form-control" placeholder="Nueva Presentacion" id="presentacion" name="presentacion" required>
                     <div class="invalid-feedback"></div>
                 </div>
-                <div class="col-md">
-
-                    <input type="text" class="form-control" placeholder="Nombre Comercial" id="nombre_comercial1"
-                        name="nombre_comercial" required>
-                    <div class="valid-feedback"></div>
-                </div>
-                <div class="col-md">
-
-                    <div class="input-group has-validation">
-                        <input type="text" class="form-control" placeholder="Nombre Generico" id="nombre_generico1"
-                            name="nombre_generico" required>
-                        <div class="invalid-feedback"></div>
-                    </div>
-                </div>
+              
                 <div class="col-12">
                     <button class="btn btn-dark" type="submit">Guardar Presentcion</button>
                     <a type="button" href="/altaBorrado" class="btn btn-dark">Alta Borrados</a>
@@ -292,12 +300,13 @@
                     <tr>
                         <th>Id Presentacion</th>
                         <th>Presentacion</th>
-                      
+                        <th>Modificar</th>
+                        <th>Eliminar</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Data for table 2 -->
-                   
+
                 </tbody>
             </table>
         </div>
@@ -308,11 +317,21 @@
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-
-
-    <script src="./js/preReseta.js"></script>
-
+    <script src="./js/medicamento.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <% if(alert){%>
+      <script>
+        Swal.fire({
+          title: '<%= alertTitle %>',
+          text: '<%= alertMessage %>',
+          icon: '<%= alertIcon %>',
+          showConfirmButton: '<%= showConfirmButton %>',
+          timer: '<%= 2500 %>'
+        }).then(() => {
+          window.location = '/<%= ruta %>'
+        })
+      </script>
+      <% } %>
 
 
 

@@ -5,6 +5,7 @@ const router = express.Router();
 const authController = require('../controllers/authController');
 const reseta_controller = require('../controllers/reseta_controller');
 const pasienteController = require('../controllers/pasienteController');
+const concController = require('../controllers/concController');
 //rutas para las vistas 
 router.get('/', authController.isAuthenticated, (req, res)=> {
     //Sconexion();
@@ -42,9 +43,7 @@ router.get('/dosis/dosisList', reseta_controller.getDosisList);
 router.get('/cantidad/cantidadList', reseta_controller.getCantidadList);
 router.get('/frecuencia/frecuenciaList', reseta_controller.getFrecuenciaList);
 router.get('/duracion/duracionList', reseta_controller.getDuracionList);
-router.get('/pre_reseta',(req, res)=> {
-      res.render('crear_reseta/pre_reseta');
-});
+
 router.post('/caragarPresc',reseta_controller.cargarPresc);
 router.post('/inprimir',reseta_controller.imprimirReceta);
 router.post('/invoice',reseta_controller.imprimirReceta);
@@ -69,6 +68,15 @@ router.get('/altaPas/:id', pasienteController.altaPas);
 router.get('/crea_medicamento',(req, res)=> {
       res.render('medicamento/crear_medicamento',{alert: false});
 });
-
-
+//rutas concentracion
+router.get('/atributos_med',(req, res)=> {
+      res.render('medicamento/atributosMed',{alert: false});
+});
+router.get('/buscar_conc',concController.findAll);
+router.post('/guardar_conc',concController.create);
+router.get('/borrar_conc/:id_conc',concController.delete);
+router.get('/buscarConc/:id',concController.findById);
+router.post('/updateConc/:id',concController.update);
+router.get('/buscar_conc0',concController.findAll0);
+router.get('/altaConc/:id',concController.altaConc);
 module.exports = router;
