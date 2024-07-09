@@ -6,6 +6,15 @@ const authController = require('../controllers/authController');
 const reseta_controller = require('../controllers/reseta_controller');
 const pasienteController = require('../controllers/pasienteController');
 const concController = require('../controllers/concController');
+const formaController = require('../controllers/formaController');
+const familiaController = require('../controllers/familiaController');
+const presentController = require('../controllers/presentController');
+const medicamentoController = require('../controllers/medicamentoController');
+
+
+
+
+
 //rutas para las vistas 
 router.get('/', authController.isAuthenticated, (req, res)=> {
     //Sconexion();
@@ -64,10 +73,7 @@ router.post('/updatePas/:id', pasienteController.update);
 router.get('/borrarPas/:id', pasienteController.delete);
 router.get('/altaPas/:id', pasienteController.altaPas);
 
-//rutas medicamentos
-router.get('/crea_medicamento',(req, res)=> {
-      res.render('medicamento/crear_medicamento',{alert: false});
-});
+
 //rutas concentracion
 router.get('/atributos_med',(req, res)=> {
       res.render('medicamento/atributosMed',{alert: false});
@@ -79,4 +85,52 @@ router.get('/buscarConc/:id',concController.findById);
 router.post('/updateConc/:id',concController.update);
 router.get('/buscar_conc0',concController.findAll0);
 router.get('/altaConc/:id',concController.altaConc);
+
+//rutas forma farmacologica
+
+router.get('/buscar_form0',formaController.findAll0);
+router.get('/buscar_forma',formaController.findAll);
+router.get('/buscarForma/:id',formaController.findById);
+router.post('/guardar_form',formaController.create);
+router.get('/borrar_form/:id',formaController.delete);
+router.get('/buscarForm',formaController.findById);
+router.post('/updateForm/:id',formaController.update);
+router.get('/altaForm/:id',formaController.altaForm);
+
+//rutas familia
+
+router.get('/buscar_fam0',familiaController.findAll0);
+router.get('/buscar_fam',familiaController.findAll);
+router.get('/buscarFam/:id',familiaController.findById);
+router.post('/guardar_fam',familiaController.create);
+router.get('/borrar_fam/:id',familiaController.delete);
+router.get('/buscarFam',familiaController.findById);
+router.post('/updateFam/:id',familiaController.update);
+router.get('/altaFam/:id',familiaController.altaForm);
+
+//rutas presentacion
+
+router.get('/buscar_present0',presentController.findAll0);
+router.get('/buscar_present',presentController.findAll);
+router.get('/buscarPresent/:id',presentController.findById);
+router.post('/guardar_present',presentController.create);
+router.get('/borrar_present/:id',presentController.delete);
+router.get('/buscarPresent',presentController.findById);
+router.post('/updatePresent/:id',presentController.update);
+router.get('/altaPresent/:id',presentController.alta);
+
+//rutas medicamento
+
+router.get('/crea_medicamento',(req, res)=> {
+      res.render('medicamento/crear_medicamento',{alert: false});
+});
+router.get('/buscar_medica0',medicamentoController.findAll0);
+router.get('/buscar_medica',medicamentoController.findAll);
+router.get('/buscarMedica/:id',medicamentoController.findById);
+router.post('/guardar_medica',medicamentoController.create);
+router.get('/borrar_medica/:id',medicamentoController.delete);
+router.get('/buscarMedica',medicamentoController.findById);
+router.post('/updateMedica/:id',medicamentoController.update);
+router.get('/altaMedica/:id',medicamentoController.alta);
+
 module.exports = router;

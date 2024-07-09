@@ -47,17 +47,17 @@
 
     </div>
 
-    <form id="formLogin" class="row g-3 needs-validation" novalidate action="/guardar_pas" method="POST">
+    <form id="formLogin" class="row g-3 needs-validation" novalidate action="/guardar_medica" method="POST">
 
 
       <div class="col-md">
-        <label for="dni" class="form-label">Reg Nac</label>
-        <input type="text" class="form-control" id="dni" name="dni" required>
+        <label for="id_reg_nac" class="form-label">Reg Nac</label>
+        <input type="text" class="form-control" id="id_reg_nac" name="id_reg_nac" required>
         <div class="invalid-feedback">
         </div>
       </div>
 
-      <div class="col-md-2">
+      <div class="col-md">
         <label for="nombre_comercial" class="form-label">Nombre Comercial</label>
         <input type="text" class="form-control" id="nombre_comercial" name="nombre_comercial" required>
 
@@ -65,7 +65,7 @@
 
         </div>
       </div>
-      <div class="col-md-2">
+      <div class="col-md">
         <label for="nombre_generico" class="form-label">Nombre Generico</label>
         <div class="input-group has-validation">
 
@@ -76,43 +76,46 @@
           </div>
         </div>
       </div>
-   
       <div class="col-md">
-        <label for="alta_med" class="form-label">Alta Med</label>
-        <select class="form-select" id="alta_med" name="alta_med" required>
-          <option value=""> </option>
-          <option>0</option>
-          <option>1</option>
-
-        </select>
-      </div>
-
-      
-
-      <div class="col-md">
-        <label for="concentracion" class="form-label">Concentracion</label>
+        <label for="concentra" class="form-label">Concentracion</label>
         <input type="text" class="form-control" id="concentracion" name="concentracion" list="sugerenciasConcentracion" required>
         <datalist id="sugerenciasConcentracion"></datalist>
-        <input type="hidden" id="id_concentracion" name="id_concentracion">
+        <input type="text" id="id_concent" name="id_concent">
         <div class="invalid-feedback">
 
         </div>
       </div>
 
+
+
       <div class="col-md">
+        <label for="concentracion" class="form-label">Forma Farmaco</label>
+        <input type="text" class="form-control" id="forma_farma" name="forma_farma" list="sugerenciasForma_farma" required>
+        <datalist id="sugerenciasForma_farma"></datalist>
+        <div class="invalid-feedback">
+
+        </div>
+    
+
+        
+      </div>
+
+
+      <div class="col-md-2">
         <label for="familia" class="form-label">Familia</label>
         <input type="text" class="form-control" id="familia" name="familia" list="sugerenciasFamilia" required>
         <datalist id="sugerenciasFamilia"></datalist>
-        <input type="hidden" id="id_familia" name="id_familia">
+        <input type="text" id="id_fam" name="id_fam">
         <div class="invalid-feedback">
 
         </div>
       </div>
-      <div class="col-md">
+     
+      <div class="col-md-2">
         <label for="presentacion" class="form-label">Presentacion</label>
-        <input type="text" class="form-control" id="presentacion" name="familia" list="sugerenciasPresentacion" required>
+        <input type="text" class="form-control" id="presentacion" name="presentacion" list="sugerenciasPresentacion" required>
         <datalist id="sugerenciasPresentacion"></datalist>
-        <input type="hidden" id="id_presentacion" name="id_presentacion">
+        <input type="text" id="id_present" name="id_present">
         <div class="invalid-feedback">
 
         </div>
@@ -127,58 +130,13 @@
         <a href="/atributos_med" type="button" class="btn btn-secondary">Atributos</a>
         <a type="button" href="logout" class="btn btn-danger">Logout</a>
       </div>
+    
+    
+    
+    
     </form>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar Pasiente</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body bg-body-secondary">
-            <form id="formularioActualizar" method="POST">
-              <div class="mb-3">
-                <label for="nomEdit" class="col-form-label">Nombre</label>
-                <input type="text" class="form-control" id="nomEdit" name="nomEdit">
-              </div>
-              <div class="mb-3">
-                <label for="apellEdit" class="col-form-label">Apellido</label>
-                <input type="text" class="form-control" id="apellEdit" name="apellEdit">
-              </div>
-              <div class="mb-3">
-                <label for="dniEdit" class="col-form-label">Dni</label>
-                <input type="text" class="form-control" id="dniEdit" name="dniEdit">
-              </div>
-              <div class="mb-3">
-                <label for="fechaEdit" class="col-form-label">Fecha Nacimiento</label>
-                <input type="date" class="form-control" id="fechaEdit" name="fechaEdit">
-              </div>
-              <div class="mb-3">
-                <label for="sexoEdit" class="col-form-label">sexo</label>
-                <input type="text" class="form-control" id="sexoEdit" name="sexoEdit">
-              </div>
-              <div class="col-md">
-
-                <label for="tipo_obraE" class="form-label">Obra Social</label>
-                <input type="text" class="form-control" id="tipo_obraE" name="tipo_obraE" list="sugerenciasNombre_obraE"
-                  autocomplete="off" required>
-                <datalist id="sugerenciasNombre_obraE"></datalist>
-                <input type="hidden" id="id_planE" name="id_planE">
-
-
-
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="submit" class="btn btn-primary">Guardar Modificacion</button>
-              </div>
-            </form>
-          </div>
-
-        </div>
-      </div>
-    </div>
+ 
 
     <div class="container">
       <table id="myTable" name="myTable" class="table table-striped" style="width:100%">
@@ -205,6 +163,108 @@
 
       </table>
     </div>
+  
+  
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar Medicamento</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body bg-body-secondary">
+            <form id="formularioActualizar" method="POST">
+              <div class="col-md">
+                <label for="id_reg_nacE" class="form-label">Reg Nac</label>
+                <input type="text" class="form-control" id="id_reg_nacE" name="id_reg_nac" required>
+                <div class="invalid-feedback">
+                </div>
+              </div>
+        
+              <div class="col-md-2">
+                <label for="nombre_comercialE" class="form-label">Nombre Comercial</label>
+                <input type="text" class="form-control" id="nombre_comercialE" name="nombre_comercial" required>
+        
+                <div class="valid-feedback">
+        
+                </div>
+              </div>
+              <div class="col-md-2">
+                <label for="nombre_generico" class="form-label">Nombre Generico</label>
+                <div class="input-group has-validation">
+        
+                  <input type="text" class="form-control" id="nombre_genericoE" name="nombre_generico" inputGroupPrepend"
+                    required>
+                  <div class="invalid-feedback">
+        
+                  </div>
+                </div>
+              </div>
+           
+        
+        
+        
+              <div class="col-md">
+                <label for="concentracion" class="form-label">Forma Farmaco</label>
+                <input type="text" class="form-control" id="forma_farma" name="forma_farma" list="sugerenciasForma_farma" required>
+                <datalist id="sugerenciasForma_farma"></datalist>
+                <input type="text" id="id_for_faE" name="id_for_fa">
+                <div class="invalid-feedback">
+        
+                </div>
+              </div>
+        
+              <div class="col-md">
+                <label for="concentra" class="form-label">Concentracion</label>
+                <input type="text" class="form-control" id="concentracionE" name="concentracion" list="sugerenciasConcentracion" required>
+                <datalist id="sugerenciasConcentracion"></datalist>
+                <input type="text" id="id_concent" name="id_concent">
+                <div class="invalid-feedback">
+        
+                </div>
+              </div>
+        
+              <div class="col-md">
+                <label for="familia" class="form-label">Familia</label>
+                <input type="text" class="form-control" id="familiaE" name="familia" list="sugerenciasFamilia" required>
+                <datalist id="sugerenciasFamilia"></datalist>
+                <input type="text" id="id_fam" name="id_fam">
+                <div class="invalid-feedback">
+        
+                </div>
+              </div>
+              <div class="col-md">
+                <label for="presentacion" class="form-label">Presentacion</label>
+                <input type="text" class="form-control" id="presentacionE" name="presentacion" list="sugerenciasPresentacion" required>
+                <datalist id="sugerenciasPresentacion"></datalist>
+                <input type="text" id="id_present" name="id_present">
+                <div class="invalid-feedback">
+        
+                </div>
+              </div>
+
+
+
+
+
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary">Guardar Modificacion</button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+    
 
   </main>
 
