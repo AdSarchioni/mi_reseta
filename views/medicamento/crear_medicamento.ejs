@@ -77,7 +77,7 @@
         </div>
       </div>
       <div class="col-md">
-        <label for="concentra" class="form-label">Concentracion</label>
+        <label for="concentracion" class="form-label">Concentracion</label>
         <input type="text" class="form-control" id="concentracion" name="concentracion" list="sugerenciasConcentracion" required>
         <datalist id="sugerenciasConcentracion"></datalist>
         <input type="text" id="id_concent" name="id_concent">
@@ -92,6 +92,7 @@
         <label for="concentracion" class="form-label">Forma Farmaco</label>
         <input type="text" class="form-control" id="forma_farma" name="forma_farma" list="sugerenciasForma_farma" required>
         <datalist id="sugerenciasForma_farma"></datalist>
+        <input type="text" id="id_for_fa" name="id_for_fa">
         <div class="invalid-feedback">
 
         </div>
@@ -174,6 +175,7 @@
           </div>
           <div class="modal-body bg-body-secondary">
             <form id="formularioActualizar" method="POST">
+        
               <div class="col-md">
                 <label for="id_reg_nacE" class="form-label">Reg Nac</label>
                 <input type="text" class="form-control" id="id_reg_nacE" name="id_reg_nac" required>
@@ -181,7 +183,7 @@
                 </div>
               </div>
         
-              <div class="col-md-2">
+              <div class="col-md">
                 <label for="nombre_comercialE" class="form-label">Nombre Comercial</label>
                 <input type="text" class="form-control" id="nombre_comercialE" name="nombre_comercial" required>
         
@@ -189,8 +191,8 @@
         
                 </div>
               </div>
-              <div class="col-md-2">
-                <label for="nombre_generico" class="form-label">Nombre Generico</label>
+              <div class="col-md">
+                <label for="nombre_genericoE" class="form-label">Nombre Generico</label>
                 <div class="input-group has-validation">
         
                   <input type="text" class="form-control" id="nombre_genericoE" name="nombre_generico" inputGroupPrepend"
@@ -200,49 +202,51 @@
                   </div>
                 </div>
               </div>
-           
+              <div class="col-md">
+                <label for="concentracionE" class="form-label">Concentracion</label>
+                <input type="text" class="form-control" id="concentracionE" name="concentracion" list="sugerenciasConcentracionE" required>
+                <datalist id="sugerenciasConcentracionE"></datalist>
+                <input type="text" id="id_concentE" name="id_concent">
+                <div class="invalid-feedback">
+        
+                </div>
+              </div>
         
         
         
               <div class="col-md">
-                <label for="concentracion" class="form-label">Forma Farmaco</label>
-                <input type="text" class="form-control" id="forma_farma" name="forma_farma" list="sugerenciasForma_farma" required>
-                <datalist id="sugerenciasForma_farma"></datalist>
+                <label for="forma_farmaE" class="form-label">Forma Farmaco</label>
+                <input type="text" class="form-control" id="forma_farmaE" name="forma_farma" list="sugerenciasForma_farmaE" required>
+                <datalist id="sugerenciasForma_farmaE"></datalist>
                 <input type="text" id="id_for_faE" name="id_for_fa">
                 <div class="invalid-feedback">
         
                 </div>
+            
+        
+                
               </div>
         
-              <div class="col-md">
-                <label for="concentra" class="form-label">Concentracion</label>
-                <input type="text" class="form-control" id="concentracionE" name="concentracion" list="sugerenciasConcentracion" required>
-                <datalist id="sugerenciasConcentracion"></datalist>
-                <input type="text" id="id_concent" name="id_concent">
+        
+              <div class="col-md-2">
+                <label for="familiaE" class="form-label">Familia</label>
+                <input type="text" class="form-control" id="familiaE" name="familia" list="sugerenciasFamiliaE" required>
+                <datalist id="sugerenciasFamiliaE"></datalist>
+                <input type="text" id="id_famE" name="id_fam">
                 <div class="invalid-feedback">
         
                 </div>
               </div>
-        
-              <div class="col-md">
-                <label for="familia" class="form-label">Familia</label>
-                <input type="text" class="form-control" id="familiaE" name="familia" list="sugerenciasFamilia" required>
-                <datalist id="sugerenciasFamilia"></datalist>
-                <input type="text" id="id_fam" name="id_fam">
+             
+              <div class="col-md-2">
+                <label for="presentacionE" class="form-label">Presentacion</label>
+                <input type="text" class="form-control" id="presentacionE" name="presentacion" list="sugerenciasPresentacionE" required>
+                <datalist id="sugerenciasPresentacionE"></datalist>
+                <input type="text" id="id_presentE" name="id_present">
                 <div class="invalid-feedback">
         
                 </div>
               </div>
-              <div class="col-md">
-                <label for="presentacion" class="form-label">Presentacion</label>
-                <input type="text" class="form-control" id="presentacionE" name="presentacion" list="sugerenciasPresentacion" required>
-                <datalist id="sugerenciasPresentacion"></datalist>
-                <input type="text" id="id_present" name="id_present">
-                <div class="invalid-feedback">
-        
-                </div>
-              </div>
-
 
 
 

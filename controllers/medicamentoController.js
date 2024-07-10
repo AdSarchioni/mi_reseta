@@ -4,7 +4,7 @@ const medicamentoController = {
     create: (req, res) => {
 const tod = req.body;
 
-console.log("Resultados tod:", JSON.stringify(tod, null, 2))
+
         const { id_reg_nac, nombre_generico, nombre_comercial, id_concent, id_for_fa, id_fam, id_present } = req.body;
     
             Medicamento.create(id_reg_nac, nombre_generico, nombre_comercial, id_concent, id_for_fa, id_fam, id_present, (err, result) => {
@@ -54,11 +54,14 @@ console.log("Resultados tod:", JSON.stringify(tod, null, 2))
         });
     },
     update: (req, res) => {
+        const ttt = req.body;
+        console.log("Resultados ttt:", JSON.stringify(ttt, null, 2))
+    
         const { id } = req.params;
-        const {id_reg_nac, nombre_generico, nombre_comercial, alta_med, id_concent, id_for_fa, id_fam, id_present}  = req.body;
+        const {id_reg_nac, nombre_generico, nombre_comercial, id_concent, id_for_fa, id_fam, id_present}  = req.body;
 
-        Medicamento.update(id, id_reg_nac, nombre_generico, nombre_comercial, alta_med, id_concent, id_for_fa, id_fam, id_present, (err, result) => {
-            console.log('id2'+id);
+        Medicamento.update(id, id_reg_nac, nombre_generico, nombre_comercial, id_concent, id_for_fa, id_fam, id_present, (err, result) => {
+
             
             if (err) {
                 return res.status(500).send(err);

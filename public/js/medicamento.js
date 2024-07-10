@@ -136,7 +136,7 @@ async function fetchBuscarConcentracion() {
 }
 
 // Evento para capturar la entrada del usuario en el campo de texto
-document.getElementById('concentra').addEventListener('input', (event) => {
+document.getElementById('concentracion').addEventListener('input', (event) => {
     const query = event.target.value;
     if (query.length > 0) {
         // Llamar a la función fetchBuscarObra si hay al menos un carácter ingresado
@@ -144,7 +144,7 @@ document.getElementById('concentra').addEventListener('input', (event) => {
     }
 });
 // Evento para capturar el cambio en el campo de texto (cuando se selecciona una opción del datalist)
-document.getElementById('concentra').addEventListener('change', (event) => {
+document.getElementById('concentracion').addEventListener('change', (event) => {
     const inputValue = event.target.value; // Obtener el valor del campo de texto
     const options = document.querySelectorAll('#sugerenciasConcentracion option');
     const hiddenInput = document.getElementById('id_concent');
@@ -264,16 +264,20 @@ async function buscarMed(id) {
     modal.show();
 
     const response = await fetch(`/buscarMedica/${id}`);
-   const { data } = await response.json(); // Desestructurando data del objeto JSON
+    const { data } = await response.json(); // Desestructurando data del objeto JSON
 
     // Inyectar datos en los campos del formulario del modal
 
     document.getElementById('id_reg_nacE').value = data[0].id_reg_nac;
     document.getElementById('nombre_comercialE').value = data[0].nombre_comercial;
     document.getElementById('nombre_genericoE').value = data[0].nombre_generico;
+    document.getElementById('id_concentE').value = data[0].id_concent;
     document.getElementById('concentracionE').value = data[0].concentracion;
+    document.getElementById('id_for_faE').value = data[0].id_for_fa;
     document.getElementById('forma_farmaE').value = data[0].forma_farma;
+    document.getElementById('id_famE').value = data[0].id_fam;
     document.getElementById('familiaE').value = data[0].familia;
+    document.getElementById('id_presentE').value = data[0].id_present;
     document.getElementById('presentacionE').value = data[0].presentacion;
     // Suponiendo que obtienes data[0].id_pas de algún lugar
     const idMed = data[0].id;
@@ -283,5 +287,200 @@ async function buscarMed(id) {
 
     // Modificar el action del formulario
     formulario.action = `/updateMedica/${idMed}`;
-
 }
+
+// Método para buscar obra social
+async function fetchBuscarFormaE() {
+    try {
+        // Realizar una petición a la URL /buscarObraPas para obtener datos en formato JSON
+        const response = await fetch(`/buscar_forma`);
+        const data = await response.json();
+
+        // Obtener el elemento datalist donde se mostrarán las sugerencias
+        const datalist = document.getElementById('sugerenciasForma_farmaE');
+        datalist.innerHTML = ''; // Limpiar opciones existentes
+
+        // Recorrer los datos obtenidos y agregar opciones al datalist
+        data.forEach(item => {
+            const option = document.createElement('option');
+            option.value = `${item.forma_fa}`;
+            // Guardar el id_plan en un atributo de datos de la opción
+            option.setAttribute('data-id', item.id_for_fa);
+            datalist.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error fetching obra social:', error);
+    }
+}
+
+// Evento para capturar la entrada del usuario en el campo de texto
+document.getElementById('forma_farmaE').addEventListener('input', (event) => {
+    const query = event.target.value;
+    if (query.length > 0) {
+        // Llamar a la función fetchBuscarObra si hay al menos un carácter ingresado
+        fetchBuscarFormaE();
+    }
+});
+// Evento para capturar el cambio en el campo de texto (cuando se selecciona una opción del datalist)
+document.getElementById('forma_farmaE').addEventListener('change', (event) => {
+    const inputValue = event.target.value; // Obtener el valor del campo de texto
+    const options = document.querySelectorAll('#sugerenciasForma_farmaE option');
+    const hiddenInput = document.getElementById('id_for_faE');
+
+    hiddenInput.value = ''; // Limpiar el valor del input oculto
+
+    // Recorrer las opciones del datalist para encontrar la seleccionada
+    options.forEach(option => {
+        if (option.value === inputValue) {
+            // Asignar el id_plan al input oculto si se encuentra una coincidencia
+            hiddenInput.value = option.getAttribute('data-id');
+        }
+    });
+});
+
+// Método para buscar obra social
+async function fetchBuscarConcentracionE() {
+    try {
+        // Realizar una petición a la URL /buscarObraPas para obtener datos en formato JSON
+        const response = await fetch(`/buscar_conc`);
+        const data = await response.json();
+
+        // Obtener el elemento datalist donde se mostrarán las sugerencias
+        const datalist = document.getElementById('sugerenciasConcentracionE');
+        datalist.innerHTML = ''; // Limpiar opciones existentes
+
+        // Recorrer los datos obtenidos y agregar opciones al datalist
+        data.forEach(item => {
+            const option = document.createElement('option');
+            option.value = `${item.concentracion}`;
+            // Guardar el id_plan en un atributo de datos de la opción
+            option.setAttribute('data-id', item.id_conc);
+            datalist.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error fetching obra social:', error);
+    }
+}
+
+// Evento para capturar la entrada del usuario en el campo de texto
+document.getElementById('concentracionE').addEventListener('input', (event) => {
+    const query = event.target.value;
+    if (query.length > 0) {
+        // Llamar a la función fetchBuscarObra si hay al menos un carácter ingresado
+        fetchBuscarConcentracionE();
+    }
+});
+// Evento para capturar el cambio en el campo de texto (cuando se selecciona una opción del datalist)
+document.getElementById('concentracionE').addEventListener('change', (event) => {
+    const inputValue = event.target.value; // Obtener el valor del campo de texto
+    const options = document.querySelectorAll('#sugerenciasConcentracionE option');
+    const hiddenInput = document.getElementById('id_concentE');
+
+    hiddenInput.value = ''; // Limpiar el valor del input oculto
+
+    // Recorrer las opciones del datalist para encontrar la seleccionada
+    options.forEach(option => {
+        if (option.value === inputValue) {
+            // Asignar el id_plan al input oculto si se encuentra una coincidencia
+            hiddenInput.value = option.getAttribute('data-id');
+        }
+    });
+});
+
+// Método para buscar Familia
+async function fetchBuscarFamiliaE() {
+    try {
+        // Realizar una petición a la URL /buscarObraPas para obtener datos en formato JSON
+        const response = await fetch(`/buscar_fam`);
+        const data = await response.json();
+
+        // Obtener el elemento datalist donde se mostrarán las sugerencias
+        const datalist = document.getElementById('sugerenciasFamiliaE');
+        datalist.innerHTML = ''; // Limpiar opciones existentes
+
+        // Recorrer los datos obtenidos y agregar opciones al datalist
+        data.forEach(item => {
+            const option = document.createElement('option');
+            option.value = `${item.familia}`;
+            // Guardar el id_plan en un atributo de datos de la opción
+            option.setAttribute('data-id', item.id_fam);
+            datalist.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error fetching obra social:', error);
+    }
+}
+
+// Evento para capturar la entrada del usuario en el campo de texto
+document.getElementById('familiaE').addEventListener('input', (event) => {
+    const query = event.target.value;
+    if (query.length > 0) {
+        // Llamar a la función fetchBuscarObra si hay al menos un carácter ingresado
+        fetchBuscarFamiliaE();
+    }
+});
+// Evento para capturar el cambio en el campo de texto (cuando se selecciona una opción del datalist)
+document.getElementById('familiaE').addEventListener('change', (event) => {
+    const inputValue = event.target.value; // Obtener el valor del campo de texto
+    const options = document.querySelectorAll('#sugerenciasFamiliaE option');
+    const hiddenInput = document.getElementById('id_famE');
+
+    hiddenInput.value = ''; // Limpiar el valor del input oculto
+
+    // Recorrer las opciones del datalist para encontrar la seleccionada
+    options.forEach(option => {
+        if (option.value === inputValue) {
+            // Asignar el id_plan al input oculto si se encuentra una coincidencia
+            hiddenInput.value = option.getAttribute('data-id');
+        }
+    });
+});
+
+// Método para buscar Familia
+async function fetchBuscarPresentacionE() {
+    try {
+        // Realizar una petición a la URL /buscarObraPas para obtener datos en formato JSON
+        const response = await fetch(`/buscar_present`);
+        const data = await response.json();
+
+        // Obtener el elemento datalist donde se mostrarán las sugerencias
+        const datalist = document.getElementById('sugerenciasPresentacionE');
+        datalist.innerHTML = ''; // Limpiar opciones existentes
+
+        // Recorrer los datos obtenidos y agregar opciones al datalist
+        data.forEach(item => {
+            const option = document.createElement('option');
+            option.value = `${item.presentacion}`;
+            // Guardar el id_plan en un atributo de datos de la opción
+            option.setAttribute('data-id', item.id_present);
+            datalist.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error fetching obra social:', error);
+    }
+}
+
+// Evento para capturar la entrada del usuario en el campo de texto
+document.getElementById('presentacionE').addEventListener('input', (event) => {
+    const query = event.target.value;
+    if (query.length > 0) {
+        // Llamar a la función fetchBuscarObra si hay al menos un carácter ingresado
+        fetchBuscarPresentacionE();
+    }
+});
+// Evento para capturar el cambio en el campo de texto (cuando se selecciona una opción del datalist)
+document.getElementById('presentacionE').addEventListener('change', (event) => {
+    const inputValue = event.target.value; // Obtener el valor del campo de texto
+    const options = document.querySelectorAll('#sugerenciasPresentacionE option');
+    const hiddenInput = document.getElementById('id_presentE');
+
+    hiddenInput.value = ''; // Limpiar el valor del input oculto
+
+    // Recorrer las opciones del datalist para encontrar la seleccionada
+    options.forEach(option => {
+        if (option.value === inputValue) {
+            // Asignar el id_plan al input oculto si se encuentra una coincidencia
+            hiddenInput.value = option.getAttribute('data-id');
+        }
+    });
+});
