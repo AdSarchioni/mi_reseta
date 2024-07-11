@@ -78,7 +78,8 @@
       </div>
       <div class="col-md">
         <label for="concentracion" class="form-label">Concentracion</label>
-        <input type="text" class="form-control" id="concentracion" name="concentracion" list="sugerenciasConcentracion" required>
+        <input type="text" class="form-control" id="concentracion" name="concentracion" list="sugerenciasConcentracion"
+          required>
         <datalist id="sugerenciasConcentracion"></datalist>
         <input type="text" id="id_concent" name="id_concent">
         <div class="invalid-feedback">
@@ -90,15 +91,16 @@
 
       <div class="col-md">
         <label for="concentracion" class="form-label">Forma Farmaco</label>
-        <input type="text" class="form-control" id="forma_farma" name="forma_farma" list="sugerenciasForma_farma" required>
+        <input type="text" class="form-control" id="forma_farma" name="forma_farma" list="sugerenciasForma_farma"
+          required>
         <datalist id="sugerenciasForma_farma"></datalist>
         <input type="text" id="id_for_fa" name="id_for_fa">
         <div class="invalid-feedback">
 
         </div>
-    
 
-        
+
+
       </div>
 
 
@@ -111,10 +113,11 @@
 
         </div>
       </div>
-     
+
       <div class="col-md-2">
         <label for="presentacion" class="form-label">Presentacion</label>
-        <input type="text" class="form-control" id="presentacion" name="presentacion" list="sugerenciasPresentacion" required>
+        <input type="text" class="form-control" id="presentacion" name="presentacion" list="sugerenciasPresentacion"
+          required>
         <datalist id="sugerenciasPresentacion"></datalist>
         <input type="text" id="id_present" name="id_present">
         <div class="invalid-feedback">
@@ -126,33 +129,33 @@
 
       <div class="col-12">
         <button class="btn btn-success" type="submit">Guardar Medicamento</button>
-        <a type="button" href="/altaBorrado" class="btn btn-info">Alta Borrados</a>
+        <a type="button" onclick="cargarMed0()" class="btn btn-dark">Alta Borrados</a>
         <a type="button" href="/" class="btn btn-warning">Volver</a>
         <a href="/atributos_med" type="button" class="btn btn-secondary">Atributos</a>
         <a type="button" href="logout" class="btn btn-danger">Logout</a>
       </div>
-    
-    
-    
-    
+
+
+
+
     </form>
 
- 
+
 
     <div class="container">
-      <table id="myTable" name="myTable" class="table table-striped" style="width:100%">
+      <table id="myTable" name="myTable" class="table table-striped">
 
         <thead>
           <tr class="bg-primary text-white">
             <th scope="col">ID MED</th>
             <th scope="col">REG NAC</th>
-            <th scope="col">NOMBE COMERCIAL</th>
-            <th scope="col">NOMBRE GENERICO</th>
+            <th scope="col">N.COMERCIAL</th>
+            <th scope="col">N.GENERICO</th>
             <th scope="col">ALTA MED</th>
-            <th scope="col">CONCENTRACION</th>
+            <th scope="col">CONCENT</th>
             <th scope="col">FORMA FARMA</th>
             <th scope="col">FAMILIA</th>
-            <th scope="col">PRESENTACION</th>
+            <th scope="col">PRESENT</th>
             <th scope="col">MODIFICAR</th>
             <th scope="col">ELIMINAR</th>
           </tr>
@@ -164,8 +167,8 @@
 
       </table>
     </div>
-  
-  
+
+
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -175,76 +178,80 @@
           </div>
           <div class="modal-body bg-body-secondary">
             <form id="formularioActualizar" method="POST">
-        
+
               <div class="col-md">
                 <label for="id_reg_nacE" class="form-label">Reg Nac</label>
                 <input type="text" class="form-control" id="id_reg_nacE" name="id_reg_nac" required>
                 <div class="invalid-feedback">
                 </div>
               </div>
-        
+
               <div class="col-md">
                 <label for="nombre_comercialE" class="form-label">Nombre Comercial</label>
                 <input type="text" class="form-control" id="nombre_comercialE" name="nombre_comercial" required>
-        
+
                 <div class="valid-feedback">
-        
+
                 </div>
               </div>
               <div class="col-md">
                 <label for="nombre_genericoE" class="form-label">Nombre Generico</label>
                 <div class="input-group has-validation">
-        
-                  <input type="text" class="form-control" id="nombre_genericoE" name="nombre_generico" inputGroupPrepend"
-                    required>
+
+                  <input type="text" class="form-control" id="nombre_genericoE" name="nombre_generico"
+                    inputGroupPrepend" required>
                   <div class="invalid-feedback">
-        
+
                   </div>
                 </div>
               </div>
               <div class="col-md">
                 <label for="concentracionE" class="form-label">Concentracion</label>
-                <input type="text" class="form-control" id="concentracionE" name="concentracion" list="sugerenciasConcentracionE" required>
+                <input type="text" class="form-control" id="concentracionE" name="concentracion"
+                  list="sugerenciasConcentracionE" required>
                 <datalist id="sugerenciasConcentracionE"></datalist>
                 <input type="text" id="id_concentE" name="id_concent">
                 <div class="invalid-feedback">
-        
+
                 </div>
               </div>
-        
-        
-        
+
+
+
               <div class="col-md">
                 <label for="forma_farmaE" class="form-label">Forma Farmaco</label>
-                <input type="text" class="form-control" id="forma_farmaE" name="forma_farma" list="sugerenciasForma_farmaE" required>
+                <input type="text" class="form-control" id="forma_farmaE" name="forma_farma"
+                  list="sugerenciasForma_farmaE" required>
                 <datalist id="sugerenciasForma_farmaE"></datalist>
                 <input type="text" id="id_for_faE" name="id_for_fa">
                 <div class="invalid-feedback">
-        
+
                 </div>
-            
-        
-                
+
+
+
               </div>
-        
-        
-              <div class="col-md-2">
+
+
+              <div class="col-md">
                 <label for="familiaE" class="form-label">Familia</label>
-                <input type="text" class="form-control" id="familiaE" name="familia" list="sugerenciasFamiliaE" required>
+                <input type="text" class="form-control" id="familiaE" name="familia" list="sugerenciasFamiliaE"
+                  required>
                 <datalist id="sugerenciasFamiliaE"></datalist>
                 <input type="text" id="id_famE" name="id_fam">
                 <div class="invalid-feedback">
-        
+
                 </div>
               </div>
-             
-              <div class="col-md-2">
+
+              <div class="col-md">
                 <label for="presentacionE" class="form-label">Presentacion</label>
-                <input type="text" class="form-control" id="presentacionE" name="presentacion" list="sugerenciasPresentacionE" required>
+                <input type="text" class="form-control" id="presentacionE" name="presentacion"
+                  list="sugerenciasPresentacionE" required>
                 <datalist id="sugerenciasPresentacionE"></datalist>
                 <input type="text" id="id_presentE" name="id_present">
                 <div class="invalid-feedback">
-        
+
                 </div>
               </div>
 
@@ -263,12 +270,56 @@
       </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="altaModal" tabindex="-1" aria-labelledby="altaModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="altaModalLabel">Alta Medicamentos Borrados</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body bg-body-secondary ">
+            ...
+            <div class="table-responsive">
+              <table id="myTables" name="myTables" class="table table-striped">
+                <thead>
+                  <tr class="bg-primary text-white">
+                    <th scope="col">ID MED</th>
+                    <th scope="col">REG NAC</th>
+                    <th scope="col">N.COMERCIAL</th>
+                    <th scope="col">N.GENERICO</th>
+                    <th scope="col">ALTA MED</th>
+                    <th scope="col">CONCENT</th>
+                    <th scope="col">FORMA FARMA</th>
+                    <th scope="col">FAMILIA</th>
+                    <th scope="col">PRESENT</th>
+                    <th scope="col">MODIFICAR</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <!-- Contenido de la tabla -->
+                </tbody>
+
+              </table>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
 
 
 
 
 
-    
+
+
+
+
 
   </main>
 

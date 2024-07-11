@@ -10,8 +10,8 @@ const formaController = require('../controllers/formaController');
 const familiaController = require('../controllers/familiaController');
 const presentController = require('../controllers/presentController');
 const medicamentoController = require('../controllers/medicamentoController');
-
-
+const espeController = require('../controllers/espeController');
+const profController = require('../controllers/profController');
 
 
 
@@ -133,4 +133,28 @@ router.get('/buscarMedica',medicamentoController.findById);
 router.post('/updateMedica/:id',medicamentoController.update);
 router.get('/altaMedica/:id',medicamentoController.alta);
 
+
+//rutas especialidad
+
+router.get('/buscar_espe0',espeController.findAll0);
+router.get('/buscar_espe',espeController.findAll);
+router.get('/buscarEspe/:id',espeController.findById);
+router.post('/guardar_espe',espeController.create);
+router.get('/borrar_espe/:id',espeController.delete);
+router.get('/buscarEspe',espeController.findById);
+router.post('/updateEspe/:id',espeController.update);
+router.get('/altaEspe/:id',espeController.alta);
+router.get('/especialidad', (req, res)=> {
+      res.render('profesional/crear_especialidad',{alert: false} );
+});
+
+
+
+
+//rutas profesionales
+
+router.get('/profesional', (req, res)=> {
+      res.render('profesional/crear_profesional',{alert: false} );
+});
+router.get('/buscar_prof',profController.findAll);
 module.exports = router;

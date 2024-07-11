@@ -351,6 +351,7 @@ async function cargarFamilia() {
             `<a href="/borrar_fam/${item.id_fam}" class="btn btn-danger btn-sm" type="button">Eliminar</a>`
         ]).draw(false);
 
+    
 
     });
 }
