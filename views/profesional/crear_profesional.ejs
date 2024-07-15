@@ -42,22 +42,24 @@
 
     </div>
 
-    <form id="formLogin" class="row g-3 needs-validation" novalidate action="/guardar_pas" method="POST">
+    <form id="formLogin" class="row g-3 needs-validation" novalidate action="/guardar_prof" method="POST">
 
     </div>
     <div class="col-md">
       <label for="id_refer" class="form-label">ID Refeps</label>
-      <input type="text" class="form-control" id="id_refer" name="id_refer" required>
+      <input type="text" class="form-control" id="id_refer" name="id_refer"list="sugerenciasRefe" autocomplete="off"   required>
+      <datalist id="sugerenciasRefe"></datalist>
+      <input type="text" id="refeps" name="refeps">
       <div class="valid-feedback">
 
       </div>
     </div>
     
     <div class="col-md">
-      <label for="especialidad" class="form-label">Especialidad</label>
-      <input type="text" class="form-control" id="especialidad" name="especialidad" list="sugerenciasEspecialidad" autocomplete="off" required>
-      <datalist id="sugerenciasEspecialidad"></datalist>
-      <input type="hidden" id="id_especialidad" name="id_especialidad">
+      <label for="tipo_esp" class="form-label">Especialidad</label>
+      <input type="text" class="form-control" id="tipo_esp" name="tipo_esp" list="sugerenciasEspe" autocomplete="off" required>
+      <datalist id="sugerenciasEspe"></datalist>
+      <input type="text" id="id_especialidad" name="id_especialidad">
       <div class="valid-feedback">
 
       </div>
@@ -137,10 +139,13 @@
 
    
       <div class="col-12">
-        <button class="btn btn-success" type="submit">Guardar Pasiente</button>
+        <button class="btn btn-success" type="submit">Guardar Profesional</button>
         <a type="button" href="/" class="btn btn-warning">Volver</a>
         <a type="button" href="/especialidad" class="btn btn-dark">Crear Especialidad</a>
+        <a type="button" href="/refeps" class="btn btn-info">Crear Refeps</a>
         <a type="button" href="logout" class="btn btn-danger">Logout</a>
+      
+      
       </div>
     </form>
 

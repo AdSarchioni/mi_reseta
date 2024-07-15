@@ -12,6 +12,7 @@ const presentController = require('../controllers/presentController');
 const medicamentoController = require('../controllers/medicamentoController');
 const espeController = require('../controllers/espeController');
 const profController = require('../controllers/profController');
+const refeController = require('../controllers/refeController');
 
 
 
@@ -148,6 +149,19 @@ router.get('/especialidad', (req, res)=> {
       res.render('profesional/crear_especialidad',{alert: false} );
 });
 
+//rutas refeps
+
+router.get('/buscar_refe0',refeController.findAll0);
+router.get('/buscar_refe',refeController.findAll);
+router.get('/buscarRefe/:id',refeController.findById);
+router.post('/guardar_refe',refeController.create);
+router.get('/borrar_refe/:id',refeController.delete);
+router.get('/buscarRefe',refeController.findById);
+router.post('/updateRefe/:id',refeController.update);
+router.get('/altaRefe/:id',refeController.alta);
+router.get('/refeps', (req, res)=> {
+      res.render('profesional/crear_refeps',{alert: false} );
+});
 
 
 
@@ -157,4 +171,8 @@ router.get('/profesional', (req, res)=> {
       res.render('profesional/crear_profesional',{alert: false} );
 });
 router.get('/buscar_prof',profController.findAll);
+router.post('/guardar_prof',profController.create);
+
+
+
 module.exports = router;

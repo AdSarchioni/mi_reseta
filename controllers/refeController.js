@@ -1,33 +1,30 @@
-const Medicamento = require('../models/Medicamento');
+const Refeps = require('../models/Refeps');
 
-const medicamentoController = {
+const refeController = {
     create: (req, res) => {
-
-
-
-        const { id_reg_nac, nombre_generico, nombre_comercial, id_concent, id_for_fa, id_fam, id_present } = req.body;
+        const { numero } = req.body;
     
-            Medicamento.create(id_reg_nac, nombre_generico, nombre_comercial, id_concent, id_for_fa, id_fam, id_present, (err, result) => {
+        Refeps.create(numero, (err, result) => {
      
             if (err) {
                 return res.status(500).send(err);
             }
 
-            res.render('medicamento/crear_medicamento', {
+            res.render('profesional/crear_refeps', {
                 alert: true,
-                alertTitle: "SE A GUARDADO MEDICAMENTO ",
-                alertMessage: "MEDICAMENTO GUARDADO ¡",
+                alertTitle: "SE A GUARDADO REFEPS ",
+                alertMessage: "REFEPS GUARDADA ¡",
                 alertIcon: 'access',
                 showConfirmButton: false,
                 timer: 800,
-                ruta: 'crea_medicamento'
+                ruta: 'refeps'
             })
         });
     },
 
 
     findAll: (req, res) => {
-        Medicamento.findAll((err, results) => {
+        Refeps.findAll((err, results) => {
             if (err) {
                 return res.status(500).send(err);
             }
@@ -35,7 +32,7 @@ const medicamentoController = {
         });
     },
     findAll0: (req, res) => {
-        Medicamento.findAll0((err, results) => {
+        Refeps.findAll0((err, results) => {
             if (err) {
                 return res.status(500).send(err);
             }
@@ -44,7 +41,7 @@ const medicamentoController = {
     },
     findById: (req, res) => {
         const { id } = req.params;
-        Medicamento.findId(id, (err, result) => {
+        Refeps.findId(id, (err, result) => {
             if (err) {
                 return res.status(500).send(err);
             }
@@ -54,46 +51,43 @@ const medicamentoController = {
         });
     },
     update: (req, res) => {
-        const ttt = req.body;
-        console.log("Resultados ttt:", JSON.stringify(ttt, null, 2))
-    
         const { id } = req.params;
-        const {id_reg_nac, nombre_generico, nombre_comercial, id_concent, id_for_fa, id_fam, id_present}  = req.body;
+        const numero  = req.body.numEdit;
 
-        Medicamento.update(id, id_reg_nac, nombre_generico, nombre_comercial, id_concent, id_for_fa, id_fam, id_present, (err, result) => {
-
+        Refeps.update(id, numero, (err, result) => {
+       
             
             if (err) {
                 return res.status(500).send(err);
             }
-            res.render('medicamento/crear_medicamento', {
+            res.render('profesional/crear_refeps', {
                 alert: true,
-                alertTitle: "SE A ACTUALIZADO MEDICAMENTO ",
-                alertMessage: "MEDICAMENTO ACTUALIZADO ¡",
+                alertTitle: "SE A ACTUALIZADO REFEPS ",
+                alertMessage: "REFEPS ACTUALIZADA ¡",
                 alertIcon: 'access',
                 showConfirmButton: false,
                 timer: 800,
-                ruta: 'crea_medicamento'
+                ruta: 'refeps'
             })
         });
     },
 
     delete: (req, res) => {
         const { id } = req.params;
-        Medicamento.delete(id, (err, result) => {
+        Refeps.delete(id, (err, result) => {
             if (err) {
                 return res.status(500).send(err);
             }
 
             else {
-                return res.render('medicamento/crear_medicamento', {
+                return res.render('profesional/crear_refeps', {
                     alert: true,
-                    alertTitle: "SE A BORRADO MEDICAMENTO ",
-                    alertMessage: "MEDICAMENTO BORRADO ¡",
+                    alertTitle: "SE A BORRADO REFEPS ",
+                    alertMessage: "REFEPS BORRADA ¡",
                     alertIcon: 'error',
                     showConfirmButton: false,
                     timer: 600,
-                    ruta: 'crea_medicamento'
+                    ruta: 'refeps'
                 })
             }
         }
@@ -101,20 +95,20 @@ const medicamentoController = {
     },
     alta: (req, res) => {
         const { id } = req.params;
-        Medicamento.alta(id, (err, result) => {
+        Refeps.alta(id, (err, result) => {
             if (err) {
                 return res.status(500).send(err);
             }
 
             else {
-                return res.render('medicamento/crear_medicamento', {
+                return res.render('profesional/crear_refeps', {
                     alert: true,
-                    alertTitle: "SE DIO ALTA MEDICAMENTO ",
-                    alertMessage: "ALTA MEDICAMENTO ¡",
+                    alertTitle: "SE DIO ALTA REFEPS ",
+                    alertMessage: "ALTA REFEPS ¡",
                     alertIcon: 'access',
                     showConfirmButton: false,
                     timer: 800,
-                    ruta: 'crea_medicamento'
+                    ruta: 'refeps'
                 })
             }
         }
@@ -122,4 +116,4 @@ const medicamentoController = {
     }
 };
 
-module.exports = medicamentoController;
+module.exports = refeController;
