@@ -6,6 +6,7 @@ const profController = {
             id_refer, id_especialidad, matricula, nombre_prof,
             apellido_prof, dni_prof, domicilio_prof, mail_prof, tel_prof
         } = req.body;
+        
         // Validar que el DNI no esté vacío y que contenga solo números
         const dniRegex = /^[0-9]+$/;
         if (!dni_prof || !dniRegex.test(dni_prof)) {
@@ -17,37 +18,48 @@ const profController = {
                 showConfirmButton: false,
                 timer: 800,
                 ruta: 'profesional'
-            })
-
+            });
         }
-        Profesional.findByDni(dni_prof, (err, results) => {
+    
+        Profesional.findByMatri(matricula, (err, result) => {
             if (err) {
                 return res.status(500).send(err);
             }
-            if (results.length > 0) {
-                res.render('profesional/crear_profesional', {
+            if (result.length > 0) {
+                return res.render('profesional/crear_profesional', {
                     alert: true,
-                    alertTitle: "ERROR EL DNI YA EXISTE",
-                    alertMessage: "DNI REPETIDO ¡",
+                    alertTitle: "ERROR LA MATRICULA  YA EXISTE",
+                    alertMessage: "MATRICULA REPETIDO ¡",
                     alertIcon: 'error',
                     showConfirmButton: false,
                     timer: 800,
                     ruta: 'profesional'
-                })
-            } else { 
-
-
-               
-                
-
-
+                });
+            }
+    
+            Profesional.findByRefeps(id_refer, (err, result) => {
+                if (err) {
+                    return res.status(500).send(err);
+                }
+                if (result.length > 0) {
+                    return res.render('profesional/crear_profesional', {
+                        alert: true,
+                        alertTitle: "ERROR EL REFEPS YA EXISTE",
+                        alertMessage: "REFEPS REPETIDO ¡",
+                        alertIcon: 'error',
+                        showConfirmButton: false,
+                        timer: 800,
+                        ruta: 'profesional'
+                    });
+                }
+    
                 Profesional.create(
                     id_refer, id_especialidad, matricula, nombre_prof, apellido_prof,
                     dni_prof, domicilio_prof, mail_prof, tel_prof, (err) => {
                         if (err) {
                             return res.status(500).send(err.message);
                         }
-
+    
                         res.render('profesional/crear_profesional', {
                             alert: true,
                             alertTitle: "SE HA CREADO EL PROFESIONAL",
@@ -57,15 +69,13 @@ const profController = {
                             timer: 800,
                             ruta: 'profesional'
                         });
-                    });
-
-
-
-
-
-            }
-        })
-    },
+                    }
+                );
+            });
+        });
+    }
+     
+    ,
 
     findAll: (req, res) => {
         Profesional.findAll((err, results) => {

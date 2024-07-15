@@ -161,9 +161,9 @@ WHERE
         const sql = 'SELECT * FROM profesional WHERE dni_prof = ?';
         conexion.query(sql, [dni], callback);
     },
-    findByRefeps: (id_refers, callback) => {
+    findByRefeps: (id_refer, callback) => {
       const sql = 'SELECT * FROM profesional WHERE id_refers = ?';
-      conexion.query(sql, [id_refers], callback);
+      conexion.query(sql, [id_refer], callback);
   },
   findByMatri: (matricula, callback) => {
     const sql = 'SELECT * FROM profesional WHERE matricula = ?';
