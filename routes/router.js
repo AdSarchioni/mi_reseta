@@ -171,8 +171,9 @@ router.get('/profesional', (req, res)=> {
       res.render('profesional/crear_profesional',{alert: false} );
 });
 router.get('/buscar_prof',profController.findAll);
+router.get('/buscarProf/:id',profController.findById);
 router.post('/guardar_prof',profController.create);
-
+router.get('/BorrarProf/:id',profController.delete);
 
 
 module.exports = router;

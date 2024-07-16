@@ -43,7 +43,7 @@ async function cargarProf() {
     opcionesTabla.forEach(item => {
         table.row.add([
             item.id_prof,
-            item.id_refer,
+            item.numero,
             item.tipo_esp,
             item.matricula,
             item.nombre_prof,
@@ -53,8 +53,8 @@ async function cargarProf() {
             item.mail_prof,
             item.tel_prof,
             item.alta,
-            `<button onclick="buscarPas(${item.id_pas})" class="btn btn-primary btn-sm" >modificar </button>`,
-            `<a href="/borrarPas/${item.id_pas}" class="btn btn-danger btn-sm" type="button">Eliminar</a>`
+            `<button onclick="buscarProf(${item.id_prof})" class="btn btn-primary btn-sm" >modificar </button>`,
+            `<a href="/borrarProf/${item.id_prof}" class="btn btn-danger btn-sm" type="button">Eliminar</a>`
         ]).draw(false);
 
     });
@@ -139,7 +139,7 @@ async function fetchBuscarRefe() {
 }
 
 // Evento para capturar la entrada del usuario en el campo de texto
-document.getElementById('id_refer').addEventListener('input', (event) => {
+document.getElementById('refeps').addEventListener('input', (event) => {
     const query = event.target.value;
     if (query.length > 0) {
         // Llamar a la función fetchBuscarObra si hay al menos un carácter ingresado
@@ -148,10 +148,10 @@ document.getElementById('id_refer').addEventListener('input', (event) => {
 });
 
 // Evento para capturar el cambio en el campo de texto (cuando se selecciona una opción del datalist)
-document.getElementById('id_refer').addEventListener('change', (event) => {
+document.getElementById('refeps').addEventListener('input', (event) => {
     const inputValue = event.target.value; // Obtener el valor del campo de texto
     const options = document.querySelectorAll('#sugerenciasRefe option');
-    const hiddenInput = document.getElementById('refeps');
+    const hiddenInput = document.getElementById('id_refer');
 
     hiddenInput.value = ''; // Limpiar el valor del input oculto
 
@@ -164,3 +164,34 @@ document.getElementById('id_refer').addEventListener('change', (event) => {
     });
 });
 
+async function buscarProf(id) {
+    // Abre el modal
+    const modal = new bootstrap.Modal(document.getElementById('profeModal'));
+    modal.show();
+
+    const response = await fetch(`/buscarProf/${id}`);
+    const { data } = await response.json(); // Desestructurando data del objeto JSON
+
+    // Inyectar datos en los campos del formulario del modal
+
+    document.getElementById('id_referE').value = data[0].id_refer;
+    document.getElementById('refepsE').value = data[0].numero;
+    document.getElementById('tipo_espE').value = data[0].tipo_esp;
+    document.getElementById('id_especialidadE').value = data[0].id_especialidad;
+    document.getElementById('matriculaE').value = data[0].matricula;
+    document.getElementById('nombre_profE').value = data[0].nombre_prof;
+    document.getElementById('apellido_profE').value = data[0].apellido_prof;
+    document.getElementById('dni_profE').value = data[0].dni_prof;
+    document.getElementById('domicilio_profE').value = data[0].domicilio_prof;
+    document.getElementById('mail_profE').value = data[0].mail_prof;
+    document.getElementById('tel_profE').value = data[0].tel_prof;
+    // Suponiendo que obtienes data[0].id_pas de algún lugar
+    const idProf = data[0].id_prof;
+
+    // Obtener el formulario
+    const formulario = document.getElementById('formularioActualizar');
+
+    // Modificar el action del formulario
+    formulario.action = `/updatePas/${idProf}`;
+
+}

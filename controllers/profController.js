@@ -1,4 +1,5 @@
 const Profesional = require('../models/Profesional');
+const { findById } = require('./pasienteController');
 
 const profController = {
     create: (req, res) => {
@@ -93,9 +94,9 @@ const profController = {
             res.json(results);
         });
     },
-    findByDni: (req, res) => {
+    findById: (req, res) => {
         const { id } = req.params;
-        Profesional.findByDni(id, (err, result) => {
+        Profesional.findById(id, (err, result) => {
             if (err) {
                 return res.status(500).send(err);
             }
@@ -164,14 +165,14 @@ const profController = {
             }
 
             else {
-                return res.render('pasiente/crear_pasiente', {
+                return res.render('profesional/crear_profesional', {
                     alert: true,
-                    alertTitle: "SE A BORRADO EL PASIENTE ",
-                    alertMessage: "PASIENTE BORRADO ¡",
+                    alertTitle: "SE A BORRADO EL PROFESIONAL ",
+                    alertMessage: "PROFESIONAL BORRADO ¡",
                     alertIcon: 'error',
                     showConfirmButton: false,
                     timer: 600,
-                    ruta: 'crea_pasiente'
+                    ruta: 'profesional'
                 })
             }
         }

@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <style>
     .dt-center {
-        text-align: center;
+      text-align: center;
     }
   </style>
   <title>Mi Reseta</title>
@@ -21,9 +21,9 @@
 
 
 <body class="d-flex align-items-center py-60   bg-body-tertiary">
-  <div></div>
-  <main class="form-signin w-100 m-4">
 
+  <main class="form-signin w-100 m-4">
+  
     <div>
       <div class="card mb-3" style="max-width: 540px;">
         <div class="row g-0">
@@ -44,42 +44,44 @@
 
     <form id="formLogin" class="row g-3 needs-validation" novalidate action="/guardar_prof" method="POST">
 
-    </div>
-    <div class="col-md">
-      <label for="id_refer" class="form-label">ID Refeps</label>
-      <input type="text" class="form-control" id="id_refer" name="id_refer"list="sugerenciasRefe" autocomplete="off"   required>
-      <datalist id="sugerenciasRefe"></datalist>
-      <input type="text" id="refeps" name="refeps">
-      <div class="valid-feedback">
-
       </div>
-    </div>
-    
-    <div class="col-md">
-      <label for="tipo_esp" class="form-label">Especialidad</label>
-      <input type="text" class="form-control" id="tipo_esp" name="tipo_esp" list="sugerenciasEspe" autocomplete="off" required>
-      <datalist id="sugerenciasEspe"></datalist>
-      <input type="text" id="id_especialidad" name="id_especialidad">
-      <div class="valid-feedback">
+      <div class="col-md">
+        <label for="id_refer" class="form-label">ID Refeps</label>
+        <input type="text" class="form-control" id="refeps" name="refeps" list="sugerenciasRefe" autocomplete="off"
+          required>
+        <datalist id="sugerenciasRefe"></datalist>
+        <input type="text" id="id_refer" name="id_refer">
+        <div class="valid-feedback">
 
+        </div>
       </div>
-    </div>
 
+      <div class="col-md">
+        <label for="tipo_esp" class="form-label">Especialidad</label>
+        <input type="text" class="form-control" id="tipo_esp" name="tipo_esp" list="sugerenciasEspe" autocomplete="off"
+          required>
+        <datalist id="sugerenciasEspe"></datalist>
+        <input type="text" id="id_especialidad" name="id_especialidad">
+        <div class="valid-feedback">
 
-   
-
-
-
-
-
-
-
-    <div class="col-md">
-      <label for="matricula" class="form-label">Matricula</label>
-      <input type="text" class="form-control" id="matricula" name="matricula" required>
-      <div class="valid-feedback">
-
+        </div>
       </div>
+
+
+
+
+
+
+
+
+
+
+      <div class="col-md">
+        <label for="matricula" class="form-label">Matricula</label>
+        <input type="text" class="form-control" id="matricula" name="matricula" required>
+        <div class="valid-feedback">
+
+        </div>
 
       </div>
       <div class="col-md">
@@ -107,14 +109,14 @@
         </div>
       </div>
 
-   
+
       </div>
       <div class="col-md">
 
         <label for="domicilio_prof" class="form-label">Domicilio</label>
         <input type="text" class="form-control" id="domicilio_prof" name="domicilio_prof" required>
 
-      
+
       </div>
 
       <div class="col-md">
@@ -122,7 +124,7 @@
         <label for="mail_prof" class="form-label">Email</label>
         <input type="text" class="form-control" id="mail_prof" name="mail_prof" required>
 
-      
+
       </div>
 
       <div class="col-md">
@@ -130,43 +132,43 @@
         <label for="tel_prof" class="form-label">Telefono</label>
         <input type="text" class="form-control" id="tel_prof" name="tel_prof" required>
 
-      
+
       </div>
 
 
 
 
 
-   
+
       <div class="col-12">
         <button class="btn btn-success" type="submit">Guardar Profesional</button>
         <a type="button" href="/" class="btn btn-warning">Volver</a>
         <a type="button" href="/especialidad" class="btn btn-dark">Crear Especialidad</a>
         <a type="button" href="/refeps" class="btn btn-info">Crear Refeps</a>
         <a type="button" href="logout" class="btn btn-danger">Logout</a>
-      
-      
+
+
       </div>
     </form>
 
 
 
 
-    <div class="container">
+    
       <table id="myTable" name="myTable" class="table table-striped" style="width:100%">
 
         <thead>
           <tr class="bg-primary text-white">
             <th scope="col">ID</th>
-            <th scope="col">ID REFEPS</th>
-            <th scope="col">ESPECIALIDAD</th>
-            <th scope="col">MATRICULA</th>
+            <th scope="col">REFEPS</th>
+            <th scope="col">ESPECIAL</th>
+            <th scope="col">MAT</th>
             <th scope="col">NOMBRE</th>
             <th scope="col">APELLIDO</th>
             <th scope="col">DNI</th>
-            <th scope="col">DOMICILIO</th>
+            <th scope="col">DOMIC</th>
             <th scope="col">EMAIL</th>
-            <th scope="col">TELEFONO</th>
+            <th scope="col">TEL</th>
             <th scope="col">ALTA</th>
             <th scope="col">MODIFICAR</th>
             <th scope="col">ELIMINAR</th>
@@ -178,37 +180,109 @@
         </tbody>
 
       </table>
-    </div>
+    
 
-  <!-- modal cargar especialidad --     -->
-  <div class="modal fade" id="espeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Cargar Especialidad</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body bg-body-secondary">
-          <form id="cargarEspecialidad" method="POST">
-            <div class="mb-3">
-              <label for="concentracionEdit" class="col-form-label">Especialidad</label>
-              <input type="text" class="form-control" id="especialidad" name="especialidad">
+    <!-- modal cargar especialidad --     -->
+    <div class="modal fade" id="profeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar profesional</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body bg-body-secondary">
+            <div class="col-md">
+              <label for="refepsE" class="form-label">ID Refeps</label>
+              <input type="text" class="form-control" id="refepsE" name="refeps" list="sugerenciasRefeE"
+                autocomplete="off" required>
+              <datalist id="sugerenciasRefeE"></datalist>
+              <input type="text" id="id_referE" name="id_refer">
+              <div class="valid-feedback">
+
+              </div>
             </div>
 
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-              <button type="submit" class="btn btn-primary">Guardar Especialidad</button>
+            <div class="col-md">
+              <label for="tipo_espE" class="form-label">Especialidad</label>
+              <input type="text" class="form-control" id="tipo_espE" name="tipo_esp" list="sugerenciasEspeE"
+                autocomplete="off" required>
+              <datalist id="sugerenciasEspeE"></datalist>
+              <input type="text" id="id_especialidadE" name="id_especialidad">
+              <div class="valid-feedback">
+
+              </div>
             </div>
+            <div class="col-md">
+              <label for="matriculaE" class="form-label">Matricula</label>
+              <input type="text" class="form-control" id="matriculaE" name="matricula" required>
+              <div class="valid-feedback">
+
+              </div>
+
+            </div>
+            <div class="col-md">
+              <label for="name_profE" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="nombre_profE" name="nombre_prof" required>
+              <div class="valid-feedback">
+
+              </div>
+            </div>
+            <div class="col-md">
+              <label for="apellido_profE" class="form-label">Apellido</label>
+              <div class="input-group has-validation">
+
+                <input type="text" class="form-control" id="apellido_profE" name="apellido_prof" inputGroupPrepend"
+                  required>
+                <div class="invalid-feedback">
+
+                </div>
+              </div>
+            </div>
+            <div class="col-md">
+              <label for="dni_profE" class="form-label">Dni</label>
+              <input type="text" class="form-control" id="dni_profE" name="dni_prof" required>
+              <div class="invalid-feedback">
+
+              </div>
+            </div>
+
+
+      
+          <div class="col-md">
+
+            <label for="domicilio_profE" class="form-label">Domicilio</label>
+            <input type="text" class="form-control" id="domicilio_profE" name="domicilio_prof" required>
+
+
+          </div>
+
+          <div class="col-md">
+
+            <label for="mail_profE" class="form-label">Email</label>
+            <input type="text" class="form-control" id="mail_profE" name="mail_prof" required>
+
+
+          </div>
+
+          <div class="col-md">
+
+            <label for="tel_profE" class="form-label">Telefono</label>
+            <input type="text" class="form-control" id="tel_profE" name="tel_prof" required>
+
+          </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-primary">Modificar Especialidad</button>
+          </div>
+      
           </form>
         </div>
 
       </div>
     </div>
-  </div>
-
-
-
-
+    </div>
+  
 
 
 
