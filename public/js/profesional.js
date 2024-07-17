@@ -192,6 +192,107 @@ async function buscarProf(id) {
     const formulario = document.getElementById('formularioActualizar');
 
     // Modificar el action del formulario
-    formulario.action = `/updatePas/${idProf}`;
+    formulario.action = `/updateProf/${idProf}`;
 
 }
+
+// Método para buscar
+async function fetchBuscarEspeE() {
+    try {
+        // Realizar una petición a la URL /buscarObraPas para obtener datos en formato JSON
+        const response = await fetch(`/buscar_espe`);
+        const data = await response.json();
+
+        // Obtener el elemento datalist donde se mostrarán las sugerencias
+        const datalist = document.getElementById('sugerenciasEspeE');
+        datalist.innerHTML = ''; // Limpiar opciones existentes
+
+        // Recorrer los datos obtenidos y agregar opciones al datalist
+        data.forEach(item => {
+            const option = document.createElement('option');
+            option.value = `${item.tipo_esp}`;
+            // Guardar el id_plan en un atributo de datos de la opción
+            option.setAttribute('data-id', item.id_especialidad);
+            datalist.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error fetching obra social:', error);
+    }
+}
+
+// Evento para capturar la entrada del usuario en el campo de texto
+document.getElementById('tipo_espE').addEventListener('input', (event) => {
+    const query = event.target.value;
+    if (query.length > 0) {
+        // Llamar a la función fetchBuscarObra si hay al menos un carácter ingresado
+        fetchBuscarEspeE();
+    }
+});
+
+// Evento para capturar el cambio en el campo de texto (cuando se selecciona una opción del datalist)
+document.getElementById('tipo_espE').addEventListener('change', (event) => {
+    const inputValue = event.target.value; // Obtener el valor del campo de texto
+    const options = document.querySelectorAll('#sugerenciasEspeE option');
+    const hiddenInput = document.getElementById('id_especialidadE');
+
+    hiddenInput.value = ''; // Limpiar el valor del input oculto
+
+    // Recorrer las opciones del datalist para encontrar la seleccionada
+    options.forEach(option => {
+        if (option.value === inputValue) {
+            // Asignar el id_plan al input oculto si se encuentra una coincidencia
+            hiddenInput.value = option.getAttribute('data-id');
+        }
+    });
+});
+
+
+// Método para buscar obra social
+async function fetchBuscarRefeE() {
+    try {
+        // Realizar una petición a la URL /buscarObraPas para obtener datos en formato JSON
+        const response = await fetch(`/buscar_refe`);
+        const data = await response.json();
+
+        // Obtener el elemento datalist donde se mostrarán las sugerencias
+        const datalist = document.getElementById('sugerenciasRefeE');
+        datalist.innerHTML = ''; // Limpiar opciones existentes
+
+        // Recorrer los datos obtenidos y agregar opciones al datalist
+        data.forEach(item => {
+            const option = document.createElement('option');
+            option.value = `${item.numero}`;
+            // Guardar el id_plan en un atributo de datos de la opción
+            option.setAttribute('data-id', item.id_refers);
+            datalist.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error fetching obra social:', error);
+    }
+}
+
+// Evento para capturar la entrada del usuario en el campo de texto
+document.getElementById('refepsE').addEventListener('input', (event) => {
+    const query = event.target.value;
+    if (query.length > 0) {
+        // Llamar a la función fetchBuscarObra si hay al menos un carácter ingresado
+        fetchBuscarRefeE();
+    }
+});
+
+// Evento para capturar el cambio en el campo de texto (cuando se selecciona una opción del datalist)
+document.getElementById('refepsE').addEventListener('input', (event) => {
+    const inputValue = event.target.value; // Obtener el valor del campo de texto
+    const options = document.querySelectorAll('#sugerenciasRefeE option');
+    const hiddenInput = document.getElementById('id_referE');
+
+    hiddenInput.value = ''; // Limpiar el valor del input oculto
+
+    // Recorrer las opciones del datalist para encontrar la seleccionada
+    options.forEach(option => {
+        if (option.value === inputValue) {
+            // Asignar el id_plan al input oculto si se encuentra una coincidencia
+            hiddenInput.value = option.getAttribute('data-id');
+        }
+    });
+});

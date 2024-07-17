@@ -58,6 +58,18 @@ router.post('/caragarPresc',reseta_controller.cargarPresc);
 router.post('/inprimir',reseta_controller.imprimirReceta);
 router.post('/invoice',reseta_controller.imprimirReceta);
 
+// metodos para gestionar resetas
+router.get('/gestionReseta', (req, res)=> {
+      res.render('crear_reseta/gestion_reseta',{alert: false} );
+});
+
+
+
+
+
+
+
+
 //rutas Pasiente
 router.get('/crea_pasiente',(req, res)=> {
       res.render('pasiente/crear_pasiente',{alert: false});
@@ -170,10 +182,15 @@ router.get('/refeps', (req, res)=> {
 router.get('/profesional', (req, res)=> {
       res.render('profesional/crear_profesional',{alert: false} );
 });
+router.get('/altaProf',(req, res)=> {
+      res.render('profesional/altaProfBorrado',{alert: false});
+});
 router.get('/buscar_prof',profController.findAll);
+router.get('/buscar_prof0',profController.findAll0);
 router.get('/buscarProf/:id',profController.findById);
 router.post('/guardar_prof',profController.create);
 router.get('/BorrarProf/:id',profController.delete);
-
+router.post('/updateProf/:id',profController.update);
+router.get('/alta_Prof/:id',profController.alta);
 
 module.exports = router;
