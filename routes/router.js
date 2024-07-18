@@ -13,7 +13,7 @@ const medicamentoController = require('../controllers/medicamentoController');
 const espeController = require('../controllers/espeController');
 const profController = require('../controllers/profController');
 const refeController = require('../controllers/refeController');
-
+const prescController = require('../controllers/prescController');
 
 
 //rutas para las vistas 
@@ -62,6 +62,7 @@ router.post('/invoice',reseta_controller.imprimirReceta);
 router.get('/gestionReseta', (req, res)=> {
       res.render('crear_reseta/gestion_reseta',{alert: false} );
 });
+router.get('/buscarPresc',prescController.findAll);
 
 
 
