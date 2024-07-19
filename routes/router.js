@@ -62,6 +62,9 @@ router.post('/invoice',reseta_controller.imprimirReceta);
 router.get('/gestionReseta', (req, res)=> {
       res.render('crear_reseta/gestion_reseta',{alert: false} );
 });
+router.get('/editPresc/:id', (req, res)=> {
+      res.render('crear_reseta/editPresc',{alert: false} );
+});
 router.get('/buscarPresc',prescController.findAll);
 
 
