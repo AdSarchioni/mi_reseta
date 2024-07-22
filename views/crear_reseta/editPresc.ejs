@@ -11,6 +11,53 @@
     .dt-center {
       text-align: center;
     }
+    table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  border: 3px solid rgb(88, 18, 88);
+}
+
+thead th:nth-child(1) {
+  width: 15%;
+}
+
+thead th:nth-child(2) {
+  width: 15%;
+}
+
+thead th:nth-child(3) {
+  width: 15%;
+}
+
+thead th:nth-child(4) {
+  width: 15%;
+}
+thead th:nth-child(5) {
+  width: 15%;
+}
+
+thead th:nth-child(6) {
+  width: 15%;
+}
+
+thead th:nth-child(7) {
+  width: 15%;
+}
+
+
+th,
+td {
+  padding: 3px;
+}
+tbody tr:nth-child(odd) {
+  background-color: #cfacc7;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #e6d7e6;
+}  
+   
   </style>
   <title>Mi Reseta</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
@@ -28,59 +75,154 @@
       <div class="card mb-3" style="max-width: 540px;">
         <div class="row g-0">
           <div class="col-md-4">
-            <img src="./img/resetaG.png" class="img-fluid rounded-start" alt="...">
+            <img src="../img/resetaG.png" class="img-fluid rounded-start" alt="...">
           </div>
           <div class="col-md-8">
             <div class="card-body">
-              <h5 class="card-title">Administracion Prescripciones</h5>
+              <h5 class="card-title">Editar Prescripciones</h5>
               <p class="card-text"> </p>
-              <p class="card-text"><small class="text-body-secondary">si tiene dudas puede buscarse primero</small></p>
+              <p class="card-text"><small class="text-body-secondary">Usted esta editando presc <%= data.id_presc %></small></p>
             </div>
           </div>
         </div>
       </div>
 
     </div>
-<div class="container">
-    <table class="table table-dark table-striped table-sm">
+
+    <form id="formLogin" class="row g-3 needs-validation" novalidate action="/guardar_prof" method="POST">
+
+
+
+
+    </div>
+    <div class="col-md">
+      <label for="diagnostico" class="form-label">Diagnostico</label>
+      <input type="text" class="form-control" id="diagnostico" name="diagnostico" value="<%= data.diagnostico %>" required>
+      <div class="valid-feedback">
+
+      </div>
+    </div>
+    <div class="col-md">
+      <label for="indicacion" class="form-label">Indicacion</label>
+      <div class="input-group has-validation">
+
+        <input type="text" class="form-control" id="indicacion" name="indicacion" value="<%= data.indicacion %>" inputGroupPrepend" required>
+        <div class="invalid-feedback">
+
+        </div>
+      </div>
+    </div>
+    <div class="col-md">
+      <label for="fecha_pres" class="form-label">Fecha</label>
+      <input type="text" class="form-control" id="fecha_pres" name="fecha_pres" value="<%= data.fecha_pres %>" required>
+      <div class="invalid-feedback">
+
+      </div>
+    </div>
+
+
+    </div>
+    <div class="col-md">
+      <label for="nombre_pas" class="form-label">Paciente</label>
+      <input type="text" class="form-control" name="nombre_pas" id="nombre_pas" list="sugerenciasNombre_pas"value="<%= data.nombre_pas %>,<%=data.apellido_pas %> "" >
+      <input type="text" name="id_pas" id="id_pas"value="<%= data.nombre_pas %> "" >
+      <datalist id="sugerenciasNombre_pas"></datalist>
+   
+
+    </div>
+
+    <div class="col-md">
+
+      <label for="id_presc" class="form-label">Id Prescripcion</label>
+      <input type="text" class="form-control" id="id_presc" name="id_presc" required>
+
+
+    </div>
+
+    <div class="col-md">
+
+      <label for="tel_prof" class="form-label">Telefono</label>
+      <input type="text" class="form-control" id="tel_prof" name="tel_prof" required>
+
+
+    </div>
+
+
+
+
+
+
+    <div class="col-12">
+      <button class="btn btn-success" type="submit">Guardar Profesional</button>
+      <a type="button" href="/" class="btn btn-warning">Volver</a>
+      <a type="button" href="/especialidad" class="btn btn-dark">Crear Especialidad</a>
+      <a type="button" href="/refeps" class="btn btn-info">Crear Refeps</a>
+      <a type="button" href="/altaProf"class="btn btn-secondary">Alta Borrados</a>
+      <a type="button" href="logout" class="btn btn-danger">Logout</a>
+
+
+    </div>
+  </form>
+<br>
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">N.GENERICO</th>
+            <th scope="col">N.COMERCIAL</th>
+            <th scope="col">CONCENTRACION</th>
+            <th scope="col">PRESENTACION</th>
+            <th scope="col">FAMILIA</th>
+            <th scope="col">FARMACO</th>
+            <th scope="col">EVENTOS</th>
+        
+          </tr>
+        </thead>
+        <tbody>
+        </thead>
+        <tbody>
+              <% if (data.medicamentos) { %>
+                <% for (var i = data.medicamentos.length -1; i >= 0; i--){ %>
+                    <tr>
+                           <td><%= data.id_medi[i] %></td>
+                           <td><%= data.medicamentos[i] %></td> 
+                           <td><%= data.duracion[i] %></td> 
+                           <td><%= data.cantidad[i] %></td> 
+                           <td>
+                                <a href="/updatePa/<%= %>" class="btn btn-outline-info">editar</a>
+                                <a href="/deletePa/<%= %>" class="btn btn-outline-danger">borrar</a>
+                           </td>
+                    </tr>
+                    <% } %>
+                    <% } %>
+        </tbody>
+        </tbody>
+      </table>
+  <br>
+    <table >
       <thead>
         <tr>
-          <th scope="col">#</th>
-          <th scope="col">First</th>
-          <th scope="col">Last</th>
-          <th scope="col">Handle</th>
+          <th scope="col">Id MEDI</th>
+          <th scope="col">PRESTACION</th>
+      
+          <th scope="col">EVENTOS</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td colspan="2">Larry the Bird</td>
-          <td>@twitter</td>
-        </tr>
+        <% if (data.prestaciones) { %>
+          <% for (var i = data.prestaciones.length -1; i >= 0; i--){ %>
+          <tr>
+                <td><%= data.id_prestac[i] %></td> 
+                 <td><%= data.prestaciones[i] %></td> 
+                 <td>
+                      <a href="/updatePa/<%=  %>" class="btn btn-outline-info">editar</a>
+                      <a href="/deletePa/<%= %>" class="btn btn-outline-danger">borrar</a>
+                 </td>
+          </tr>
+          <% } %>
+          <% } %>
       </tbody>
     </table>
-  </div>
-
-
-
-   
-
-
-
-
-
+  
   </main>
 
 

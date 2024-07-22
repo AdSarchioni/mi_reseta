@@ -357,6 +357,181 @@ controller.cargarPresc = async (req, res) => {
     }
 };
 
+controller.actualizarPresc = async (req, res) => {
+    const { id_presc } = req.params;  // ID de la prescripción a actualizar
+    const diagnostico = req.body.diagnostico;
+    const indicacion = req.body.indicacion;
+    const id_prof = req.body.id_prof;
+    const id_pas = req.body.id_pas;
+    const body = req.body;
+    const administraciones = [];
+    const prestaciones = [];
+    const keys = Object.keys(body);
+    const ids = keys.filter(key => key.startsWith('medicamentoId'));
+    const idsP = keys.filter(key => key.startsWith('idPrestacion'));
+
+    idsP.forEach(idKeyP => {
+        const indexP = idKeyP.replace('idPrestacion', '');
+        const prestacion = {
+            id_presta: body[`idPrestacion${indexP}`],
+            nomPrest: body[`datalista${indexP}`]
+        };
+        prestaciones.push(prestacion);
+    });
+
+    ids.forEach(idKey => {
+        const index = idKey.replace('medicamentoId', '');
+        const administracion = {
+            id_med: body[`medicamentoId${index}`],
+            id_dosis: body[`dosisId${index}`],
+            id_cantidad: body[`cantidadId${index}`],
+            id_frecuencia: body[`frecuenciaId${index}`],
+            id_duracion: body[`duracionId${index}`]
+        };
+        administraciones.push(administracion);
+    });
+
+    console.log("Resultados del submit:", JSON.stringify(body, null, 2));
+
+    try {
+        // Iniciar la transacción
+        await conexion.beginTransaction();
+
+        // Paso 1: Actualizar la prescripción en la tabla `prescripcion`
+        await new Promise((resolve, reject) => {
+            conexion.query(
+                'UPDATE prescripcion SET diagnostico = ?, indicacion = ?, id_prof = ?, id_pas = ? WHERE id_presc = ?',
+                [diagnostico, indicacion, id_prof, id_pas, id_presc],
+                (error, results) => {
+                    if (error) return reject(error);
+                    resolve(results);
+                }
+            );
+        });
+
+        // Paso 2: Eliminar las administraciones existentes para la prescripción
+        await new Promise((resolve, reject) => {
+            conexion.query(
+                'DELETE FROM presc_admin WHERE id_presc = ?',
+                [id_presc],
+                (error, results) => {
+                    if (error) return reject(error);
+                    resolve(results);
+                }
+            );
+        });
+
+        // Paso 3: Insertar las nuevas administraciones y asociaciones en `presc_admin`
+        if (administraciones) {
+            for (const admin of administraciones) {
+                try {
+                    const resultAdmin = await new Promise((resolve, reject) => {
+                        conexion.query(
+                            'INSERT INTO administracion (id_dosis, id_frecuencia, id_cantidad, id_duracion, id_med) VALUES (?, ?, ?, ?, ?)',
+                            [admin.id_dosis, admin.id_frecuencia, admin.id_cantidad, admin.id_duracion, admin.id_med],
+                            (error, results) => {
+                                if (error) return reject(error);
+                                resolve(results);
+                            }
+                        );
+                    });
+
+                    const id_admin = resultAdmin.insertId;
+
+                    await new Promise((resolve, reject) => {
+                        conexion.query(
+                            'INSERT INTO presc_admin (id_presc, id_admin) VALUES (?, ?)',
+                            [id_presc, id_admin],
+                            (error, results) => {
+                                if (error) return reject(error);
+                                resolve(results);
+                            }
+                        );
+                    });
+                } catch (error) {
+                    console.error('Error al insertar administración:', error);
+                    await conexion.rollback();
+                    return res.render('crear_reseta/crear_reseta', {
+                        alert: true,
+                        alertTitle: "ERROR AL CARGAR ADMINISTRACION",
+                        alertMessage: "FORMULARIO INCOMPLETO ¡",
+                        alertIcon: 'error',
+                        showConfirmButton: false,
+                        timer: 800,
+                        ruta: 'crea_reseta'
+                    });
+                }
+            }
+        }
+
+        // Paso 4: Eliminar las prestaciones existentes para la prescripción
+        await new Promise((resolve, reject) => {
+            conexion.query(
+                'DELETE FROM prescripcion_prestacion WHERE id_presc = ?',
+                [id_presc],
+                (error, results) => {
+                    if (error) return reject(error);
+                    resolve(results);
+                }
+            );
+        });
+
+        // Paso 5: Insertar las nuevas prestaciones
+        if (prestaciones) {
+            for (const presta of prestaciones) {
+                try {
+                    await new Promise((resolve, reject) => {
+                        conexion.query(
+                            'INSERT INTO prescripcion_prestacion (id_presc, id_presta) VALUES (?, ?)',
+                            [id_presc, presta.id_presta],
+                            (error, results) => {
+                                if (error) return reject(error);
+                                resolve(results);
+                            }
+                        );
+                    });
+                } catch (error) {
+                    console.error('Error al insertar prestación:', error);
+                    await conexion.rollback();
+                    return res.render('crear_reseta/crear_reseta', {
+                        alert: true,
+                        alertTitle: "ERROR AL CARGAR FORMULARIO",
+                        alertMessage: "ERROR AL CARGAR PRESTACIÓN ¡",
+                        alertIcon: 'error',
+                        showConfirmButton: false,
+                        timer: 800,
+                        ruta: 'crea_reseta'
+                    });
+                }
+            }
+        }
+
+        // Confirmar la transacción
+        await conexion.commit();
+        res.render('crear_reseta/crear_reseta', {
+            alert: true,
+            alertTitle: "SE HA ACTUALIZADO EL FORMULARIO",
+            alertMessage: "FORMULARIO ACTUALIZADO ¡",
+            alertIcon: 'access',
+            showConfirmButton: false,
+            timer: 800,
+            ruta: 'crea_reseta'
+        });
+
+    } catch (error) {
+        await conexion.rollback();
+        console.error('Error al actualizar la prescripción:', error);
+        res.render('crear_reseta/crear_reseta', {
+            alert: true,
+            alertTitle: "ERROR AL ACTUALIZAR FORMULARIO",
+            alertMessage: "FORMULARIO INCOMPLETO ¡",
+            alertIcon: 'error',
+            showConfirmButton: false,
+            timer: 800,
+            ruta: 'crea_reseta'
+        });
+    }
+};
 
 
 

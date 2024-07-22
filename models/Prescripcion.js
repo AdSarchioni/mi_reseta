@@ -59,16 +59,66 @@ WHERE
     alta= 0;`;
         conexion.query(sql, callback);
     }, 
+     findId: (id, callback) => {
+            const sqlPres = `
+                SELECT
+                    pr.id_presta,
+                    pr.nombre AS prestacion
+                FROM 
+                    prescripcion p
+                JOIN
+                    prescripcion_prestacion pp ON p.id_presc = pp.id_presc
+                LEFT JOIN
+                    prestacion pr ON pp.id_presta = pr.id_presta 
+                WHERE
+                    p.id_presc = ?;
+            `;
+            
+            const sqlMed = `
+      SELECT
+                    m.*,
+                    ad.*,
+                    can.nombre AS cantidad,
+                    du.nombre AS duracion,
+                    dos.nombre AS dosis,
+                    fr.nombre AS frecuencia
+                FROM 
+                    prescripcion p
+                JOIN
+                    presc_admin pa ON p.id_presc = pa.id_presc
+                LEFT JOIN
+                    administracion ad ON pa.id_admin = ad.id_administracion
+                JOIN
+                    medicamentos m ON ad.id_med = m.id_med
+                    JOIN
+                    cantidad can ON ad.id_cantidad = can.id_cantidad
+                    JOIN
+                    duracion du ON ad.id_duracion = du.id_duracion
+                    JOIN
+                    dosis dos ON ad.id_dosis = dos.id_dosis
+                    JOIN
+                    frecuencia fr ON ad.id_frecuencia = fr.id_frecuencia
+                WHERE
+                    p.id_presc = 110;
+            `;
+            
+            conexion.query(sqlPres, [id], (err, resultPres) => {
+                if (err) return callback(err);
+                
+                conexion.query(sqlMed, [id], (err, resultMed) => {
+                    if (err) return callback(err);
+                    
+                    const result = {
+                        prestaciones: resultPres,
+                        medicamentos: resultMed
+                    };
+                    callback(null, result);
+                });
+            });
+        },
 
-    findId: (id, callback) => {
-        const sql = `SELECT 
-       *
-FROM 
-     prescripcion
-WHERE
-    id_presc = ?;`;
-        conexion.query(sql, [id], callback);
-    },
+
+    
     update: (id, familia, callback) => {
        
         const sql = `UPDATE familia SET familia = ?  WHERE id_fam = ${id}`;

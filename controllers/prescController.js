@@ -45,11 +45,73 @@ const prescController = {
             if (err) {
                 return res.status(500).send(err);
             }
-           
-            res.json({data:result});
-            console.log(result); 
+            
+            if (result.prestaciones.length > 0 || result.medicamentos.length > 0) {
+                const data = {
+                    prestaciones: result.prestaciones.map(p => p.prestacion),
+                    id_prestac: result.prestaciones.map(p => p.id_presta),
+                    medicamentos: result.medicamentos.map(m => m.nombre_generico),
+                    id_medi: result.medicamentos.map(m => m.id_med),
+                    cantidad : result.medicamentos.map(can =>can.cantidad),
+                    duracion : result.medicamentos.map(du =>du.duracion)
+                };
+                console.log(result);
+                res.render('crear_reseta/editPresc', { alert: false, data: data });
+            } else {
+                res.status(404).send('Prescripción no encontrada');
+            }
         });
     },
+    
+
+    deletes : (req, res) => {
+        const { id } = req.params;
+        try {
+              conexion.query('DELETE FROM pasientes WHERE id = ?', [id], (err, rows) => {
+                    res.redirect('/guarPa');
+              });
+  
+        } catch (error) {
+              console.log(error);
+        };
+  },
+  
+  edits : (req, res) => {
+        const { id } = req.params;
+        try {
+              conexion.query('SELECT * FROM pasientes  WHERE id = ?', [id], (err, results) => {
+  
+                    res.render('rpc/guarPa_Edit', {
+                          data: results[0]
+                    });
+  
+              });
+        } catch (error) {
+              console.log(error);
+        }
+  },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     update: (req, res) => {
         const { id } = req.params;
         const familia  = req.body.famEdit;
