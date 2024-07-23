@@ -44,7 +44,7 @@ LEFT JOIN
 LEFT JOIN
     obra_social ob ON pl.id_plan_obra_social = ob.id_obra_social
 WHERE
-     p.alta = 1
+     p.alta = 1 
 GROUP BY 
        p.id_presc, prof.nombre_prof, prof.apellido_prof, esp.tipo_esp, pas.nombre_pas, pas.apellido_pas, p.diagnostico;
 `;
@@ -59,64 +59,95 @@ WHERE
     alta= 0;`;
         conexion.query(sql, callback);
     }, 
-     findId: (id, callback) => {
-            const sqlPres = `
-                SELECT
-                    pr.id_presta,
-                    pr.nombre AS prestacion
-                FROM 
-                    prescripcion p
-                JOIN
-                    prescripcion_prestacion pp ON p.id_presc = pp.id_presc
-                LEFT JOIN
-                    prestacion pr ON pp.id_presta = pr.id_presta 
-                WHERE
-                    p.id_presc = ?;
-            `;
+    findId: (id, callback) => {
+        const sqlPres = `
+            SELECT
+                pr.id_presta,
+                pr.nombre AS prestacion
+            FROM 
+                prescripcion p
+            JOIN
+                prescripcion_prestacion pp ON p.id_presc = pp.id_presc
+            LEFT JOIN
+                prestacion pr ON pp.id_presta = pr.id_presta 
+            WHERE
+                p.id_presc = ?;
+        `;
+        
+        const sqlMed = `
+            SELECT
+                m.*,
+                ad.*,
+                can.nombre AS cantidad,
+                du.nombre AS duracion,
+                dos.nombre AS dosis,
+                fr.nombre AS frecuencia,
+                pr.presentacion,
+                co.concentracion,
+                fa.familia,
+                ff.forma_fa
+            FROM 
+                prescripcion p
+            JOIN
+                presc_admin pa ON p.id_presc = pa.id_presc
+            LEFT JOIN
+                administracion ad ON pa.id_admin = ad.id_administracion
+            JOIN
+                medicamentos m ON ad.id_med = m.id_med
+            JOIN
+                concentracion co ON m.id_concent = co.id_conc
+            JOIN
+                familia fa ON m.id_fam = fa.id_fam
+            JOIN
+                forma_farma ff ON m.id_for_fa = ff.id_for_fa
+            JOIN
+                presentacion pr ON m.id_present = pr.id_present
+            JOIN
+                cantidad can ON ad.id_cantidad = can.id_cantidad
+            JOIN
+                duracion du ON ad.id_duracion = du.id_duracion
+            JOIN
+                dosis dos ON ad.id_dosis = dos.id_dosis
+            JOIN
+                frecuencia fr ON ad.id_frecuencia = fr.id_frecuencia
+            WHERE
+                p.id_presc = ?
+        `;
+
+        const sqlProfPas = `
+            SELECT 
+                p.*, 
+                pro.*, 
+                pas.* 
+            FROM 
+                prescripcion p
+            JOIN 
+                profesional pro ON p.id_prof = pro.id_prof
+            JOIN 
+                pasciente pas ON p.id_pas = pas.id_pas
+            WHERE 
+                p.id_presc = ?;
+        `;
+        
+        conexion.query(sqlPres, [id], (err, resultPres) => {
+            if (err) return callback(err);
             
-            const sqlMed = `
-      SELECT
-                    m.*,
-                    ad.*,
-                    can.nombre AS cantidad,
-                    du.nombre AS duracion,
-                    dos.nombre AS dosis,
-                    fr.nombre AS frecuencia
-                FROM 
-                    prescripcion p
-                JOIN
-                    presc_admin pa ON p.id_presc = pa.id_presc
-                LEFT JOIN
-                    administracion ad ON pa.id_admin = ad.id_administracion
-                JOIN
-                    medicamentos m ON ad.id_med = m.id_med
-                    JOIN
-                    cantidad can ON ad.id_cantidad = can.id_cantidad
-                    JOIN
-                    duracion du ON ad.id_duracion = du.id_duracion
-                    JOIN
-                    dosis dos ON ad.id_dosis = dos.id_dosis
-                    JOIN
-                    frecuencia fr ON ad.id_frecuencia = fr.id_frecuencia
-                WHERE
-                    p.id_presc = 110;
-            `;
-            
-            conexion.query(sqlPres, [id], (err, resultPres) => {
+            conexion.query(sqlMed, [id], (err, resultMed) => {
                 if (err) return callback(err);
-                
-                conexion.query(sqlMed, [id], (err, resultMed) => {
+
+                conexion.query(sqlProfPas, [id], (err, resultProfPas) => {
                     if (err) return callback(err);
-                    
+
                     const result = {
                         prestaciones: resultPres,
-                        medicamentos: resultMed
+                        medicamentos: resultMed,
+                        profPas: resultProfPas
                     };
                     callback(null, result);
                 });
             });
-        },
-
+        });
+    },
 
     
     update: (id, familia, callback) => {

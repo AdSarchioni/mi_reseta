@@ -64,7 +64,7 @@ router.get('/gestionReseta', (req, res)=> {
 });
 router.get('/editPresc/:id',prescController.findById);
 router.get('/buscarPresc',prescController.findAll);
-
+router.post('/generate-pdf',prescController.printPdf);
 
 
 
