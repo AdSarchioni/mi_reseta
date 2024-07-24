@@ -20,7 +20,7 @@
     }
 
     thead th:nth-child(1) {
-      width: 15%;
+      width: 25%;
     }
 
     thead th:nth-child(2) {
@@ -56,13 +56,11 @@
     }
 
 
-    thead th:nth-child(10) {
-      width: 20%;
-    }
+   
 
     th,
     td {
-      padding: 3px;
+      padding: 1px;
     }
 
     tbody tr:nth-child(odd) {
@@ -93,10 +91,10 @@
           </div>
           <div class="col-md-8">
             <div class="card-body">
-              <h5 class="card-title">Editar Prescripciones</h5>
-              <p class="card-text"> </p>
-              <p class="card-text"><small class="text-body-secondary">Usted esta editando presc <%=
-                    data.paciente[0].id_presc %></small></p>
+              <h5 class="card-title">Presc N° <%=data.paciente[0].id_presc %> Pas : %><%= data.paciente[0].nombre_pas %>, <%=data.paciente[0].apellido_pas %></h5>
+              <p class="card-text">Prof :<%=data.profesional[0].nombre_prof %>,  <%=data.profesional[0].apellido_prof %>, Dni <%=data.profesional[0].dni_prof %> </p>
+              <p class="card-text"><%=data.profesional[0].tipo_esp %>, Refeps <%=data.profesional[0].numero %>, Mat<%=data.profesional[0].matricula %>, Tel <%=data.profesional[0].tel_prof %> </p>
+             
             </div>
           </div>
         </div>
@@ -105,6 +103,13 @@
     </div>
     <form id="formLogin" class="row g-3 needs-validation" novalidate action="/guardar_prof" method="POST">
       <!-- Resto de tu formulario -->
+     
+      <div class="col-md-2">
+        <label for="nombre_pas" class="form-label">Paciente</label>
+        <input type="text" class="form-control" name="nombre_pas" id="nombre_pas" list="sugerenciasNombre_pas" value="<%= data.paciente[0].nombre_pas %>, <%=data.paciente[0].apellido_pas %>">
+        <input type="hidden" name="id_pas" id="id_pas" value="<%= data.paciente[0].id_pas %>">
+        <datalist id="sugerenciasNombre_pas"></datalist>
+      </div>
       <div class="col-md">
         <label for="diagnostico" class="form-label">Diagnostico</label>
         <input type="text" class="form-control" id="diagnostico" name="diagnostico" value="<%= data.paciente[0].diagnostico %>" required>
@@ -117,31 +122,26 @@
           <div class="invalid-feedback"></div>
         </div>
       </div>
-      <div class="col-md">
+      <div class="col-md-2">
         <label for="fecha_pres" class="form-label">Fecha</label>
         <input type="text" class="form-control" id="fecha_pres" name="fecha_pres" value="<%= data.paciente[0].fecha_pres %>" required>
         <div class="invalid-feedback"></div>
       </div>
-      <div class="col-md">
-        <label for="nombre_pas" class="form-label">Paciente</label>
-        <input type="text" class="form-control" name="nombre_pas" id="nombre_pas" list="sugerenciasNombre_pas" value="<%= data.paciente[0].nombre_pas %>, <%=data.paciente[0].apellido_pas %>">
-        <input type="hidden" name="id_pas" id="id_pas" value="<%= data.paciente[0].id_pas %>">
-        <datalist id="sugerenciasNombre_pas"></datalist>
-      </div>
+ 
       <br>
       <table id="medicamentosTable">
         <thead>
           <tr>
-            <th scope="col">N.GEN</th>
+            <th scope="col">MEDICAMENTOS</th>
             <th scope="col">CONC</th>
             <th scope="col">PRES</th>
-            <th scope="col">FAM</th>
-            <th scope="col">FAR</th>
+            <th scope="col">FAMILIA</th>
+            <th scope="col">FARMACOLOGIA</th>
             <th scope="col">DOSIS</th>
             <th scope="col">FREC</th>
             <th scope="col">DUR</th>
             <th scope="col">CANT</th>
-            <th scope="col">EVENTOS</th>
+           
           </tr>
         </thead>
         <tbody>
@@ -157,10 +157,7 @@
                 <td><%= data.medicamentos[i].frecuencia %></td>
                 <td><%= data.medicamentos[i].duracion %></td>
                 <td><%= data.medicamentos[i].cantidad %></td>
-                <td>
-                  <a href="/updatePa/<%= data.paciente[0].id_pas %>" class="btn btn-outline-info">editar</a>
-                  <a href="/deletePa/<%= data.paciente[0].id_pas %>" class="btn btn-outline-danger">borrar</a>
-                </td>
+             
               </tr>
             <% } %>
           <% } %>
@@ -170,21 +167,18 @@
       <table id="prestacionesTable">
         <thead>
           <tr>
-            <th scope="col">Id MEDI</th>
-            <th scope="col">PRESTACION</th>
-            <th scope="col">EVENTOS</th>
+      
+            <th scope="col">PRESTACIONIONES</th>
+          
           </tr>
         </thead>
         <tbody>
           <% if (data.prestaciones) { %>
             <% for (var i=data.prestaciones.length -1; i>= 0; i--){ %>
               <tr>
-                <td><%= data.id_prestac[i] %></td>
+                
                 <td><%= data.prestaciones[i] %></td>
-                <td>
-                  <a href="/updatePa/<%= data.paciente[0].id_pas %>" class="btn btn-outline-info">editar</a>
-                  <a href="/deletePa/<%= data.paciente[0].id_pas %>" class="btn btn-outline-danger">borrar</a>
-                </td>
+            
               </tr>
             <% } %>
           <% } %>
@@ -192,6 +186,9 @@
       </table>
       <div class="col-12">
         <button class="btn btn-success" type="button" onclick="captureFormData()">imprimir</button>
+        <a type="button" href="/crea_reseta" class="btn btn-info">Crear Nueva Presc</a>
+        <a type="button" href="/" class="btn btn-warning">Volver</a>
+        <a type="button" href="logout" class="btn btn-danger">Logout</a>
       </div>
     </form>
   
@@ -199,11 +196,7 @@
 
 
     <div>
-      <a type="button" href="/" class="btn btn-warning">Volver</a>
-      <a type="button" href="/especialidad" class="btn btn-dark">Crear Especialidad</a>
-      <a type="button" href="/refeps" class="btn btn-info">Crear Refeps</a>
-      <a type="button" href="/altaProf" class="btn btn-secondary">Alta Borrados</a>
-      <a type="button" href="logout" class="btn btn-danger">Logout</a>
+  
     </div>
   </main>
 

@@ -32,8 +32,7 @@ function captureFormData() {
     for (let row of prestacionesRows) {
       const cells = row.getElementsByTagName('td');
       formData.prestaciones.push({
-        id_medi: cells[0].innerText,
-        prestacion: cells[1].innerText,
+        prestacion: cells[0].innerText,
       });
     }
 

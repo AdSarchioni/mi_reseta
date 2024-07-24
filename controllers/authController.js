@@ -141,39 +141,34 @@ exports.isAuthenticated = async (req, res, next)=> {
       }
 }
 
-exports.esAdmin = (req, res, next)=>{
-      const rol = req.user.rol;
-      if(rol !== "Administrador"){
-            res.render('index', {
-                  alert: true,
-                  alertTitle: "error",
-                  alertMessage: "no tiene permisos de administrador",
-                  alertIcon: 'error',
-                  showConfirmButton: true,
-                  timer: false,
-                  ruta: '/'
-            })
-      }else{
-            next();
-      }
-}
-exports.esProf = (req, res, next)=>{
-      const rol = req.user.rol;
-      if(rol !== "Profesional"){
-            res.render('index', {
-                  alert: true,
-                  alertTitle: "error",
-                  alertMessage: "no tiene permisos de profesional",
-                  alertIcon: 'error',
-                  showConfirmButton: true,
-                  timer: false,
-                  ruta: '/'
-            })
-      }else{
-            next();
-      }
-}
 
+exports.esAdmin = (req, res, next) => {
+      const rol = req.user.rol;
+      if (rol !== "Administrador") {
+        res.send(`
+          <script>
+            alert('No tiene permisos de Administrador');
+            window.location.href = '/';
+          </script>
+        `);
+      } else {
+        next();
+      }
+    };
+
+exports.esProf = (req, res, next) => {
+      const rol = req.user.rol;
+      if (rol !== "Profesional") {
+        res.send(`
+          <script>
+            alert('No tiene permisos de profesional');
+            window.location.href = '/';
+          </script>
+        `);
+      } else {
+        next();
+      }
+    };
 
 
 exports.logout = (req, res) => {

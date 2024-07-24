@@ -21,24 +21,68 @@ const prescController = {
             })
         });
     },
+    user: (req, res) => {
+        const nombre = req.user.name;
+        const dni = req.user.dni;
+        const user = req.user.user;
+        const data = { nombre, dni, user }
+        res.render('crear_reseta/gestion_reseta', { alert: false, data: data });
+
+  
+    },
 
 
     findAll: (req, res) => {
-        Prescripcion.findAll((err, results) => {
+     
+        const dni = req.user.dni;
+        const rol = req.user.rol;
+  
+if (rol === "Administrador"){
+    Prescripcion.findAll((err, results) => {
+        if (err) {
+            return res.status(500).send(err);
+        }
+        res.json(results);
+    });
+}else{
+        Prescripcion.findAllDni(dni,(err, results) => {
             if (err) {
                 return res.status(500).send(err);
             }
             res.json(results);
         });
+
+
+    }
+
+   
     },
     findAll0: (req, res) => {
-        Prescripcion.findAll0((err, results) => {
+     
+        const dni = req.user.dni;
+        const rol = req.user.rol;
+  
+if (rol === "Administrador"){
+    Prescripcion.findAll0((err, results) => {
+        if (err) {
+            return res.status(500).send(err);
+        }
+        res.json(results);
+    });
+}else{
+        Prescripcion.findAll0Dni(dni,(err, results) => {
             if (err) {
                 return res.status(500).send(err);
             }
             res.json(results);
         });
-    },
+
+
+    }
+
+   
+    }
+ ,
     findById: (req, res) => {
         const { id } = req.params;
         Prescripcion.findId(id, (err, result) => {
@@ -71,6 +115,11 @@ const prescController = {
                         id_prof: p.id_prof,
                         nombre_prof: p.nombre_prof,
                         apellido_prof: p.apellido_prof,
+                        matricula: p.matricula,
+                        tipo_esp: p.tipo_esp,
+                        numero: p.numero,
+                        dni_prof: p.dni_prof,
+                        tel_prof: p.tel_prof,
                     })),
                     paciente: result.profPas.map(p => ({
                         id_pas: p.id_pas,
@@ -102,7 +151,7 @@ printPdf: (req, res) => {
   
     doc.pipe(res);
   
-    doc.fontSize(16).text('Datos del Paciente', { align: 'center' });
+    doc.fontSize(20).text('Receta Médica', { align: 'center' });
     doc.moveDown();
     doc.fontSize(12).text(`Diagnostico: ${data.diagnostico}`);
     doc.text(`Indicacion: ${data.indicacion}`);

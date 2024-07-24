@@ -29,10 +29,7 @@ async function cargarPresc() {
                 "sortAscending": ": activar para ordenar la columna ascendente",
                 "sortDescending": ": activar para ordenar la columna descendente"
             }
-        },
-        columnDefs: [
-            { className: "dt-center", targets: "_all" } // Aplicar la clase dt-center a todas las columnas
-        ]
+        }
     });
 
     // Obtener el cuerpo de la tabla
@@ -52,7 +49,7 @@ async function cargarPresc() {
             item.prestaciones,
             item.medicamentos, 
             item.obras_sociales,
-           `<a href="/editPresc/${item.id_presc}" class="btn btn-info btn-sm" type="button">Modificar</a>` ,
+           `<a href="/editPresc/${item.id_presc}" class="btn btn-info btn-sm" type="button">Ver/Detalle</a>` ,
             `<a href="/borrarProf/${item.id_presc}" class="btn btn-danger btn-sm" type="button">Eliminar</a>`
         ]).draw(false);
 

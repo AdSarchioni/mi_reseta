@@ -53,7 +53,7 @@ async function cargarPas() {
             item.mail_prof,
             item.tel_prof,
             item.alta,
-           `<a href="/alta_prof/${item.id_prof}" class="btn btn-info btn-sm" type="button">Alta Pas</a>`,
+           `<a href="/alta_prof/${item.id_prof}" class="btn btn-info btn-sm" type="button">Alta Prof</a>`,
         
         ]).draw(false);
    
