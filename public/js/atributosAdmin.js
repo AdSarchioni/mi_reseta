@@ -300,10 +300,10 @@ async function cargaFrec0() {
 }
 
 /////////////////////////////////////////////////
-//funciones familia
+//funciones Duracion
 
-async function cargarFamilia() {
-    const response = await fetch(`/buscar_fam`);
+async function cargarDuracion() {
+    const response = await fetch(`/buscar_dura`);
     const opcionesTabla = await response.json();
 
     // Inicializar DataTable con textos en español y ordenación por la columna de ID en orden descendente
@@ -346,11 +346,11 @@ async function cargarFamilia() {
     // Agregar los datos a la tabla usando la API de DataTable
     opcionesTabla.forEach(item => {
         table.row.add([
-            item.id_fam,
-            item.familia,
-          
-            `<button onclick="buscarFam(${item.id_fam})" class="btn btn-primary btn-sm" >modificar </button>`,
-            `<a href="/borrar_fam/${item.id_fam}" class="btn btn-danger btn-sm" type="button">Eliminar</a>`
+            item.id_duracion,
+            item.nombre,
+            item.alta,
+            `<button onclick="buscarDura(${item.id_duracion})" class="btn btn-primary btn-sm" >modificar </button>`,
+            `<a href="/borrar_dura/${item.id_duracion}" class="btn btn-danger btn-sm" type="button">Eliminar</a>`
         ]).draw(false);
 
     
@@ -359,38 +359,38 @@ async function cargarFamilia() {
 }
 
 // Llamar a la función para cargar los datos
-cargarFamilia()
+cargarDuracion()
 
 //activar modal para modificar concentracion
-async function buscarFam(id) {
+async function buscarDura(id) {
     // Abre el modal
-    const modal = new bootstrap.Modal(document.getElementById('famModal'));
+    const modal = new bootstrap.Modal(document.getElementById('duraModal'));
     modal.show();
 
-    const response = await fetch(`/buscarFam/${id}`);
+    const response = await fetch(`/buscarDura/${id}`);
     const { data } = await response.json(); // Desestructurando data del objeto JSON
 
     // Inyectar datos en los campos del formulario del modal
 
-    document.getElementById('famEdit').value = data[0].familia;
+    document.getElementById('duraEdit').value = data[0].nombre;
  
     // Suponiendo que obtienes data[0].id_pas de algún lugar
-    const idFam = data[0].id_fam;
+    const idDura = data[0].id_duracion;
 
     // Obtener el formulario
-    const formulario = document.getElementById('famActualizar');
+    const formulario = document.getElementById('duraActualizar');
 
     // Modificar el action del formulario
-    formulario.action = `/updateFam/${idFam}`;
+    formulario.action = `/updateDura/${idDura}`;
 
 }
 
-async function cargaFam0() {
+async function cargaDura0() {
    // Abre el modal
-   const modal = new bootstrap.Modal(document.getElementById('famAltaModal'));
+   const modal = new bootstrap.Modal(document.getElementById('duraAltaModal'));
    modal.show();
 
-    const response = await fetch(`/buscar_fam0`);
+    const response = await fetch(`/buscar_dura0`);
     const opcionesTabla = await response.json();
 
     // Inicializar DataTable con textos en español y ordenación por la columna de ID en orden descendente
@@ -433,19 +433,20 @@ async function cargaFam0() {
     // Agregar los datos a la tabla usando la API de DataTable
     opcionesTabla.forEach(item => {
         table.row.add([
-            item.id_fam,
-            item.familia,
-           `<a href="/altaFam/${item.id_fam}" class="btn btn-primary btn-sm" type="button">Dar Alta</a>`,
+            item.id_duracion,
+            item.nombre,
+            item.alta,
+           `<a href="/altaDura/${item.id_duracion}" class="btn btn-primary btn-sm" type="button">Dar Alta</a>`,
         ]).draw(false);
 
 
     });
 }
 /////////////////////////////////////////////////
-//funciones Presentacion
+//funciones Cantidad
 
-async function cargarPresentacion() {
-    const response = await fetch(`/buscar_present`);
+async function cargarCantidad() {
+    const response = await fetch(`/buscar_cant`);
     const opcionesTabla = await response.json();
 
     // Inicializar DataTable con textos en español y ordenación por la columna de ID en orden descendente
@@ -488,11 +489,11 @@ async function cargarPresentacion() {
     // Agregar los datos a la tabla usando la API de DataTable
     opcionesTabla.forEach(item => {
         table.row.add([
-            item.id_present,
-            item.presentacion,
-          
-            `<button onclick="buscarPresent(${item.id_present})" class="btn btn-primary btn-sm" >modificar </button>`,
-            `<a href="/borrar_present/${item.id_present}" class="btn btn-danger btn-sm" type="button">Eliminar</a>`
+            item.id_cantidad,
+            item.nombre,
+            item.alta,
+            `<button onclick="buscarCant(${item.id_cantidad})" class="btn btn-primary btn-sm" >modificar </button>`,
+            `<a href="/borrar_cant/${item.id_cantidad}" class="btn btn-danger btn-sm" type="button">Eliminar</a>`
         ]).draw(false);
 
 
@@ -500,38 +501,38 @@ async function cargarPresentacion() {
 }
 
 // Llamar a la función para cargar los datos
-cargarPresentacion()
+cargarCantidad()
 
 //activar modal para modificar concentracion
-async function buscarPresent(id) {
+async function buscarCant(id) {
     // Abre el modal
-    const modal = new bootstrap.Modal(document.getElementById('presentModal'));
+    const modal = new bootstrap.Modal(document.getElementById('cantModal'));
     modal.show();
 
-    const response = await fetch(`/buscarPresent/${id}`);
+    const response = await fetch(`/buscarCant/${id}`);
     const { data } = await response.json(); // Desestructurando data del objeto JSON
 
     // Inyectar datos en los campos del formulario del modal
 
-    document.getElementById('presentEdit').value = data[0].presentacion;
+    document.getElementById('cantEdit').value = data[0].nombre;
  
     // Suponiendo que obtienes data[0].id_pas de algún lugar
-    const idPresent = data[0].id_present;
+    const idCant = data[0].id_cantidad;
 
     // Obtener el formulario
-    const formulario = document.getElementById('presentActualizar');
+    const formulario = document.getElementById('cantActualizar');
 
     // Modificar el action del formulario
-    formulario.action = `/updatePresent/${idPresent}`;
+    formulario.action = `/updateCant/${idCant}`;
 
 }
 
-async function cargaPresent0() {
+async function cargaCant0() {
    // Abre el modal
-   const modal = new bootstrap.Modal(document.getElementById('presentAltaModal'));
+   const modal = new bootstrap.Modal(document.getElementById('cantAltaModal'));
    modal.show();
 
-    const response = await fetch(`/buscar_present0`);
+    const response = await fetch(`/buscar_cant0`);
     const opcionesTabla = await response.json();
 
     // Inicializar DataTable con textos en español y ordenación por la columna de ID en orden descendente
@@ -574,9 +575,10 @@ async function cargaPresent0() {
     // Agregar los datos a la tabla usando la API de DataTable
     opcionesTabla.forEach(item => {
         table.row.add([
-            item.id_present,
-            item.presentacion,
-           `<a href="/altaPresent/${item.id_present}" class="btn btn-primary btn-sm" type="button">Dar Alta</a>`,
+            item.id_cantidad,
+            item.nombre,
+            item.alta,
+           `<a href="/altaCant/${item.id_cantidad}" class="btn btn-primary btn-sm" type="button">Dar Alta</a>`,
         ]).draw(false);
 
 

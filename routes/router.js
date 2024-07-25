@@ -16,8 +16,8 @@ const refeController = require('../controllers/refeController');
 const prescController = require('../controllers/prescController');
 const dosisController = require('../controllers/dosisController');
 const frecController = require('../controllers/frecController');
-
-
+const duraController = require('../controllers/duraController');
+const cantController = require('../controllers/cantController');
 
 
 //rutas para las vistas 
@@ -92,6 +92,26 @@ router.get('/borrar_frec/:id',authController.isAuthenticated,frecController.dele
 router.post('/updateFrec/:id',authController.isAuthenticated,frecController.update);
 router.get('/altaFrec/:id',authController.isAuthenticated,frecController.alta);
 
+//rutas Duracion
+
+router.get('/buscar_dura0',authController.isAuthenticated,duraController.findAll0);
+router.get('/buscar_dura',authController.isAuthenticated,duraController.findAll);
+router.get('/buscarDura/:id',authController.isAuthenticated,duraController.findById);
+router.post('/guardar_dura',authController.isAuthenticated,duraController.create);
+router.get('/borrar_dura/:id',authController.isAuthenticated,duraController.delete);
+router.post('/updateDura/:id',authController.isAuthenticated,duraController.update);
+router.get('/altaDura/:id',authController.isAuthenticated,duraController.alta);
+
+//rutas Cantidad
+
+router.get('/buscar_cant0',authController.isAuthenticated,cantController.findAll0);
+router.get('/buscar_cant',authController.isAuthenticated,cantController.findAll);
+router.get('/buscarCant/:id',authController.isAuthenticated,cantController.findById);
+router.post('/guardar_cant',authController.isAuthenticated,cantController.create);
+router.get('/borrar_cant/:id',authController.isAuthenticated,cantController.delete);
+router.post('/updateCant/:id',authController.isAuthenticated,cantController.update);
+router.get('/altaCant/:id',authController.isAuthenticated,cantController.alta);
+
 
 //rutas Pasiente
 router.get('/crea_pasiente',authController.isAuthenticated,(req, res)=> {
@@ -150,7 +170,6 @@ router.get('/buscar_present',authController.isAuthenticated,presentController.fi
 router.get('/buscarPresent/:id',authController.isAuthenticated,presentController.findById);
 router.post('/guardar_present',authController.isAuthenticated,presentController.create);
 router.get('/borrar_present/:id',authController.isAuthenticated,presentController.delete);
-router.get('/buscarPresent',authController.isAuthenticated,presentController.findById);
 router.post('/updatePresent/:id',authController.isAuthenticated,presentController.update);
 router.get('/altaPresent/:id',authController.isAuthenticated,presentController.alta);
 

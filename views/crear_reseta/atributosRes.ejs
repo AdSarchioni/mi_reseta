@@ -309,26 +309,27 @@
 
     <!-- Quadrant 3 -->
     <div class="grid-item quadrant-3">
-      <h4>Gestionar Familia</h4>
-      <form id="form2" class="row g-3 needs-validation" novalidate action="/guardar_fam" method="POST">
+      <h4>Gestionar Duracion</h4>
+      <form id="form2" class="row g-3 needs-validation" novalidate action="/guardar_dura" method="POST">
         <div class="col-md-4">
 
-          <input type="text" class="form-control" placeholder="Nueva Familia" id="familia" name="familia" required>
+          <input type="text" class="form-control" placeholder="Nueva Duracion" id="duracion" name="duracion" required>
           <div class="invalid-feedback"></div>
         </div>
 
         <div class="col-12">
-          <button class="btn btn-dark" type="submit">Guardar Familia</button>
-          <a type="button" onclick="cargaFam0()" class="btn btn-dark">Alta Borrados</a>
-          <a type="button" href="/crea_medicamento" class="btn btn-dark">Volver</a>
+          <button class="btn btn-dark" type="submit">Guardar Duracion</button>
+          <a type="button" onclick="cargaDura0()" class="btn btn-dark">Alta Borrados</a>
+          <a type="button" href="/gestionReseta" class="btn btn-dark">Volver</a>
           <a type="button" href="logout" class="btn btn-danger">Logout</a>
         </div>
       </form>
       <table id="datatable3" class="table table-striped" style="width:100%">
         <thead>
           <tr>
-            <th>Id Familia</th>
-            <th>Familia</th>
+            <th>Id Dura</th>
+            <th>Duracion</th>
+            <th>Alta</th>
             <th>Modificar</th>
             <th>Eliminar</th>
           </tr>
@@ -340,23 +341,23 @@
       </table>
     </div>
     <!-- modal modificar --     -->
-    <div class="modal fade" id="famModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="duraModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar Familia</h1>
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar Duracion</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body bg-body-secondary">
-            <form id="famActualizar" method="POST">
+            <form id="duraActualizar" method="POST">
               <div class="mb-3">
-                <label for="famEdit" class="col-form-label">Familia</label>
-                <input type="text" class="form-control" id="famEdit" name="famEdit">
+                <label for="duraEdit" class="col-form-label">Duracion</label>
+                <input type="text" class="form-control" id="duraEdit" name="duraEdit">
               </div>
 
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="submit" class="btn btn-primary">Guardar Familia</button>
+                <button type="submit" class="btn btn-primary">Guardar Duracion</button>
               </div>
             </form>
           </div>
@@ -365,19 +366,20 @@
       </div>
     </div>
     <!-- modal alta borrado -->
-    <div class="modal fade" id="famAltaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="duraAltaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar Familia</h1>
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar Duracion</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body bg-body-secondary">
             <table id="datatable7" class="table table-striped" style="width:100%">
               <thead>
                 <tr>
-                  <th>Id Familia</th>
-                  <th>Familia</th>
+                  <th>Id Dura</th>
+                  <th>Duracion</th>
+                  <th> Alta</th>
                   <th>Dar Alta</th>
 
                 </tr>
@@ -395,28 +397,29 @@
 
     <!-- Quadrant 4 -->
     <div class="grid-item quadrant-4">
-      <h4>Gestionar Presentacion</h4>
+      <h4>Gestionar Cantidad</h4>
 
-      <form id="form2" class="row g-3 needs-validation" novalidate action="/guardar_present" method="POST">
+      <form id="form2" class="row g-3 needs-validation" novalidate action="/guardar_cant" method="POST">
         <div class="col-md-4">
 
-          <input type="text" class="form-control" placeholder="Nueva Presentacion" id="presentacion" name="presentacion"
+          <input type="text" class="form-control" placeholder="Nueva Cantidad" id="cantidad" name="cantidad"
             required>
           <div class="invalid-feedback"></div>
         </div>
 
         <div class="col-12">
-          <button class="btn btn-dark" type="submit">Guardar Presentacion</button>
-          <a type="button" onclick="cargaPresent0()" class="btn btn-dark">Alta Borrados</a>
-          <a type="button" href="/crea_medicamento" class="btn btn-dark">Volver</a>
+          <button class="btn btn-dark" type="submit">Guardar Cantidad</button>
+          <a type="button" onclick="cargaCant0()" class="btn btn-dark">Alta Borrados</a>
+          <a type="button" href="/gestionReseta" class="btn btn-dark">Volver</a>
           <a type="button" href="logout" class="btn btn-danger">Logout</a>
         </div>
       </form>
       <table id="datatable4" class="table table-striped" style="width:100%">
         <thead>
           <tr>
-            <th>Id Presentacion</th>
-            <th>Presentacion</th>
+            <th>Id Cant</th>
+            <th>Cantidad</th>
+            <th>Alta</th>
             <th>Modificar</th>
             <th>Eliminar</th>
           </tr>
@@ -429,23 +432,23 @@
     </div>
   </div>
   <!-- modal modificar --     -->
-  <div class="modal fade" id="presentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="cantModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar Presentacion</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar Cantidad</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body bg-body-secondary">
-          <form id="presentActualizar" method="POST">
+          <form id="cantActualizar" method="POST">
             <div class="mb-3">
-              <label for="presentEdit" class="col-form-label">Presentacion</label>
-              <input type="text" class="form-control" id="presentEdit" name="presentEdit">
+              <label for="cantEdit" class="col-form-label">Cantidad</label>
+              <input type="text" class="form-control" id="cantEdit" name="cantEdit">
             </div>
 
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-              <button type="submit" class="btn btn-primary">Guardar Presentacion</button>
+              <button type="submit" class="btn btn-primary">Guardar Cantidad</button>
             </div>
           </form>
         </div>
@@ -454,19 +457,20 @@
     </div>
   </div>
   <!-- modal alta borrado -->
-  <div class="modal fade" id="presentAltaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="cantAltaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar Presentacion</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modificar Cantidad</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body bg-body-secondary">
           <table id="datatable8" class="table table-striped" style="width:100%">
             <thead>
               <tr>
-                <th>Id Presentacion</th>
-                <th>Presentacion</th>
+                <th>Id Cant</th>
+                <th>Cantidad</th>
+                <th>Alta</th>
                 <th>Dar Alta</th>
 
               </tr>
