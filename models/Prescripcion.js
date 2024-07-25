@@ -292,17 +292,12 @@ GROUP BY
     },
 
 
-    update: (id, familia, callback) => {
-
-        const sql = `UPDATE familia SET familia = ?  WHERE id_fam = ${id}`;
-        conexion.query(sql, [familia], callback);
-    },
-    delete: (id, callback) => {
-        const sql = 'UPDATE familia SET alta = 0 WHERE id_fam = ?';
+    alta: (id, callback) => {
+        const sql = `UPDATE prescripcion SET alta = 1  WHERE id_presc = ?`;
         conexion.query(sql, [id], callback);
     },
-    altaForm: (id, callback) => {
-        const sql = 'UPDATE familia SET alta = 1 WHERE id_fam = ?';
+    delete : (id, callback) => {
+        const sql = 'UPDATE prescripcion SET alta = 0 WHERE id_presc = ?';
         conexion.query(sql, [id], callback);
     }
 };

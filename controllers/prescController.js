@@ -3,9 +3,9 @@ const PDFDocument = require('pdfkit');
 const prescController = {
     create: (req, res) => {
         const { familia } = req.body;
-    
+
         Prescripcion.create(familia, (err, result) => {
-     
+
             if (err) {
                 return res.status(500).send(err);
             }
@@ -25,71 +25,112 @@ const prescController = {
         const nombre = req.user.name;
         const dni = req.user.dni;
         const user = req.user.user;
-        const data = { nombre, dni, user }
+        const rol = req.user.rol;
+        const data = { nombre, dni, user, rol }
+        console.log(dni+user+rol)
         res.render('crear_reseta/gestion_reseta', { alert: false, data: data });
 
-  
-    },
 
+    },
+    delete: (req, res) => {
+        const { id } = req.params;
+        Prescripcion.delete(id, (err, result) => {
+            if (err) {
+                return res.status(500).send(err);
+            }
+
+            else {
+                return res.render('crear_reseta/gestion_reseta', {
+                    alert: true,
+                    alertTitle: "SE A BORRADO PRESCRIPCION ",
+                    alertMessage: "PRESCRIPCION  BORRADA ¡",
+                    alertIcon: 'error',
+                    showConfirmButton: false,
+                    timer: 600,
+                    ruta: 'gestionReseta'
+                })
+            }
+        }
+        );
+    },
+    alta: (req, res) => {
+        const { id } = req.params;
+        Prescripcion.alta(id, (err, result) => {
+            if (err) {
+                return res.status(500).send(err);
+            }
+
+            else {
+                return res.render('crear_reseta/gestion_reseta', {
+                    alert: true,
+                    alertTitle: "SE DIO ALTA PRESCRIPCION ",
+                    alertMessage: "ALTA PRESCRIPCION ¡",
+                    alertIcon: 'access',
+                    showConfirmButton: false,
+                    timer: 800,
+                    ruta: 'gestionReseta'
+                })
+            }
+        }
+        );
+    },
 
     findAll: (req, res) => {
-     
+
         const dni = req.user.dni;
         const rol = req.user.rol;
-  
-if (rol === "Administrador"){
-    Prescripcion.findAll((err, results) => {
-        if (err) {
-            return res.status(500).send(err);
+
+        if (rol === "Administrador") {
+            Prescripcion.findAll((err, results) => {
+                if (err) {
+                    return res.status(500).send(err);
+                }
+                res.json(results);
+            });
+        } else {
+            Prescripcion.findAllDni(dni, (err, results) => {
+                if (err) {
+                    return res.status(500).send(err);
+                }
+                res.json(results);
+            });
         }
-        res.json(results);
-    });
-}else{
-        Prescripcion.findAllDni(dni,(err, results) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-            res.json(results);
-        });
-
-
-    }
-
-   
     },
     findAll0: (req, res) => {
-     
+
         const dni = req.user.dni;
         const rol = req.user.rol;
-  
-if (rol === "Administrador"){
-    Prescripcion.findAll0((err, results) => {
-        if (err) {
-            return res.status(500).send(err);
+
+        if (rol === "Administrador") {
+            Prescripcion.findAll0((err, results) => {
+                if (err) {
+                    return res.status(500).send(err);
+                }
+                res.json(results);
+            });
+        } else {
+            Prescripcion.findAll0Dni(dni, (err, results) => {
+                if (err) {
+                    return res.status(500).send(err);
+                }
+                res.json(results);
+            });
         }
-        res.json(results);
-    });
-}else{
-        Prescripcion.findAll0Dni(dni,(err, results) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-            res.json(results);
-        });
+    },
 
 
-    }
 
-   
-    }
- ,
+
+
+
     findById: (req, res) => {
         const { id } = req.params;
+        const user = req.user;
         Prescripcion.findId(id, (err, result) => {
             if (err) {
                 return res.status(500).send(err);
             }
-            
+
             if (result.prestaciones.length > 0 || result.medicamentos.length > 0) {
                 const data = {
                     prestaciones: result.prestaciones.map(p => p.prestacion),
@@ -108,7 +149,7 @@ if (rol === "Administrador"){
                         frecuencia: m.frecuencia,
                         dosis: m.dosis,
                         id_administracion: m.id_administracion,
-                    
+
 
                     })),
                     profesional: result.profPas.map(p => ({
@@ -132,63 +173,63 @@ if (rol === "Administrador"){
                     }))
                 };
                 console.log(result);
-                res.render('crear_reseta/editPresc', { alert: false, data: data });
+                res.render('crear_reseta/editPresc', { alert: false, data: data, user: user });
             } else {
                 res.status(404).send('Prescripción no encontrada');
             }
         });
     }
     ,
-printPdf: (req, res) => {
-    const data = req.body;
+    printPdf: (req, res) => {
+        const data = req.body;
 
-    const doc = new PDFDocument();
-    let filename = 'prescription-data.pdf';
-    filename = encodeURIComponent(filename);
-  
-    res.setHeader('Content-disposition', `attachment; filename="${filename}"`);
-    res.setHeader('Content-type', 'application/pdf');
-  
-    doc.pipe(res);
-  
-    doc.fontSize(20).text('Receta Médica', { align: 'center' });
-    doc.moveDown();
-    doc.fontSize(12).text(`Diagnostico: ${data.diagnostico}`);
-    doc.text(`Indicacion: ${data.indicacion}`);
-    doc.text(`Fecha: ${data.fecha_pres}`);
-    doc.text(`Paciente: ${data.nombre_pas}`);
-    doc.text(`ID Paciente: ${data.id_pas}`);
-  
-    doc.moveDown();
-    doc.fontSize(16).text('Medicamentos', { align: 'center' });
-    data.medicamentos.forEach(med => {
-      doc.moveDown();
-      doc.fontSize(12).text(`Nombre Generico: ${med.nombre_generico}`);
-      doc.text(`Nombre Comercial: ${med.nombre_comercial}`);
-      doc.text(`Concentracion: ${med.concentracion}`);
-      doc.text(`Presentacion: ${med.presentacion}`);
-      doc.text(`Familia: ${med.familia}`);
-      doc.text(`Forma Farmaceutica: ${med.forma_fa}`);
-      doc.text(`Dosis: ${med.dosis}`);
-      doc.text(`Frecuencia: ${med.frecuencia}`);
-      doc.text(`Duracion: ${med.duracion}`);
-      doc.text(`Cantidad: ${med.cantidad}`);
-    });
-  
-    doc.moveDown();
-    doc.fontSize(16).text('Prestaciones', { align: 'center' });
-    data.prestaciones.forEach(pres => {
-      doc.moveDown();
-      doc.fontSize(12).text(`ID Medi: ${pres.id_medi}`);
-      doc.text(`Prestacion: ${pres.prestacion}`);
-    });
-  
-    doc.end();
-  
-  
+        const doc = new PDFDocument();
+        let filename = 'prescription-data.pdf';
+        filename = encodeURIComponent(filename);
+
+        res.setHeader('Content-disposition', `attachment; filename="${filename}"`);
+        res.setHeader('Content-type', 'application/pdf');
+
+        doc.pipe(res);
+
+        doc.fontSize(20).text('Receta Médica', { align: 'center' });
+        doc.moveDown();
+        doc.fontSize(12).text(`Diagnostico: ${data.diagnostico}`);
+        doc.text(`Indicacion: ${data.indicacion}`);
+        doc.text(`Fecha: ${data.fecha_pres}`);
+        doc.text(`Paciente: ${data.nombre_pas}`);
+        doc.text(`ID Paciente: ${data.id_pas}`);
+
+        doc.moveDown();
+        doc.fontSize(16).text('Medicamentos', { align: 'center' });
+        data.medicamentos.forEach(med => {
+            doc.moveDown();
+            doc.fontSize(12).text(`Nombre Generico: ${med.nombre_generico}`);
+            doc.text(`Nombre Comercial: ${med.nombre_comercial}`);
+            doc.text(`Concentracion: ${med.concentracion}`);
+            doc.text(`Presentacion: ${med.presentacion}`);
+            doc.text(`Familia: ${med.familia}`);
+            doc.text(`Forma Farmaceutica: ${med.forma_fa}`);
+            doc.text(`Dosis: ${med.dosis}`);
+            doc.text(`Frecuencia: ${med.frecuencia}`);
+            doc.text(`Duracion: ${med.duracion}`);
+            doc.text(`Cantidad: ${med.cantidad}`);
+        });
+
+        doc.moveDown();
+        doc.fontSize(16).text('Prestaciones', { align: 'center' });
+        data.prestaciones.forEach(pres => {
+            doc.moveDown();
+            doc.fontSize(12).text(`ID Medi: ${pres.id_medi}`);
+            doc.text(`Prestacion: ${pres.prestacion}`);
+        });
+
+        doc.end();
 
 
-}
+
+
+    }
 };
 
 module.exports = prescController;

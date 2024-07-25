@@ -185,10 +185,10 @@
         </tbody>
       </table>
       <div class="col-12">
-        <button class="btn btn-success" type="button" onclick="captureFormData()">imprimir</button>
+        <button class="btn btn-success" type="button"  onclick="captureFormData()"  <% if (user.rol === 'Administrador') { %>disabled<% } %>>imprimir</button>
         <a type="button" href="/crea_reseta" class="btn btn-info">Crear Nueva Presc</a>
         <a type="button" href="/" class="btn btn-warning">Volver</a>
-        <a type="button" href="logout" class="btn btn-danger">Logout</a>
+        <a type="button" href="/logout" class="btn btn-danger">Logout</a>
       </div>
     </form>
   

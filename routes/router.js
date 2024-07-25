@@ -14,12 +14,16 @@ const espeController = require('../controllers/espeController');
 const profController = require('../controllers/profController');
 const refeController = require('../controllers/refeController');
 const prescController = require('../controllers/prescController');
+const dosisController = require('../controllers/dosisController');
+const frecController = require('../controllers/frecController');
+
+
 
 
 //rutas para las vistas 
 router.get('/', authController.isAuthenticated, (req, res)=> {
-    //Sconexion();
-      res.render('index',{user: req.user, alert: false });
+   
+      res.render('index',{user: req.user, alert: false  });
 });
 
 router.get('/login', (req, res)=>{
@@ -62,12 +66,31 @@ router.post('/invoice',authController.isAuthenticated,authController.esProf,rese
 router.get('/gestionReseta',authController.isAuthenticated,prescController.user);
 router.get('/editPresc/:id',authController.isAuthenticated,prescController.findById);
 router.get('/buscarPresc',authController.isAuthenticated,prescController.findAll);
+router.get('/buscarPresc0',authController.isAuthenticated,prescController.findAll0);
 router.post('/generate-pdf',authController.isAuthenticated,prescController.printPdf);
+router.get('/borrarPresc/:id',authController.isAuthenticated,authController.esProf,prescController.delete);
+router.get('/altaPresc/:id',authController.isAuthenticated,authController.esProf,prescController.alta);
+router.get('/atributos_admin',authController.isAuthenticated,(req, res)=> {
+      res.render('crear_reseta/atributosRes',{alert: false});
+});
+//rutas Dosis
 
+router.get('/buscar_dos',authController.isAuthenticated,dosisController.findAll);
+router.post('/guardar_dos',authController.isAuthenticated,dosisController.create);
+router.get('/borrar_dos/:id_dos',authController.isAuthenticated,dosisController.delete);
+router.get('/buscarDos/:id',authController.isAuthenticated,dosisController.findById);
+router.post('/updateDos/:id',authController.isAuthenticated,dosisController.update);
+router.get('/buscar_dos0',authController.isAuthenticated,dosisController.findAll0);
+router.get('/altaDos/:id',authController.isAuthenticated,dosisController.alta);
+//rutas frecuencia
 
-
-
-
+router.get('/buscar_frec0',authController.isAuthenticated,frecController.findAll0);
+router.get('/buscar_frec',authController.isAuthenticated,frecController.findAll);
+router.get('/buscarFrec/:id',authController.isAuthenticated,frecController.findById);
+router.post('/guardar_frec',authController.isAuthenticated,frecController.create);
+router.get('/borrar_frec/:id',authController.isAuthenticated,frecController.delete);
+router.post('/updateFrec/:id',authController.isAuthenticated,frecController.update);
+router.get('/altaFrec/:id',authController.isAuthenticated,frecController.alta);
 
 
 //rutas Pasiente
@@ -106,7 +129,6 @@ router.get('/buscar_forma',authController.isAuthenticated,formaController.findAl
 router.get('/buscarForma/:id',authController.isAuthenticated,formaController.findById);
 router.post('/guardar_form',authController.isAuthenticated,formaController.create);
 router.get('/borrar_form/:id',authController.isAuthenticated,formaController.delete);
-router.get('/buscarForm',authController.isAuthenticated,formaController.findById);
 router.post('/updateForm/:id',authController.isAuthenticated,formaController.update);
 router.get('/altaForm/:id',authController.isAuthenticated,formaController.altaForm);
 

@@ -55,9 +55,9 @@
       <div class="col-12">
       
         <a type="button" href="/" class="btn btn-warning">Volver</a>
-        <a type="button" href="/especialidad" class="btn btn-dark">Atributos Administraciones</a>
+        <a type="button" href='/atributos_admin' class="btn btn-dark">Atributos Administraciones</a>
       
-        <a type="button" href="/altaProf" class="btn btn-secondary">Alta Borrados</a>
+        <button onclick="cargarPresc0()" class="btn btn-secondary">Alta Borrados</button>
         <a type="button" href="logout" class="btn btn-danger">Logout</a>
 
 
@@ -96,7 +96,49 @@
 
 
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="altaModal" tabindex="-1" aria-labelledby="altaModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="altaModalLabel">Alta Medicamentos Borrados</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body bg-body-secondary ">
+            ...
+            <div class="table-responsive">
+              <table id="myTables" name="myTables" class="table table-striped">
+                <thead>
+                  <tr class="bg-primary text-white">
+                    <th scope="col">Presc</th>
+                    <th scope="col">N.Prof</th>
+                    <th scope="col">A.Prof</th>
+                    <th scope="col">Espec</th>
+                    <th scope="col">N.Pas</th>
+                    <th scope="col">A.PAS</th>
+                    <th scope="col">Diagnostico</th>
+                    <th scope="col">Prestacion</th>
+                    <th scope="col">Medicamentos</th>
+                    <th scope="col">O.Sosial</th>
+                    <th scope="col">Dar Alta</th>
+                    
+                  </tr>
+                </thead>
 
+                <tbody>
+                  <!-- Contenido de la tabla -->
+                </tbody>
+
+              </table>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
 
 
 

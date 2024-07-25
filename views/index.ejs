@@ -28,7 +28,7 @@
             <a class="nav-link active" aria-current="page" href="#"><%= new Date().toLocaleDateString() %></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Features</a>
+            <a class="nav-link" href="#">Nombre : <%= user.name %>, Rol : <%= user.rol %></a>
           </li>
         
          
@@ -37,7 +37,7 @@
     </div>
   </nav>
   <div class="p-3 mb-2  bg-success-subtle  text-primary-emphasis">
-<br>
+
     <div class="container">
       <div class="row">
         <div class="col-sm-6 mb-3 mb-sm-0">
@@ -73,7 +73,7 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Gestionar Prescripciones Guardadas</h5>
-              <p class="card-text">Usted solo podra gestionar prescripciones si esta logueado como profesional</p>
+              <p class="card-text">Usted solo podra gestionar prescripciones si esta logueado como profesional, como Administrador solo podra visualizar</p>
               <a href="/gestionReseta" class="btn btn-outline-primary">Prescripciones</a>
             </div>
           </div>
