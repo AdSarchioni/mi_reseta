@@ -175,3 +175,67 @@ exports.logout = (req, res) => {
       res.clearCookie('jwt')
       return res.redirect('/login')
 }
+exports.cambioContra = async (req, res) => {
+      try {
+          const { user, oldPass, newPass } = req.body;
+  
+          // Verify if the user exists
+          conexion.query('SELECT * FROM users WHERE user = ?', [user], async (error, results) => {
+              if (error) {
+                  console.log(error);
+                  res.status(500).send('Error en la consulta de la base de datos');
+                  return;
+              }
+  
+              if (results.length == 0) {
+                  res.render('cambioContra', {
+                      alert: true,
+                      alertTitle: "Error",
+                      alertMessage: "Usuario no encontrado",
+                      alertIcon: 'error',
+                      showConfirmButton: true,
+                      timer: false,
+                      ruta: 'cambioCon'
+                  });
+              } else {
+                  // Verificar contraseña
+                  if (!(await bcryptjs.compare(oldPass, results[0].pass))) {
+                      res.render('cambioContra', {
+                          alert: true,
+                          alertTitle: "Error",
+                          alertMessage: "Contraseña antigua incorrecta",
+                          alertIcon: 'error',
+                          showConfirmButton: true,
+                          timer: false,
+                          ruta: 'cambioCon'
+                      });
+                  } else {
+                      // Hash nueva contraseña
+                      let newPassHash = await bcryptjs.hash(newPass, 8);
+  
+                      // Update nueva contraseña
+                      conexion.query('UPDATE users SET pass = ? WHERE user = ?', [newPassHash, user], (error, result) => {
+                          if (error) {
+                              console.log(error);
+                              res.status(500).send('Error al actualizar la contraseña');
+                          } else {
+                              res.render('cambioContra', {
+                                  alert: true,
+                                  alertTitle: "Éxito",
+                                  alertMessage: "Contraseña actualizada correctamente",
+                                  alertIcon: 'success',
+                                  showConfirmButton: true,
+                                  timer: 800,
+                                  ruta: 'login'
+                              });
+                          }
+                      });
+                  }
+              }
+          });
+      } catch (error) {
+          console.log(error);
+          res.status(500).send('Error en el servidor');
+      }
+  };
+  

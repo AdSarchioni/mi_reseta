@@ -33,6 +33,9 @@ router.get('/login', (req, res)=>{
 router.get('/register', (req, res)=> {
       res.render('register',{alert: false} );
 });
+router.get('/cambioCon', (req, res)=> {
+      res.render('cambioContra',{alert: false} );
+});
 router.get('/preReseta', (req, res)=> {
       res.render('crear_reseta/pre_reseta',{alert: false} );
 });
@@ -42,7 +45,7 @@ router.get('/preReseta', (req, res)=> {
 router.post('/register', authController.register);
 router.post('/login', authController.login);
 router.get('/logout',authController.logout);
-
+router.post('/cambioContra', authController.cambioContra);
 //rutas para metodos de crear reseta
 
 router.get('/crea_reseta',authController.isAuthenticated,authController.esProf,reseta_controller.crea_reseta);
