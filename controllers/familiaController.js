@@ -3,7 +3,18 @@ const Familia = require('../models/Familia');
 const familiaController = {
     create: (req, res) => {
         const { familia } = req.body;
-    
+        const ctrlRegex = /^[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]+$/;
+        if (!familia || !ctrlRegex.test(familia)) {
+            return res.render('medicamento/atributosMed', {
+                alert: true,
+                alertTitle: "COLOQUE UN VALOR VALIDO",
+                alertMessage: "NO PUEDE ESTAR VACÍO Y DEBE CONTENER LETRAS, NÚMEROS O SÍMBOLOS",
+                alertIcon: 'error',
+                showConfirmButton: false,
+                timer: 800,
+                ruta: 'atributos_med'
+            });
+        }
         Familia.create(familia, (err, result) => {
      
             if (err) {

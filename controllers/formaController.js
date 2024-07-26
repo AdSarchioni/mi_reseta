@@ -4,6 +4,19 @@ const formaController = {
     create: (req, res) => {
         const { forma_fa } = req.body;
         const todo = req.body;
+        const ctrlRegex = /^[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]+$/;
+        if (!forma_fa || !ctrlRegex.test(forma_fa)) {
+            return res.render('medicamento/atributosMed', {
+                alert: true,
+                alertTitle: "COLOQUE UN VALOR VALIDO",
+                alertMessage: "NO PUEDE ESTAR VACÍO Y DEBE CONTENER LETRAS, NÚMEROS O SÍMBOLOS",
+                alertIcon: 'error',
+                showConfirmButton: false,
+                timer: 800,
+                ruta: 'atributos_med'
+            });
+        }
+
         FormaFarma.create(forma_fa, (err, result) => {
             console.log(todo);
             if (err) {

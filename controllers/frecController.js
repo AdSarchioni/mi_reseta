@@ -4,6 +4,18 @@ const frecController = {
     create: (req, res) => {
         const { frecuencia } = req.body;
         const todo = req.body;
+        const ctrlRegex = /^[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]+$/;
+        if (!frecuencia || !ctrlRegex.test(frecuencia)) {
+            return res.render('crear_reseta/atributosRes', {
+                alert: true,
+                alertTitle: "COLOQUE UN VALOR VALIDO",
+                alertMessage: "NO PUEDE ESTAR VACÍO Y DEBE CONTENER LETRAS, NÚMEROS O SÍMBOLOS",
+                alertIcon: 'error',
+                showConfirmButton: false,
+                timer: 800,
+                ruta: 'atributos_admin'
+            });
+        }
         Frecuencia.create(frecuencia, (err, result) => {
             console.log(todo);
             if (err) {

@@ -3,14 +3,29 @@ const Duracion = require('../models/Duracion');
 const duraController = {
     create: (req, res) => {
         const { duracion } = req.body;
-    
-        Duracion.create(duracion, (err, result) => {
+       
+        const ctrlRegex = /^[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]+$/;
+        if (!duracion || !ctrlRegex.test(duracion)) {
+            return res.render('crear_reseta/atributosRes', {
+                alert: true,
+                alertTitle: "COLOQUE UN VALOR VALIDO",
+                alertMessage: "NO PUEDE ESTAR VACÍO Y DEBE CONTENER LETRAS, NÚMEROS O SÍMBOLOS",
+                alertIcon: 'error',
+                showConfirmButton: false,
+                timer: 800,
+                ruta: 'atributos_admin'
+            });
+        }
+
+
+        Duracion.crea
+        te(duracion, (err, result) => {
      
             if (err) {
                 return res.status(500).send(err);
             }
 
-            res.render('medicamento/atributosMed', {
+            res.render('crear_reseta/atributosRes', {
                 alert: true,
                 alertTitle: "SE A GUARDADO DURACION ",
                 alertMessage: "DURACION GUARDADA ¡",
@@ -60,7 +75,7 @@ const duraController = {
             if (err) {
                 return res.status(500).send(err);
             }
-            res.render('medicamento/atributosMed', {
+            res.render('crear_reseta/atributosRes', {
                 alert: true,
                 alertTitle: "SE A ACTUALIZADO DURACION ",
                 alertMessage: "DURACION ACTUALIZADA ¡",
@@ -80,7 +95,7 @@ const duraController = {
             }
 
             else {
-                return res.render('medicamento/atributosMed', {
+                return res.render('crear_reseta/atributosRes', {
                     alert: true,
                     alertTitle: "SE A BORRADO DURACION ",
                     alertMessage: "DURACION BORRADA ¡",
@@ -101,7 +116,7 @@ const duraController = {
             }
 
             else {
-                return res.render('medicamento/atributosMed', {
+                return res.render('crear_reseta/atributosRes', {
                     alert: true,
                     alertTitle: "SE DIO ALTA DURACION ",
                     alertMessage: "ALTA DURACION ¡",

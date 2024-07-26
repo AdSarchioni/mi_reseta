@@ -3,7 +3,19 @@ const Cantidad = require('../models/Cantidad');
 const cantController = {
     create: (req, res) => {
         const { cantidad } = req.body;
-    
+        const ctrlRegex = /^[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]+$/;
+        if (!cantidad || !ctrlRegex.test(cantidad)) {
+            return res.render('crear_reseta/atributosRes', {
+                alert: true,
+                alertTitle: "COLOQUE UN VALOR VALIDO",
+                alertMessage: "NO PUEDE ESTAR VACÍO Y DEBE CONTENER LETRAS, NÚMEROS O SÍMBOLOS",
+                alertIcon: 'error',
+                showConfirmButton: false,
+                timer: 800,
+                ruta: 'atributos_admin'
+            });
+        }
+        
         Cantidad.create(cantidad, (err, result) => {
      
             if (err) {

@@ -4,6 +4,19 @@ const concController = {
     create: (req, res) => {
         const { concentracion } = req.body;
         const todo = req.body;
+        const ctrlRegex = /^[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]+$/;
+        if (!concentracion || !ctrlRegex.test(concentracion)) {
+            return res.render('medicamento/atributosMed', {
+                alert: true,
+                alertTitle: "COLOQUE UN VALOR VALIDO",
+                alertMessage: "NO PUEDE ESTAR VACÍO Y DEBE CONTENER LETRAS, NÚMEROS O SÍMBOLOS",
+                alertIcon: 'error',
+                showConfirmButton: false,
+                timer: 800,
+                ruta: 'atributos_med'
+            });
+        }
+
         Concentracion.create(concentracion, (err, result) => {
             console.log(todo);
             if (err) {

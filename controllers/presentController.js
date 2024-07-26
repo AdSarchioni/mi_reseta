@@ -3,7 +3,18 @@ const Presentacion = require('../models/Presentacion');
 const presentController = {
     create: (req, res) => {
         const { presentacion } = req.body;
-    
+        const ctrlRegex = /^[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]+$/;
+        if (!presentacion || !ctrlRegex.test(presentacion)) {
+            return res.render('medicamento/atributosMed', {
+                alert: true,
+                alertTitle: "COLOQUE UN VALOR VALIDO",
+                alertMessage: "NO PUEDE ESTAR VACÍO Y DEBE CONTENER LETRAS, NÚMEROS O SÍMBOLOS",
+                alertIcon: 'error',
+                showConfirmButton: false,
+                timer: 800,
+                ruta: 'atributos_med'
+            });
+        }
         Presentacion.create(presentacion, (err, result) => {
      
             if (err) {
