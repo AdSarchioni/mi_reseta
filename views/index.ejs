@@ -25,13 +25,14 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#"><%= new Date().toLocaleDateString() %></a>
+            <a class="nav-link active" aria-current="page" href="#">
+              <%= new Date().toLocaleDateString() %>
+            </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Nombre : <%= typeof user !== 'undefined' ? user.name :'###' %>, Rol :<%= typeof user !== 'undefined' ? user.rol :'Debe Loguearce Nuevamente'  %></a>
+            <a class="nav-link" href="#">Nombre : <%= typeof user !=='undefined' ? user.name :'###' %>, Rol :<%= typeof
+                  user !=='undefined' ? user.rol :'Debe Loguearce Nuevamente' %></a>
           </li>
-        
-         
         </ul>
       </div>
     </div>
@@ -40,67 +41,111 @@
 
     <div class="container">
       <div class="row">
-        <div class="col-sm-6 mb-3 mb-sm-0">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Gestionar Pacientes</h5>
-              <p class="card-text">Usted solo podra gestionar pasientes si esta logueado como administrador</p>
-              <a href="/crea_pasiente" class="btn btn-outline-primary">Pacientes</a>
+        <div class="card mb-3" style="max-width: 540px;">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="./img/pasiente.PNG" class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Gestionar Pacientes</h5>
+                <a href="/crea_pasiente" type="button" class="btn btn-outline-primary">Pacientes</a>
+              </div>
+              <p class="card-text"><small class="text-body-secondary">Profesional o Administrador</small></p>
             </div>
           </div>
         </div>
-        <div class="col-sm-6">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Gestionar Profesionales</h5>
-              <p class="card-text">Usted solo podra gestionar profesionales si esta logueado como administrador</p>
-              <a href="/profesional" class="btn btn-outline-primary">Profesionales</a>
+
+        <div class="card mb-3" style="max-width: 540px;">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="./img/profesional.PNG" class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Gestionar Profesional</h5>
+                <a href="/profesional" class="btn btn-outline-primary">Profesionales</a>
+
+              </div>
+              <p class="card-text"><small class="text-body-secondary">Solo Administrador</small></p>
             </div>
           </div>
         </div>
+
       </div>
+
       <div class="row">
-        <div class="col-sm-6 mb-3 mb-sm-0">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Gestion de Medicamentos</h5>
-              <p class="card-text">Usted solo podra gestionar profesionales si esta logueado como administrador</p>
-              <a href="/crea_medicamento" class="btn btn-outline-primary">Medicamentos</a>
+
+        <div class="card mb-3" style="max-width: 540px;">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="./img/medi.PNG" class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Gestionar Medicamentos</h5>
+                <a href="/crea_medicamento" class="btn btn-outline-primary">Medicamentos</a>
+
+              </div>
+              <p class="card-text"><small class="text-body-secondary">Solo Admministrador</small></p>
             </div>
           </div>
         </div>
-        <div class="col-sm-6">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Gestionar Prescripciones Guardadas</h5>
-              <p class="card-text">Usted solo podra gestionar prescripciones si esta logueado como profesional, como Administrador solo podra visualizar</p>
-              <a href="/gestionReseta" class="btn btn-outline-primary">Prescripciones</a>
+
+        <div class="card mb-3" style="max-width: 540px;">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="./img/resetaB.PNG" class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Gestionar Prescripciones</h5>
+                <a href="/gestionReseta" class="btn btn-outline-primary">Prescripciones</a>
+
+              </div>
+              <p class="card-text"><small class="text-body-secondary">Profesional o Administrador</small></p>
             </div>
           </div>
         </div>
       </div>
+
       <div class="row">
-        <div class="col-sm-6 mb-3 mb-sm-0">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Prescripcion Exit</h5>
-              <p class="card-text">Hacemos su vida mas facil gracias por elegirnos </p>
-              <a href="/logout" class="btn btn-outline-danger">Logout</a>
+
+        <div class="card mb-3" style="max-width: 540px;">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="./img/usuario.PNG" class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Logout</h5>
+                <a href="/logout" class="btn btn-outline-danger">Logout</a>
+
+              </div>
+              <p class="card-text"><small class="text-body-secondary">Salida</small></p>
             </div>
           </div>
         </div>
-        <div class="col-sm-6">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Crear Prescripcion</h5>
-              <p class="card-text">solo podra crear prescripcion si esta logueado como profesional</p>
-              <a href="/crea_reseta" class="btn btn-outline-success">Crear Prescripcion</a>
+
+        <div class="card mb-3" style="max-width: 540px;">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="./img/crear_prescrip.PNG" class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">Crear Prescripcion</h5>
+                <a href="/crea_reseta" class="btn btn-outline-success">Crear Prescripcion</a>
+
+              </div>
+              <p class="card-text"><small class="text-body-secondary">Solo Profesional</small></p>
             </div>
           </div>
         </div>
+
       </div>
-      <br>
-      
+
+
       <div class="card text-bg-dark">
         <img src="./img/pastillas.PNG" class="card-img" alt="...">
         <div class="card-img-overlay">
@@ -111,8 +156,8 @@
       </div>
 
     </div>
- </div>
- 
+  </div>
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"

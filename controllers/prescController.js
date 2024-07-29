@@ -1,135 +1,156 @@
 const Prescripcion = require('../models/Prescripcion');
 const PDFDocument = require('pdfkit');
+
 const prescController = {
-    create: (req, res) => {
-        const { familia } = req.body;
-
-        Prescripcion.create(familia, (err, result) => {
-
-            if (err) {
-                return res.status(500).send(err);
-            }
+    create: async (req, res) => {
+        try {
+            const { familia } = req.body;
+            await new Promise((resolve, reject) => {
+                Prescripcion.create(familia, (err, result) => {
+                    if (err) return reject(err);
+                    resolve(result);
+                });
+            });
 
             res.render('medicamento/atributosMed', {
                 alert: true,
-                alertTitle: "SE A GUARDADO FAMILIA ",
+                alertTitle: "SE HA GUARDADO FAMILIA",
                 alertMessage: "FAMILIA GUARDADA ¡",
-                alertIcon: 'access',
+                alertIcon: 'success',
                 showConfirmButton: false,
                 timer: 800,
                 ruta: 'atributos_med'
-            })
-        });
+            });
+        } catch (err) {
+            console.error("Error al crear familia:", err);
+            res.status(500).send(err.message);
+        }
     },
+
     user: (req, res) => {
-        const nombre = req.user.name;
-        const dni = req.user.dni;
-        const user = req.user.user;
-        const rol = req.user.rol;
-        const data = { nombre, dni, user, rol }
-        console.log(dni+user+rol)
-        res.render('crear_reseta/gestion_reseta', { alert: false, data: data });
-
-
-    },
-    delete: (req, res) => {
-        const { id } = req.params;
-        Prescripcion.delete(id, (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-
-            else {
-                return res.render('crear_reseta/gestion_reseta', {
-                    alert: true,
-                    alertTitle: "SE A BORRADO PRESCRIPCION ",
-                    alertMessage: "PRESCRIPCION  BORRADA ¡",
-                    alertIcon: 'error',
-                    showConfirmButton: false,
-                    timer: 600,
-                    ruta: 'gestionReseta'
-                })
-            }
-        }
-        );
-    },
-    alta: (req, res) => {
-        const { id } = req.params;
-        Prescripcion.alta(id, (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-
-            else {
-                return res.render('crear_reseta/gestion_reseta', {
-                    alert: true,
-                    alertTitle: "SE DIO ALTA PRESCRIPCION ",
-                    alertMessage: "ALTA PRESCRIPCION ¡",
-                    alertIcon: 'access',
-                    showConfirmButton: false,
-                    timer: 800,
-                    ruta: 'gestionReseta'
-                })
-            }
-        }
-        );
+        const { name: nombre, dni, user, rol } = req.user;
+        const data = { nombre, dni, user, rol };
+        console.log(`${dni}${user}${rol}`);
+        res.render('crear_reseta/gestion_reseta', { alert: false, data });
     },
 
-    findAll: (req, res) => {
-
-        const dni = req.user.dni;
-        const rol = req.user.rol;
-
-        if (rol === "Administrador") {
-            Prescripcion.findAll((err, results) => {
-                if (err) {
-                    return res.status(500).send(err);
-                }
-                res.json(results);
+    delete: async (req, res) => {
+        try {
+            const { id } = req.params;
+            await new Promise((resolve, reject) => {
+                Prescripcion.delete(id, (err, result) => {
+                    if (err) return reject(err);
+                    resolve(result);
+                });
             });
-        } else {
-            Prescripcion.findAllDni(dni, (err, results) => {
-                if (err) {
-                    return res.status(500).send(err);
-                }
-                res.json(results);
-            });
-        }
-    },
-    findAll0: (req, res) => {
 
-        const dni = req.user.dni;
-        const rol = req.user.rol;
-
-        if (rol === "Administrador") {
-            Prescripcion.findAll0((err, results) => {
-                if (err) {
-                    return res.status(500).send(err);
-                }
-                res.json(results);
+            res.render('crear_reseta/gestion_reseta', {
+                alert: true,
+                alertTitle: "SE HA BORRADO PRESCRIPCIÓN",
+                alertMessage: "PRESCRIPCIÓN BORRADA ¡",
+                alertIcon: 'error',
+                showConfirmButton: false,
+                timer: 600,
+                ruta: 'gestionReseta'
             });
-        } else {
-            Prescripcion.findAll0Dni(dni, (err, results) => {
-                if (err) {
-                    return res.status(500).send(err);
-                }
-                res.json(results);
-            });
+        } catch (err) {
+            console.error("Error al borrar prescripción:", err);
+            res.status(500).send(err.message);
         }
     },
 
+    alta: async (req, res) => {
+        try {
+            const { id } = req.params;
+            await new Promise((resolve, reject) => {
+                Prescripcion.alta(id, (err, result) => {
+                    if (err) return reject(err);
+                    resolve(result);
+                });
+            });
 
+            res.render('crear_reseta/gestion_reseta', {
+                alert: true,
+                alertTitle: "SE DIO ALTA PRESCRIPCIÓN",
+                alertMessage: "ALTA PRESCRIPCIÓN ¡",
+                alertIcon: 'success',
+                showConfirmButton: false,
+                timer: 800,
+                ruta: 'gestionReseta'
+            });
+        } catch (err) {
+            console.error("Error al dar alta a prescripción:", err);
+            res.status(500).send(err.message);
+        }
+    },
 
+    findAll: async (req, res) => {
+        try {
+            const { dni, rol } = req.user;
+            let results;
 
-
-
-    findById: (req, res) => {
-        const { id } = req.params;
-        const user = req.user;
-        Prescripcion.findId(id, (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
+            if (rol === "Administrador") {
+                results = await new Promise((resolve, reject) => {
+                    Prescripcion.findAll((err, results) => {
+                        if (err) return reject(err);
+                        resolve(results);
+                    });
+                });
+            } else {
+                results = await new Promise((resolve, reject) => {
+                    Prescripcion.findAllDni(dni, (err, results) => {
+                        if (err) return reject(err);
+                        resolve(results);
+                    });
+                });
             }
+
+            res.json(results);
+        } catch (err) {
+            console.error("Error al obtener todas las prescripciones:", err);
+            res.status(500).send(err.message);
+        }
+    },
+
+    findAll0: async (req, res) => {
+        try {
+            const { dni, rol } = req.user;
+            let results;
+
+            if (rol === "Administrador") {
+                results = await new Promise((resolve, reject) => {
+                    Prescripcion.findAll0((err, results) => {
+                        if (err) return reject(err);
+                        resolve(results);
+                    });
+                });
+            } else {
+                results = await new Promise((resolve, reject) => {
+                    Prescripcion.findAll0Dni(dni, (err, results) => {
+                        if (err) return reject(err);
+                        resolve(results);
+                    });
+                });
+            }
+
+            res.json(results);
+        } catch (err) {
+            console.error("Error al obtener todas las prescripciones (findAll0):", err);
+            res.status(500).send(err.message);
+        }
+    },
+
+    findById: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const user = req.user;
+
+            const result = await new Promise((resolve, reject) => {
+                Prescripcion.findId(id, (err, result) => {
+                    if (err) return reject(err);
+                    resolve(result);
+                });
+            });
 
             if (result.prestaciones.length > 0 || result.medicamentos.length > 0) {
                 const data = {
@@ -148,9 +169,6 @@ const prescController = {
                         duracion: m.duracion,
                         frecuencia: m.frecuencia,
                         dosis: m.dosis,
-                        id_administracion: m.id_administracion,
-
-
                     })),
                     profesional: result.profPas.map(p => ({
                         id_prof: p.id_prof,
@@ -172,12 +190,16 @@ const prescController = {
                         id_presc: p.id_presc,
                     }))
                 };
+
                 console.log(result);
-                res.render('crear_reseta/editPresc', { alert: false, data: data, user: user });
+                res.render('crear_reseta/editPresc', { alert: false, data, user });
             } else {
                 res.status(404).send('Prescripción no encontrada');
             }
-        });
+        } catch (err) {
+            console.error("Error al obtener prescripción por ID:", err);
+            res.status(500).send(err.message);
+        }
     }
     ,
     printPdf: (req, res) => {
