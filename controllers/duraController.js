@@ -1,43 +1,125 @@
 const Duracion = require('../models/Duracion');
 
 const duraController = {
-    create: (req, res) => {
-        const { duracion } = req.body;
-       
-        const ctrlRegex = /^[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]+$/;
-        if (!duracion || !ctrlRegex.test(duracion)) {
-            return res.render('crear_reseta/atributosRes', {
+    create: async (req, res) => {
+        try {
+            const { duracion } = req.body;
+            const ctrlRegex = /^[a-zA-Z0-9\s!@#$%^&*(),.?":{}|<>]+$/; // Se incluye \s para permitir espacios en blanco
+
+            if (!duracion || !ctrlRegex.test(duracion)) {
+                return res.render('crear_reseta/atributosRes', {
+                    alert: true,
+                    alertTitle: "COLOQUE UN VALOR VALIDO",
+                    alertMessage: "NO PUEDE ESTAR VACÍO Y DEBE CONTENER LETRAS, NÚMEROS O SÍMBOLOS",
+                    alertIcon: 'error',
+                    showConfirmButton: false,
+                    timer: 800,
+                    ruta: 'atributos_admin'
+                });
+            }
+
+            await new Promise((resolve, reject) => {
+                Duracion.create(duracion, (err, result) => {
+                    if (err) return reject(err);
+                    resolve(result);
+                });
+            });
+
+            res.render('crear_reseta/atributosRes', {
                 alert: true,
-                alertTitle: "COLOQUE UN VALOR VALIDO",
-                alertMessage: "NO PUEDE ESTAR VACÍO Y DEBE CONTENER LETRAS, NÚMEROS O SÍMBOLOS",
-                alertIcon: 'error',
+                alertTitle: "SE HA GUARDADO DURACIÓN",
+                alertMessage: "DURACIÓN GUARDADA ¡",
+                alertIcon: 'success',
                 showConfirmButton: false,
                 timer: 800,
                 ruta: 'atributos_admin'
             });
+        } catch (err) {
+            console.error("Error al crear duración:", err);
+            res.status(500).send(err);
         }
+    },
 
+    update: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const duracion = req.body.duraEdit;
 
-        Duracion.crea
-        te(duracion, (err, result) => {
-     
-            if (err) {
-                return res.status(500).send(err);
-            }
+            await new Promise((resolve, reject) => {
+                Duracion.update(id, duracion, (err, result) => {
+                    if (err) return reject(err);
+                    resolve(result);
+                });
+            });
 
             res.render('crear_reseta/atributosRes', {
                 alert: true,
-                alertTitle: "SE A GUARDADO DURACION ",
-                alertMessage: "DURACION GUARDADA ¡",
-                alertIcon: 'access',
+                alertTitle: "SE HA ACTUALIZADO DURACIÓN",
+                alertMessage: "DURACIÓN ACTUALIZADA ¡",
+                alertIcon: 'success',
                 showConfirmButton: false,
                 timer: 800,
                 ruta: 'atributos_admin'
-            })
-        });
+            });
+        } catch (err) {
+            console.error("Error al actualizar duración:", err);
+            res.status(500).send(err);
+        }
     },
 
+    delete: async (req, res) => {
+        try {
+            const { id } = req.params;
 
+            await new Promise((resolve, reject) => {
+                Duracion.delete(id, (err, result) => {
+                    if (err) return reject(err);
+                    resolve(result);
+                });
+            });
+
+            res.render('crear_reseta/atributosRes', {
+                alert: true,
+                alertTitle: "SE HA BORRADO DURACIÓN",
+                alertMessage: "DURACIÓN BORRADA ¡",
+                alertIcon: 'error',
+                showConfirmButton: false,
+                timer: 600,
+                ruta: 'atributos_admin'
+            });
+        } catch (err) {
+            console.error("Error al eliminar duración:", err);
+            res.status(500).send(err);
+        }
+    },
+
+    alta: async (req, res) => {
+        try {
+            const { id } = req.params;
+
+            await new Promise((resolve, reject) => {
+                Duracion.alta(id, (err, result) => {
+                    if (err) return reject(err);
+                    resolve(result);
+                });
+            });
+
+            res.render('crear_reseta/atributosRes', {
+                alert: true,
+                alertTitle: "SE DIO ALTA A DURACIÓN",
+                alertMessage: "ALTA DURACIÓN ¡",
+                alertIcon: 'success',
+                showConfirmButton: false,
+                timer: 800,
+                ruta: 'atributos_admin'
+            });
+        } catch (err) {
+            console.error("Error al dar alta a duración:", err);
+            res.status(500).send(err);
+        }
+    },
+
+    // Métodos que no necesitan cambios
     findAll: (req, res) => {
         Duracion.findAll((err, results) => {
             if (err) {
@@ -46,6 +128,7 @@ const duraController = {
             res.json(results);
         });
     },
+
     findAll0: (req, res) => {
         Duracion.findAll0((err, results) => {
             if (err) {
@@ -54,6 +137,7 @@ const duraController = {
             res.json(results);
         });
     },
+
     findById: (req, res) => {
         const { id } = req.params;
         Duracion.findId(id, (err, result) => {
@@ -61,74 +145,10 @@ const duraController = {
                 return res.status(500).send(err);
             }
            
-            res.json({data:result});
+            res.json({ data: result });
             console.log(result); 
         });
-    },
-    update: (req, res) => {
-        const { id } = req.params;
-        const duracion = req.body.duraEdit;
-
-        Duracion.update(id, duracion, (err, result) => {
-            console.log('id2'+id);
-            
-            if (err) {
-                return res.status(500).send(err);
-            }
-            res.render('crear_reseta/atributosRes', {
-                alert: true,
-                alertTitle: "SE A ACTUALIZADO DURACION ",
-                alertMessage: "DURACION ACTUALIZADA ¡",
-                alertIcon: 'access',
-                showConfirmButton: false,
-                timer: 800,
-                ruta: 'atributos_admin'
-            })
-        });
-    },
-
-    delete: (req, res) => {
-        const { id } = req.params;
-        Duracion.delete(id, (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-
-            else {
-                return res.render('crear_reseta/atributosRes', {
-                    alert: true,
-                    alertTitle: "SE A BORRADO DURACION ",
-                    alertMessage: "DURACION BORRADA ¡",
-                    alertIcon: 'error',
-                    showConfirmButton: false,
-                    timer: 600,
-                    ruta: 'atributos_admin'
-                })
-            }
-        }
-        );
-    },
-    alta: (req, res) => {
-        const { id } = req.params;
-        Duracion.alta(id, (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-
-            else {
-                return res.render('crear_reseta/atributosRes', {
-                    alert: true,
-                    alertTitle: "SE DIO ALTA DURACION ",
-                    alertMessage: "ALTA DURACION ¡",
-                    alertIcon: 'access',
-                    showConfirmButton: false,
-                    timer: 800,
-                    ruta: 'atributos_admin'
-                })
-            }
-        }
-        );
     }
 };
 
-module.exports = duraController
+module.exports = duraController;

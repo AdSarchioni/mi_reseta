@@ -2,12 +2,25 @@ const Pasiente = require('../models/Pasiente');
 
 const pasienteController = {
     create: (req, res) => {
-        const { nombre, apellido, dni, fecha_nac, sexo, alta, id_plan} = req.body;
-        const todo = req.body;
+        const { nombre, apellido, dni, fecha_nac, sexo, alta, id_plan } = req.body;
+
+        // Verificar si alguno de los valores requeridos está vacío
+        if (!nombre || !apellido || !dni || !fecha_nac || !sexo || !alta || !id_plan) {
+            return res.render('pasiente/crear_pasiente', {
+                alert: true,
+                alertTitle: "DATOS INCOMPLETOS",
+                alertMessage: "FALTAN VALORES O VALORES INCORRECTOS ¡",
+                alertIcon: 'error',
+                showConfirmButton: false,
+                timer: 800,
+                ruta: 'crea_pasiente'
+            });
+        }
+
         // Validar que el DNI no esté vacío y que contenga solo números
-               const dniRegex = /^[0-9]+$/;
-            if (!dni || !dniRegex.test(dni)) {
-            return      res.render('pasiente/crear_pasiente', {
+        const dniRegex = /^[0-9]+$/;
+        if (!dni || !dniRegex.test(dni)) {
+            return res.render('pasiente/crear_pasiente', {
                 alert: true,
                 alertTitle: "COLOQUE UN NUMERO VALIDO",
                 alertMessage: "DNI DISTINTO VALOR ¡",
@@ -15,15 +28,15 @@ const pasienteController = {
                 showConfirmButton: false,
                 timer: 800,
                 ruta: 'crea_pasiente'
-            })
-            
-  }
-        Pasiente.findByDni(dni,(err, results)=>{
-            if(err){
+            });
+        }
+
+        Pasiente.findByDni(dni, (err, results) => {
+            if (err) {
                 return res.status(500).send(err);
             }
-            if(results.length > 0){
-                res.render('pasiente/crear_pasiente', {
+            if (results.length > 0) {
+                return res.render('pasiente/crear_pasiente', {
                     alert: true,
                     alertTitle: "ERROR EL DNI YA EXISTE",
                     alertMessage: "DNI REPETIDO ¡",
@@ -31,29 +44,25 @@ const pasienteController = {
                     showConfirmButton: false,
                     timer: 800,
                     ruta: 'crea_pasiente'
-                })
-            }else{
-                Pasiente.create( nombre, apellido, dni, fecha_nac, sexo, alta, id_plan, (err, result) => {
-          
-                    console.log(todo);
-                
+                });
+            } else {
+                Pasiente.create(nombre, apellido, dni, fecha_nac, sexo, alta, id_plan, (err, result) => {
                     if (err) {
                         return res.status(500).send(err);
                     }
-                    
-                         res.render('pasiente/crear_pasiente', {
-                    alert: true,
-                    alertTitle: "SE A GUARDADO EL PASIENTE ",
-                    alertMessage: "PASIENTE GUARDADO ¡" ,
-                    alertIcon: 'access',
-                    showConfirmButton: false,
-                    timer: 800,
-                    ruta: 'crea_pasiente'
-                })
+
+                    res.render('pasiente/crear_pasiente', {
+                        alert: true,
+                        alertTitle: "SE HA GUARDADO EL PASIENTE",
+                        alertMessage: "PASIENTE GUARDADO ¡",
+                        alertIcon: 'success',
+                        showConfirmButton: false,
+                        timer: 800,
+                        ruta: 'crea_pasiente'
+                    });
                 });
             }
-        })
-     
+        });
     },
     findAll: (req, res) => {
         Pasiente.findAll((err, results) => {

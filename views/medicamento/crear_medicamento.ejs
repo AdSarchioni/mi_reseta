@@ -59,7 +59,7 @@
 
         <div class="col-md-3">
           <label for="nombre_comercial" class="form-label">Nombre Comercial</label>
-          <input type="text" class="form-control" id="nombre_comercial" name="nombre_comercial" required>
+          <input type="text" class="form-control" id="nombre_comercial" name="nombre_comercial" autocomplete="off" required>
 
           <div class="valid-feedback">
 
@@ -69,7 +69,7 @@
           <label for="nombre_generico" class="form-label">Nombre Generico</label>
           <div class="input-group has-validation">
 
-            <input type="text" class="form-control" id="nombre_generico" name="nombre_generico" inputGroupPrepend"
+            <input type="text" class="form-control" id="nombre_generico" name="nombre_generico" autocomplete="off" inputGroupPrepend"
               required>
             <div class="invalid-feedback">
 
@@ -82,10 +82,10 @@
 
       <div class="col-md-2">
         <label for="concentracion" class="form-label">Concentracion</label>
-        <input type="text" class="form-control" id="concentracion" name="concentracion" list="sugerenciasConcentracion"
+        <input type="text" class="form-control" id="concentracion" name="concentracion" autocomplete="off" list="sugerenciasConcentracion"
           required>
         <datalist id="sugerenciasConcentracion"></datalist>
-        <input type="text" id="id_concent" name="id_concent">
+        <input type="text" id="id_concent" name="id_concent" class="form-control" readonly ="true">
         <div class="invalid-feedback">
 
         </div>
@@ -95,10 +95,10 @@
 
       <div class="col-md-2">
         <label for="concentracion" class="form-label">Forma Farmaco</label>
-        <input type="text" class="form-control" id="forma_farma" name="forma_farma" list="sugerenciasForma_farma"
+        <input type="text" class="form-control" id="forma_farma" name="forma_farma" autocomplete="off" list="sugerenciasForma_farma"
           required>
         <datalist id="sugerenciasForma_farma"></datalist>
-        <input type="text" id="id_for_fa" name="id_for_fa">
+        <input type="text" id="id_for_fa" name="id_for_fa" class="form-control" readonly ="true">
         <div class="invalid-feedback">
 
         </div>
@@ -110,9 +110,9 @@
 
       <div class="col-md-2">
         <label for="familia" class="form-label">Familia</label>
-        <input type="text" class="form-control" id="familia" name="familia" list="sugerenciasFamilia" required>
+        <input type="text" class="form-control" id="familia" name="familia" autocomplete="off" list="sugerenciasFamilia" required>
         <datalist id="sugerenciasFamilia"></datalist>
-        <input type="text" id="id_fam" name="id_fam">
+        <input type="text" id="id_fam" name="id_fam" class="form-control" readonly ="true">
         <div class="invalid-feedback">
 
         </div>
@@ -120,10 +120,10 @@
 
       <div class="col-md-2">
         <label for="presentacion" class="form-label">Presentacion</label>
-        <input type="text" class="form-control" id="presentacion" name="presentacion" list="sugerenciasPresentacion"
+        <input type="text" class="form-control" id="presentacion" name="presentacion" autocomplete="off" list="sugerenciasPresentacion"
           required>
         <datalist id="sugerenciasPresentacion"></datalist>
-        <input type="text" id="id_present" name="id_present">
+        <input type="text" id="id_present" name="id_present"class="form-control" readonly ="true" >
         <div class="invalid-feedback">
 
         </div>
@@ -192,7 +192,7 @@
 
               <div class="col-md">
                 <label for="nombre_comercialE" class="form-label">Nombre Comercial</label>
-                <input type="text" class="form-control" id="nombre_comercialE" name="nombre_comercial" required>
+                <input type="text" class="form-control" id="nombre_comercialE" name="nombre_comercial" autocomplete="off" required>
 
                 <div class="valid-feedback">
 
@@ -202,7 +202,7 @@
                 <label for="nombre_genericoE" class="form-label">Nombre Generico</label>
                 <div class="input-group has-validation">
 
-                  <input type="text" class="form-control" id="nombre_genericoE" name="nombre_generico"
+                  <input type="text" class="form-control" id="nombre_genericoE" autocomplete="off" name="nombre_generico"
                     inputGroupPrepend" required>
                   <div class="invalid-feedback">
 
@@ -212,7 +212,7 @@
               <div class="col-md">
                 <label for="concentracionE" class="form-label">Concentracion</label>
                 <input type="text" class="form-control" id="concentracionE" name="concentracion"
-                  list="sugerenciasConcentracionE" required>
+                  list="sugerenciasConcentracionE" autocomplete="off" required>
                 <datalist id="sugerenciasConcentracionE"></datalist>
                 <input type="text" id="id_concentE" name="id_concent">
                 <div class="invalid-feedback">
@@ -225,7 +225,7 @@
               <div class="col-md">
                 <label for="forma_farmaE" class="form-label">Forma Farmaco</label>
                 <input type="text" class="form-control" id="forma_farmaE" name="forma_farma"
-                  list="sugerenciasForma_farmaE" required>
+                  list="sugerenciasForma_farmaE" autocomplete="off"  required>
                 <datalist id="sugerenciasForma_farmaE"></datalist>
                 <input type="text" id="id_for_faE" name="id_for_fa">
                 <div class="invalid-feedback">
@@ -239,7 +239,7 @@
 
               <div class="col-md">
                 <label for="familiaE" class="form-label">Familia</label>
-                <input type="text" class="form-control" id="familiaE" name="familia" list="sugerenciasFamiliaE"
+                <input type="text" class="form-control" id="familiaE" name="familia" autocomplete="off" list="sugerenciasFamiliaE"
                   required>
                 <datalist id="sugerenciasFamiliaE"></datalist>
                 <input type="text" id="id_famE" name="id_fam">
@@ -250,7 +250,7 @@
 
               <div class="col-md">
                 <label for="presentacionE" class="form-label">Presentacion</label>
-                <input type="text" class="form-control" id="presentacionE" name="presentacion"
+                <input type="text" class="form-control" id="presentacionE" autocomplete="off" name="presentacion"
                   list="sugerenciasPresentacionE" required>
                 <datalist id="sugerenciasPresentacionE"></datalist>
                 <input type="text" id="id_presentE" name="id_present">

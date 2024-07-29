@@ -6,7 +6,15 @@ const Refeps = {
         const sql = 'INSERT INTO refers (numero) VALUES ( ?)';
         conexion.query(sql, [numero], callback);
     },
-
+    exists: (numero, callback) => {
+        const sql = 'SELECT COUNT(*) AS count FROM refers WHERE numero = ?';
+        conexion.query(sql, [numero], (err, results) => {
+            if (err) {
+                return callback(err);
+            }
+            callback(null, results[0].count > 0);
+        });
+    },
     findAll: (callback) => {
         const sql = `SELECT 
   id_refers, numero, alta

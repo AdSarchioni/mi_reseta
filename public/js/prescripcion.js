@@ -111,11 +111,13 @@ async function fetchPrestaciones(datalistId, idInputName) {
 
     // Agregar evento para actualizar el ID input cuando se selecciona una opción
     const input = document.querySelector(`input[list="${datalistId}"]`);
+    input.setAttribute('autocomplete', 'off'); // Desactivar autocompletado
     input.addEventListener('input', (event) => {
       const selectedOption = Array.from(datalist.options).find(option => option.value === event.target.value);
       if (selectedOption && idInputName) {
         const idInput = document.querySelector(`input[name="${idInputName}"]`);
         idInput.value = selectedOption.getAttribute('data-id');
+       // idInput.setAttribute('hidden', 'true'); // Ocultar input de ID
         checkPrestacionesSelection();
       }
     });

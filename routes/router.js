@@ -21,10 +21,16 @@ const cantController = require('../controllers/cantController');
 
 
 //rutas para las vistas 
-router.get('/', authController.isAuthenticated, (req, res)=> {
-   
-      res.render('index',{user: req.user, alert: false  });
-});
+router.get('/', authController.isAuthenticated, (req, res) => {
+      // Verificar si el rol del usuario es 'profesional' o 'administrador'
+      if (req.user && (req.user.rol === 'Profesional' || req.user.rol === 'Administrador')) {
+        res.render('index', { user: req.user, alert: false });
+      } else {
+        // Si el rol es distinto, redirigir al login
+        res.redirect('/login');
+      }
+    });
+    
 
 router.get('/login', (req, res)=>{
       res.render('login', {alert: false});

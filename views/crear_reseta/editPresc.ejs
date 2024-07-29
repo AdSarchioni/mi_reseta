@@ -106,25 +106,25 @@
      
       <div class="col-md-2">
         <label for="nombre_pas" class="form-label">Paciente</label>
-        <input type="text" class="form-control" name="nombre_pas" id="nombre_pas" list="sugerenciasNombre_pas" value="<%= data.paciente[0].nombre_pas %>, <%=data.paciente[0].apellido_pas %>">
+        <input type="text" class="form-control" name="nombre_pas" id="nombre_pas" list="sugerenciasNombre_pas" value="<%= data.paciente[0].nombre_pas %>, <%=data.paciente[0].apellido_pas %>"readonly="true">
         <input type="hidden" name="id_pas" id="id_pas" value="<%= data.paciente[0].id_pas %>">
         <datalist id="sugerenciasNombre_pas"></datalist>
       </div>
       <div class="col-md">
         <label for="diagnostico" class="form-label">Diagnostico</label>
-        <input type="text" class="form-control" id="diagnostico" name="diagnostico" value="<%= data.paciente[0].diagnostico %>" required>
+        <input type="text" class="form-control" id="diagnostico" name="diagnostico" value="<%= data.paciente[0].diagnostico %>"readonly="true" required>
         <div class="valid-feedback"></div>
       </div>
       <div class="col-md">
         <label for="indicacion" class="form-label">Indicacion</label>
         <div class="input-group has-validation">
-          <input type="text" class="form-control" id="indicacion" name="indicacion" value="<%= data.paciente[0].indicacion %>" required>
+          <input type="text" class="form-control" id="indicacion" name="indicacion" value="<%= data.paciente[0].indicacion %>"readonly="true" required>
           <div class="invalid-feedback"></div>
         </div>
       </div>
       <div class="col-md-2">
         <label for="fecha_pres" class="form-label">Fecha</label>
-        <input type="text" class="form-control" id="fecha_pres" name="fecha_pres" value="<%= data.paciente[0].fecha_pres %>" required>
+        <input type="text" class="form-control" id="fecha_pres" name="fecha_pres" value="<%= data.paciente[0].fecha_pres %>"readonly="true" required>
         <div class="invalid-feedback"></div>
       </div>
  
