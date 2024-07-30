@@ -24,7 +24,7 @@
 
 
 
-<body class="d-flex align-items-center py-60   bg-body-secondary">
+<body class="d-flex align-items-center py-60  bg-success-subtle">
   <div></div>
   <main class="form-signin w-100 m-4">
 
@@ -147,9 +147,14 @@
                 <label for="fechaEdit" class="col-form-label">Fecha Nacimiento</label>
                 <input type="date" class="form-control" id="fechaEdit" name="fechaEdit" >
               </div>
-              <div class="mb-3">
-                <label for="sexoEdit" class="col-form-label">sexo</label>
-                <input type="text" class="form-control" id="sexoEdit" name="sexoEdit" >
+              <div class="mb-3">              
+                <label for="sexoEdit" class="form-label">sexo</label> 
+                <select class="form-select" id="sexoEdit" name="sexoEdit" required>
+                  <option selected disabled value="">Elegir...</option>
+                  <option>Masculino</option>
+                  <option>Femenino</option>
+                  <option>No Binario</option>
+                </select>  
               </div>
               <div class="col-md">
 

@@ -143,16 +143,29 @@ const pasienteController = {
         try {
             const { id } = req.params;
             const { nomEdit, apellEdit, dniEdit, fechaEdit, sexoEdit, id_planE } = req.body;
-
+    
+            // Verificar que ningún valor venga vacío
+            if (!nomEdit || !apellEdit || !dniEdit || !fechaEdit || !sexoEdit || !id_planE) {
+                return res.render('pasiente/crear_pasiente', {
+                    alert: true,
+                    alertTitle: "Error",
+                    alertMessage: "Todos los campos son obligatorios.",
+                    alertIcon: 'error',
+                    showConfirmButton: true,
+                    timer: false,
+                    ruta: 'crea_pasiente'
+                });
+            }
+    
             console.log('edit:', nomEdit, apellEdit, dniEdit, fechaEdit, sexoEdit, id_planE);
-
+    
             await new Promise((resolve, reject) => {
                 Pasiente.update(id, nomEdit, apellEdit, dniEdit, fechaEdit, sexoEdit, id_planE, (err, result) => {
                     if (err) return reject(err);
                     resolve(result);
                 });
             });
-
+    
             res.render('pasiente/crear_pasiente', {
                 alert: true,
                 alertTitle: "SE HA ACTUALIZADO EL PACIENTE",
@@ -167,6 +180,7 @@ const pasienteController = {
             res.status(500).send(err.message);
         }
     },
+    
 
     delete: async (req, res) => {
         try {

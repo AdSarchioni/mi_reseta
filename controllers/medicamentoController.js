@@ -44,7 +44,18 @@ const medicamentoController = {
         try {
             const { id } = req.params;
             const { id_reg_nac, nombre_generico, nombre_comercial, id_concent, id_for_fa, id_fam, id_present } = req.body;
-
+            // Verificar si alguno de los valores requeridos está vacío
+            if (!id_reg_nac || !nombre_generico || !nombre_comercial || !id_concent || !id_for_fa || !id_fam || !id_present) {
+                return res.render('medicamento/crear_medicamento', {
+                    alert: true,
+                    alertTitle: "MEDICAMENTO NO VALIDO",
+                    alertMessage: "FALTAN VALORES O VALORES INCORRECTOS ¡",
+                    alertIcon: 'error',
+                    showConfirmButton: false,
+                    timer: 800,
+                    ruta: 'crea_medicamento'
+                });
+            }
             await new Promise((resolve, reject) => {
                 Medicamento.update(id, id_reg_nac, nombre_generico, nombre_comercial, id_concent, id_for_fa, id_fam, id_present, (err, result) => {
                     if (err) return reject(err);
@@ -144,9 +155,9 @@ const medicamentoController = {
             if (err) {
                 return res.status(500).send(err);
             }
-           
+
             res.json({ data: result });
-            console.log(result); 
+            console.log(result);
         });
     }
 };

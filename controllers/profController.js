@@ -7,7 +7,7 @@ const profController = {
                 id_refer, id_especialidad, matricula, nombre_prof,
                 apellido_prof, dni_prof, domicilio_prof, mail_prof, tel_prof
             } = req.body;
-            
+
             // Validar que el DNI no esté vacío y que contenga solo números
             const dniRegex = /^[0-9]+$/;
             if (!dni_prof || !dniRegex.test(dni_prof)) {
@@ -21,7 +21,19 @@ const profController = {
                     ruta: 'profesional'
                 });
             }
-
+            // Validar que matricula no esté vacío y que contenga solo números
+            const matRegex = /^[0-9]+$/;
+            if (!matricula || !matRegex.test(matricula)) {
+                return res.render('profesional/crear_profesional', {
+                    alert: true,
+                    alertTitle: "COLOQUE UN NÚMERO VÁLIDO MATRICULA",
+                    alertMessage: "MATRICULA DISTINTO VALOR ¡",
+                    alertIcon: 'error',
+                    showConfirmButton: false,
+                    timer: 800,
+                    ruta: 'profesional'
+                });
+            }
             // Verificar si la matrícula ya existe
             const matriculaResult = await new Promise((resolve, reject) => {
                 Profesional.findByMatri(matricula, (err, result) => {
@@ -95,7 +107,7 @@ const profController = {
                 id_refer, id_especialidad, matricula, nombre_prof,
                 apellido_prof, dni_prof, domicilio_prof, mail_prof, tel_prof
             } = req.body;
-            
+
             // Validar que el DNI no esté vacío y que contenga solo números
             const dniRegex = /^[0-9]+$/;
             if (!dni_prof || !dniRegex.test(dni_prof)) {
@@ -129,7 +141,19 @@ const profController = {
                     ruta: 'profesional'
                 });
             }
-
+            // Validar que matricula no esté vacío y que contenga solo números
+            const matRegex = /^[0-9]+$/;
+            if (!matricula || !matRegex.test(matricula)) {
+                return res.render('profesional/crear_profesional', {
+                    alert: true,
+                    alertTitle: "COLOQUE UN NÚMERO VÁLIDO MATRICULA",
+                    alertMessage: "MATRICULA DISTINTO VALOR ¡",
+                    alertIcon: 'error',
+                    showConfirmButton: false,
+                    timer: 800,
+                    ruta: 'profesional'
+                });
+            }
             // Verificar si el referente ya existe
             const referResult = await new Promise((resolve, reject) => {
                 Profesional.findByRefepsU(id_refer, id, (err, result) => {

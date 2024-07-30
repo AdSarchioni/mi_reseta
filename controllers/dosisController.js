@@ -44,7 +44,19 @@ const dosisController = {
         try {
             const { id } = req.params;
             const { dosisEdit: dosis } = req.body;
+            const ctrlRegex = /^[a-zA-Z0-9\s!@#$%^&*(),.?":{}|<>]+$/; // Se incluye \s para permitir espacios en blanco
 
+            if (!dosis || !ctrlRegex.test(dosis)) {
+                return res.render('crear_reseta/atributosRes', {
+                    alert: true,
+                    alertTitle: "COLOQUE UN VALOR VALIDO",
+                    alertMessage: "NO PUEDE ESTAR VACÍO Y DEBE CONTENER LETRAS, NÚMEROS O SÍMBOLOS",
+                    alertIcon: 'error',
+                    showConfirmButton: false,
+                    timer: 800,
+                    ruta: 'atributos_admin'
+                });
+            }
             await new Promise((resolve, reject) => {
                 Dosis.update(id, dosis, (err, result) => {
                     if (err) return reject(err);

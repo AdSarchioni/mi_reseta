@@ -44,7 +44,19 @@ const familiaController = {
         try {
             const { id } = req.params;
             const familia = req.body.famEdit;
+            const ctrlRegex = /^[a-zA-Z0-9\s!@#$%^&*(),.?":{}|<>]+$/;
 
+            if (!familia || !ctrlRegex.test(familia)) {
+                return res.render('medicamento/atributosMed', {
+                    alert: true,
+                    alertTitle: "COLOQUE UN VALOR VALIDO",
+                    alertMessage: "NO PUEDE ESTAR VACÍO Y DEBE CONTENER LETRAS, NÚMEROS O SÍMBOLOS",
+                    alertIcon: 'error',
+                    showConfirmButton: false,
+                    timer: 800,
+                    ruta: 'atributos_med'
+                });
+            }
             await new Promise((resolve, reject) => {
                 Familia.update(id, familia, (err, result) => {
                     if (err) return reject(err);

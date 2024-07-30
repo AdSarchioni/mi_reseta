@@ -44,7 +44,19 @@ const frecController = {
         try {
             const { id } = req.params;
             const { frecuenciaEdit: frecuencia } = req.body;
+            const ctrlRegex = /^[a-zA-Z0-9\s!@#$%^&*(),.?":{}|<>]+$/; // Se incluye \s para permitir espacios en blanco
 
+            if (!frecuencia || !ctrlRegex.test(frecuencia)) {
+                return res.render('crear_reseta/atributosRes', {
+                    alert: true,
+                    alertTitle: "COLOQUE UN VALOR VALIDO",
+                    alertMessage: "NO PUEDE ESTAR VACÍO Y DEBE CONTENER LETRAS, NÚMEROS O SÍMBOLOS",
+                    alertIcon: 'error',
+                    showConfirmButton: false,
+                    timer: 800,
+                    ruta: 'atributos_admin'
+                });
+            }
             await new Promise((resolve, reject) => {
                 Frecuencia.update(id, frecuencia, (err, result) => {
                     if (err) return reject(err);

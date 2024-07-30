@@ -44,6 +44,19 @@ const concController = {
         try {
             const { id } = req.params;
             const concentracion = req.body.concentracionEdit;
+            const ctrlRegex = /^[a-zA-Z0-9\s!@#$%^&*(),.?":{}|<>]+$/; // Se incluye \s para permitir espacios en blanco
+
+            if (!concentracion || !ctrlRegex.test(concentracion)) {
+                return res.render('medicamento/atributosMed', {
+                    alert: true,
+                    alertTitle: "COLOQUE UN VALOR VALIDO",
+                    alertMessage: "NO PUEDE ESTAR VACÍO Y DEBE CONTENER LETRAS, NÚMEROS O SÍMBOLOS",
+                    alertIcon: 'error',
+                    showConfirmButton: false,
+                    timer: 800,
+                    ruta: 'atributos_med'
+                });
+            }
 
             await new Promise((resolve, reject) => {
                 Concentracion.update(id, concentracion, (err, result) => {

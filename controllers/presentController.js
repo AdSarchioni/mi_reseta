@@ -44,7 +44,19 @@ const presentController = {
         try {
             const { id } = req.params;
             const presentacion = req.body.presentEdit;
+            const ctrlRegex = /^[a-zA-Z0-9\s!@#$%^&*(),.?":{}|<>]+$/; // Se incluye \s para permitir espacios en blanco
 
+            if (!presentacion || !ctrlRegex.test(presentacion)) {
+                return res.render('medicamento/atributosMed', {
+                    alert: true,
+                    alertTitle: "COLOQUE UN VALOR VALIDO",
+                    alertMessage: "NO PUEDE ESTAR VACÍO Y DEBE CONTENER LETRAS, NÚMEROS O SÍMBOLOS",
+                    alertIcon: 'error',
+                    showConfirmButton: false,
+                    timer: 800,
+                    ruta: 'atributos_med'
+                });
+            }
             await new Promise((resolve, reject) => {
                 Presentacion.update(id, presentacion, (err, result) => {
                     if (err) return reject(err);
