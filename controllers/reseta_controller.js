@@ -333,7 +333,7 @@ controller.cargarPresc = async (req, res) => {
         await conexion.commit();
         res.render('crear_reseta/crear_reseta', {
             alert: true,
-            alertTitle: "SE A CARGADO EL FORMULARIO",
+            alertTitle: "SE A CARGADO PRESCRIPCION",
             alertMessage: "FORMULARIO CARGADO ¡",
             alertIcon: 'access',
             showConfirmButton: false,
