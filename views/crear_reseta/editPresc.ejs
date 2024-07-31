@@ -56,7 +56,7 @@
     }
 
 
-   
+
 
     th,
     td {
@@ -84,17 +84,21 @@
   <main class="form-signin w-100 m-4">
 
     <div>
-      <div class="card mb-3" style="max-width: 540px;">
+      <div class="card mb-3" style="max-width: 640px;">
         <div class="row g-0">
           <div class="col-md-4">
-            <img src="../img/resetaG.png" class="img-fluid rounded-start" alt="...">
+            <img src="../img/resetaB.png" class="img-fluid rounded-start" alt="...">
           </div>
           <div class="col-md-8">
             <div class="card-body">
-              <h5 class="card-title">Presc N° <%=data.paciente[0].id_presc %> Pas : %><%= data.paciente[0].nombre_pas %>, <%=data.paciente[0].apellido_pas %></h5>
-              <p class="card-text">Prof :<%=data.profesional[0].nombre_prof %>,  <%=data.profesional[0].apellido_prof %>, Dni <%=data.profesional[0].dni_prof %> </p>
-              <p class="card-text"><%=data.profesional[0].tipo_esp %>, Refeps <%=data.profesional[0].numero %>, Mat<%=data.profesional[0].matricula %>, Tel <%=data.profesional[0].tel_prof %> </p>
-             
+              <h5 class="card-title">Presc N° <%=data.paciente[0].id_presc %> Pas : %><%= data.paciente[0].nombre_pas %>
+                    , <%=data.paciente[0].apellido_pas %>
+              </h5>
+
+              <p class="card-text">
+
+              </p>
+
             </div>
           </div>
         </div>
@@ -102,33 +106,132 @@
 
     </div>
     <form id="formLogin" class="row g-3 needs-validation" novalidate action="/guardar_prof" method="POST">
+
+
       <!-- Resto de tu formulario -->
-     
-      <div class="col-md-2">
-        <label for="nombre_pas" class="form-label">Paciente</label>
-        <input type="text" class="form-control" name="nombre_pas" id="nombre_pas" list="sugerenciasNombre_pas" value="<%= data.paciente[0].nombre_pas %>, <%=data.paciente[0].apellido_pas %>"readonly="true">
-        <input type="hidden" name="id_pas" id="id_pas" value="<%= data.paciente[0].id_pas %>">
-        <datalist id="sugerenciasNombre_pas"></datalist>
-      </div>
-      <div class="col-md">
-        <label for="diagnostico" class="form-label">Diagnostico</label>
-        <input type="text" class="form-control" id="diagnostico" name="diagnostico" value="<%= data.paciente[0].diagnostico %>"readonly="true" required>
-        <div class="valid-feedback"></div>
-      </div>
-      <div class="col-md">
-        <label for="indicacion" class="form-label">Indicacion</label>
-        <div class="input-group has-validation">
-          <input type="text" class="form-control" id="indicacion" name="indicacion" value="<%= data.paciente[0].indicacion %>"readonly="true" required>
+      <div class="row">
+
+        <div class="col-md">
+          <label for="nombre_prof" class="form-label">Profesional</label>
+          <input type="text" class="form-control" name="nombre_prof" id="nombre_prof"
+            value="<%=data.profesional[0].nombre_prof %>,  <%=data.profesional[0].apellido_prof %> " readonly="true">
+          <input type="hidden" name="id_prof" id="id_prof" value="<%= data.profesional[0].id_prof %>">
+
+        </div>
+        <div class="col-md">
+          <label for="refeps" class="form-label">Refeps</label>
+          <input type="text" class="form-control" id="refeps" name="refeps" value="<%=data.profesional[0].numero %>"
+            readonly="true" required>
+          <div class="valid-feedback"></div>
+        </div>
+
+        <div class="col-md">
+          <label for="dni_prof" class="form-label">Dni </label>
+          <div class="input-group has-validation">
+            <input type="text" class="form-control" id="dni_prof" name="dni_prof"
+              value="<%= data.profesional[0].dni_prof %>" readonly="true" required>
+            <div class="invalid-feedback"></div>
+          </div>
+        </div>
+        <div class="col-md">
+          <label for="matricula" class="form-label">Matricula</label>
+          <input type="text" class="form-control" id="matricula" name="matricula"
+            value="<%= data.profesional[0].matricula %>" readonly="true" required>
           <div class="invalid-feedback"></div>
         </div>
+
+        <div class="col-md">
+          <label for="especialidad" class="form-label">Especialidad </label>
+            <input type="text" class="form-control" id="especialidad" name="especialidad"
+              value="<%= data.profesional[0].tipo_esp %>" readonly="true" required>
+            <div class="invalid-feedback"></div>
+          
+        </div>
+      
+        <div class="col-md">
+          <label for="telefono" class="form-label">Telefono</label>
+          <input type="text" class="form-control" id="telefono" name="telefono"
+            value="<%= data.profesional[0].tel_prof %>" readonly="true" required>
+          <div class="invalid-feedback"></div>
+        </div>
+
+        
       </div>
-      <div class="col-md-2">
-        <label for="fecha_pres" class="form-label">Fecha</label>
-        <input type="text" class="form-control" id="fecha_pres" name="fecha_pres" value="<%= data.paciente[0].fecha_pres %>"readonly="true" required>
+    
+      <!-- Resto de tu formulario -->
+      <div class="row">
+
+        <div class="col-md-2">
+          <label for="nombre_pas" class="form-label">Paciente</label>
+          <input type="text" class="form-control" name="nombre_pas" id="nombre_pas" list="sugerenciasNombre_pas"
+            value="<%= data.paciente[0].nombre_pas %>, <%=data.paciente[0].apellido_pas %>" readonly="true">
+         
+       
+        </div>
+
+        <div class="col-md-2">
+          <label for="dni_pas" class="form-label">Dni Pas</label>
+          <input type="text" class="form-control" id="dni_pas" name="dni_pas" value="<%= data.paciente[0].dni_pas %>"
+            readonly="true" required>
+          <div class="invalid-feedback"></div>
+        </div>
+
+        <div class="col-md-2">
+          <label for="fecha_nac_pas" class="form-label">Fecha Nac</label>
+          <input type="text" class="form-control" name="fecha_nac_pas" id="fecha_nac_pas"
+            value="<%= data.paciente[0].fecha_nac_pas %>" readonly="true">
+
+        </div>
+        <div class="col-md">
+          <label for="sexo_pas" class="form-label">Sexo Pas</label>
+          <input type="text" class="form-control" id="sexo_pas" name="sexo_pas" value="<%= data.paciente[0].sexo_pas %>"
+            readonly="true" required>
+          <div class="valid-feedback"></div>
+        </div>
+
+  
+
+     
+      <div class="col-md">
+        <label for="obra_social" class="form-label">Obra Social</label>
+        <input type="text" class="form-control" id="obra_social" name="obra_social"
+          value="<%= data.paciente[0].tipo_plan %>,<%= data.paciente[0].nombre_obra %>" readonly="true" required>
         <div class="invalid-feedback"></div>
       </div>
- 
-      <br>
+    </div>
+  </div>
+
+
+
+        <div class="row">
+
+          <div class="col-md-2">
+            <label for="fecha_pres" class="form-label">Fecha Presc</label>
+            <input type="text" class="form-control" id="fecha_pres" name="fecha_pres"
+              value="<%= data.paciente[0].fecha_pres %>" readonly="true" required>
+            <div class="invalid-feedback"></div>
+          </div>
+          <div class="col-md">
+            <label for="diagnostico" class="form-label">Diagnostico</label>
+            <input type="text" class="form-control" id="diagnostico" name="diagnostico"
+              value="<%= data.paciente[0].diagnostico %>" readonly="true" required>
+            <div class="valid-feedback"></div>
+          </div>
+          <div class="col-md">
+            <label for="indicacion" class="form-label">Indicacion</label>
+            <div class="input-group has-validation">
+              <input type="text" class="form-control" id="indicacion" name="indicacion"
+                value="<%= data.paciente[0].indicacion %>" readonly="true" required>
+              <div class="invalid-feedback"></div>
+            </div>
+          </div>
+
+
+
+        </div>
+
+     
+      
       <table id="medicamentosTable">
         <thead>
           <tr>
@@ -141,62 +244,82 @@
             <th scope="col">FREC</th>
             <th scope="col">DUR</th>
             <th scope="col">CANT</th>
-           
+
           </tr>
         </thead>
         <tbody>
           <% if (data.medicamentos) { %>
             <% for (var i=data.medicamentos.length -1; i>= 0; i--){ %>
               <tr>
-                <td><%= data.medicamentos[i].nombre_generico %>, <%= data.medicamentos[i].nombre_comercial %></td>
-                <td><%= data.medicamentos[i].concentracion %></td>
-                <td><%= data.medicamentos[i].presentacion %></td>
-                <td><%= data.medicamentos[i].familia %></td>
-                <td><%= data.medicamentos[i].forma_fa %></td>
-                <td><%= data.medicamentos[i].dosis %></td>
-                <td><%= data.medicamentos[i].frecuencia %></td>
-                <td><%= data.medicamentos[i].duracion %></td>
-                <td><%= data.medicamentos[i].cantidad %></td>
-             
+                <td>
+                  <%= data.medicamentos[i].nombre_generico %>, <%= data.medicamentos[i].nombre_comercial %>
+                </td>
+                <td>
+                  <%= data.medicamentos[i].concentracion %>
+                </td>
+                <td>
+                  <%= data.medicamentos[i].presentacion %>
+                </td>
+                <td>
+                  <%= data.medicamentos[i].familia %>
+                </td>
+                <td>
+                  <%= data.medicamentos[i].forma_fa %>
+                </td>
+                <td>
+                  <%= data.medicamentos[i].dosis %>
+                </td>
+                <td>
+                  <%= data.medicamentos[i].frecuencia %>
+                </td>
+                <td>
+                  <%= data.medicamentos[i].duracion %>
+                </td>
+                <td>
+                  <%= data.medicamentos[i].cantidad %>
+                </td>
+
               </tr>
-            <% } %>
-          <% } %>
+              <% } %>
+                <% } %>
         </tbody>
       </table>
       <br>
       <table id="prestacionesTable">
         <thead>
           <tr>
-      
+
             <th scope="col">PRESTACIONIONES</th>
-          
+
           </tr>
         </thead>
         <tbody>
           <% if (data.prestaciones) { %>
             <% for (var i=data.prestaciones.length -1; i>= 0; i--){ %>
               <tr>
-                
-                <td><%= data.prestaciones[i] %></td>
-            
+
+                <td>
+                  <%= data.prestaciones[i] %>
+                </td>
+
               </tr>
-            <% } %>
-          <% } %>
+              <% } %>
+                <% } %>
         </tbody>
       </table>
       <div class="col-12">
-        <button class="btn btn-success" type="button"  onclick="captureFormData()"  <% if (user.rol === 'Administrador') { %>disabled<% } %>>imprimir</button>
+        <button class="btn btn-success" type="button" onclick="captureFormData()" <% if (user.rol==='Administrador' ) {%>disabled<% } %>>imprimir</button>
         <a type="button" href="/crea_reseta" class="btn btn-info">Crear Nueva Presc</a>
         <a type="button" href="/gestionReseta" class="btn btn-warning">Volver</a>
         <a type="button" href="/logout" class="btn btn-danger">Logout</a>
       </div>
     </form>
-  
-   
+
+
 
 
     <div>
-  
+
     </div>
   </main>
 

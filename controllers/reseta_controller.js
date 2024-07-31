@@ -67,11 +67,14 @@ controller.paraListProf = (req, res) => {
     p.tel_prof,
     e.id_especialidad,
     e.tipo_esp,
-    pe.matricula
+    pe.matricula,
+    r.numero
 FROM 
     profesional p
 JOIN 
     prof_espec pe ON p.id_prof = pe.id_prof
+JOIN 
+    refers r  ON p.id_refer = r.id_refers    
 JOIN 
     especialidad e ON pe.id_especialidad = e.id_especialidad
 WHERE 
@@ -558,9 +561,9 @@ controller.imprimirReceta = async (req, res) => {
     doc.moveDown();
 
     doc.fontSize(12).text(`Nombre del Profesional: ${datosProfesional.nombre_prof} ${datosProfesional.apellido_prof}`);
-    doc.text(`ID Profesional: ${datosProfesional.id_prof}`);
     doc.text(`DNI Profesional: ${datosProfesional.dni_prof}`);
     doc.text(`Matrícula: ${datosProfesional.matricula}`);
+    doc.text(`Refeps: ${datosProfesional.id_refer}`);
     doc.text(`Teléfono: ${datosProfesional.tel_prof}`);
     doc.text(`Especialidad: ${datosProfesional.tipo_esp}`);
     doc.moveDown();
@@ -576,8 +579,16 @@ controller.imprimirReceta = async (req, res) => {
 
 
     doc.text('Medicamentos y Administraciones:');
+    doc.moveDown();
     administraciones.forEach((admin, index) => {
-        doc.text(`${index + 1}. Medicamento: ${admin.medicamento}, Dosis: ${admin.dosis}, Cantidad: ${admin.cantidad}, Frecuencia: ${admin.frecuencia}, Duración: ${admin.duracion}`);
+        doc.text(`${index + 1}. Medicamento: ${admin.medicamento}`);
+        doc.text(`Dosis: ${admin.dosis}`);
+        doc.text(`Frecuencia: ${admin.frecuencia}`);
+        doc.text(`Duración: ${admin.duracion}`);
+        doc.text(`Cantidad: ${admin.cantidad}`);
+       
+        
+        doc.moveDown(); 
     });
     doc.moveDown();
 
@@ -585,8 +596,10 @@ controller.imprimirReceta = async (req, res) => {
     doc.moveDown();
 
     doc.text('Prestaciones:');
+    doc.moveDown();
     prestaciones.forEach((prestacion, index) => {
         doc.text(`${index + 1}. ${prestacion}`);
+        doc.moveDown();
     });
 
     doc.end();

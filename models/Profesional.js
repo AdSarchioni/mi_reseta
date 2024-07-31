@@ -133,7 +133,7 @@ WHERE
     e.id_especialidad,
     e.tipo_esp,
     pe.matricula,
-    r.numero
+    r.numero AS numero
 FROM 
     profesional p
 JOIN 

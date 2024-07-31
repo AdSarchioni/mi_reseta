@@ -3,8 +3,17 @@ function captureFormData() {
       diagnostico: document.getElementById('diagnostico').value,
       indicacion: document.getElementById('indicacion').value,
       fecha_pres: document.getElementById('fecha_pres').value,
-      nombre_pas: document.getElementById('nombre_pas').value,
-      id_pas: document.getElementById('id_pas').value,
+      nombre_prof: document.getElementById('nombre_prof').value,
+      nombre_pas : document.getElementById('nombre_pas').value,
+      sexo_pas: document.getElementById('sexo_pas').value,
+      fecha_nac_pas: document.getElementById('fecha_nac_pas').value,
+      dni_pas: document.getElementById('dni_pas').value,
+      obra_social:document.getElementById('obra_social').value,
+      refeps : document.getElementById('refeps').value,
+      dni_prof : document.getElementById('dni_prof').value,
+      matricula : document.getElementById('matricula').value,
+      especialidad : document.getElementById('especialidad').value,
+      telefono : document.getElementById('telefono').value,
       medicamentos: [],
       prestaciones: []
     };
@@ -48,7 +57,7 @@ function captureFormData() {
         const a = document.createElement('a');
         a.style.display = 'none';
         a.href = url;
-        a.download = 'prescription-data.pdf';
+        a.download = 'reseta.pdf';
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);

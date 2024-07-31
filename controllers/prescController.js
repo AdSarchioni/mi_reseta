@@ -184,7 +184,12 @@ const prescController = {
                         id_pas: p.id_pas,
                         nombre_pas: p.nombre_pas,
                         apellido_pas: p.apellido_pas,
-                        fecha_pres: p.fecha_pres,
+                        sexo_pas: p.sexo_pas,
+                        dni_pas: p.dni_pas,
+                        fecha_nac_pas: p.fecha_nac_pac,
+                        tipo_plan: p.tipo_plan,
+                        nombre_obra: p.nombre_obra,
+                        fecha_pres: p.fecha_presc,
                         indicacion: p.indicacion,
                         diagnostico: p.diagnostico,
                         id_presc: p.id_presc,
@@ -206,7 +211,7 @@ const prescController = {
         const data = req.body;
 
         const doc = new PDFDocument();
-        let filename = 'prescription-data.pdf';
+        let filename = 'reseta.pdf';
         filename = encodeURIComponent(filename);
 
         res.setHeader('Content-disposition', `attachment; filename="${filename}"`);
@@ -216,36 +221,46 @@ const prescController = {
 
         doc.fontSize(20).text('Receta Médica', { align: 'center' });
         doc.moveDown();
-        doc.fontSize(12).text(`Diagnostico: ${data.diagnostico}`);
-        doc.text(`Indicacion: ${data.indicacion}`);
-        doc.text(`Fecha: ${data.fecha_pres}`);
-        doc.text(`Paciente: ${data.nombre_pas}`);
-        doc.text(`ID Paciente: ${data.id_pas}`);
-
+        
+        doc.fontSize(12).text(`Nombre del Profesional: ${data.nombre_prof}`);
+       
+        doc.text(`DNI Profesional: ${data.dni_prof}`);
+        doc.text(`Matrícula: ${data.matricula}`);
+        doc.text(`Refeps: ${data.refeps}`);
+        doc.text(`Teléfono: ${data.telefono}`);
+        doc.text(`Especialidad: ${data.especialidad}`);
         doc.moveDown();
-        doc.fontSize(16).text('Medicamentos', { align: 'center' });
+    
+        doc.text(`Nombre del Paciente: ${data.nombre_pas}-${data.dni_pas}-${data.fecha_nac_pas}-${data.sexo_pas}-${data.obra_social}`);
+        doc.moveDown();
+    
+        doc.text(`Diagnóstico: ${data.diagnostico}`);
+        doc.moveDown();
+let indexo = 1;    
+        doc.fontSize(12).text('Medicamentos y Administraciones');
         data.medicamentos.forEach(med => {
             doc.moveDown();
-            doc.fontSize(12).text(`Nombre Generico: ${med.nombre_generico}`);
-            doc.text(`Nombre Comercial: ${med.nombre_comercial}`);
-            doc.text(`Concentracion: ${med.concentracion}`);
-            doc.text(`Presentacion: ${med.presentacion}`);
-            doc.text(`Familia: ${med.familia}`);
-            doc.text(`Forma Farmaceutica: ${med.forma_fa}`);
+            doc.fontSize(12).text(`${indexo }.Medicamento: ${med.nombre_generico}-${med.nombre_comercial}- ${med.concentracion}-${med.forma_fa}-${med.presentacion}-${med.familia}`);
+        
             doc.text(`Dosis: ${med.dosis}`);
             doc.text(`Frecuencia: ${med.frecuencia}`);
             doc.text(`Duracion: ${med.duracion}`);
             doc.text(`Cantidad: ${med.cantidad}`);
+            indexo++;
         });
-
+let index = 1;
         doc.moveDown();
-        doc.fontSize(16).text('Prestaciones', { align: 'center' });
+        doc.text(`Indicaciones: ${data.indicacion}`);
+        doc.moveDown();
+        doc.fontSize(12).text('Prestaciones');
         data.prestaciones.forEach(pres => {
             doc.moveDown();
-            doc.fontSize(12).text(`ID Medi: ${pres.id_medi}`);
-            doc.text(`Prestacion: ${pres.prestacion}`);
+           
+            doc.text(`${index }. ${pres.prestacion}`);
+            index++;
         });
 
+     
         doc.end();
 
 

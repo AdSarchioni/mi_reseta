@@ -80,7 +80,7 @@ async function cargarProf() {
         row.innerHTML = `
         <td><input type="checkbox" name="id_prof" value="${item.id_prof}" onclick="checkSelection1()"></td>
             
-            <td>${item.id_refer}</td> 
+             <td>${item.numero}</td> 
              <td>${item.id_prof}</td>  
              <td>${item.nombre_prof}</td>
               <td>${item.apellido_prof}</td>
@@ -303,7 +303,7 @@ function checkPrestacionesSelection() {
            // Población del datalist con los datos obtenidos
            data.forEach(item => {
                 const option = document.createElement('option');
-                option.value = `${item.nombre}-${item.concentracion}-${item.forma_farma}-${item.nombre_generico}-${item.presentacion}-${item.familia}`;
+                option.value = `${item.nombre}-${item.nombre_generico}-${item.concentracion}-${item.forma_farma}-${item.presentacion}-${item.familia}`;
                 option.dataset.idMed = item.id;
                 datalist.appendChild(option);
             });

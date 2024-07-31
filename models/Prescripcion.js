@@ -249,11 +249,15 @@ GROUP BY
         const sqlProfPas = `
           SELECT 
                 p.*, 
+                DATE_FORMAT(p.fecha_pres, '%d-%m-%Y') AS fecha_presc,
                 pro.*, 
                 pas.*,
+                DATE_FORMAT(pas.fecha_nac_pas, '%d-%m-%Y') AS fecha_nac_pac,
                 pe.*,
                 es.*,
-                re.*
+                re.*,
+                pobs.*,
+                obs.*
             FROM 
                 prescripcion p
             JOIN 
@@ -262,6 +266,10 @@ GROUP BY
                 refers re ON Pro.id_refer = re.id_refers
             JOIN 
                 pasciente pas ON p.id_pas = pas.id_pas
+            LEFT JOIN
+                plan_obra_social pobs ON pas.id_plan_obra_social = pobs.id_plan_obra_social
+            LEFT JOIN
+                 obra_social obs ON pobs.id_obra_social = obs.id_obra_social  
             JOIN
                 prof_espec pe ON p.id_prof =pe.id_prof
             LEFT JOIN 
