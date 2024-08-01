@@ -18,8 +18,8 @@ const dosisController = require('../controllers/dosisController');
 const frecController = require('../controllers/frecController');
 const duraController = require('../controllers/duraController');
 const cantController = require('../controllers/cantController');
-
-
+const obraController = require('../controllers/obraController');
+const planController = require('../controllers/planController');
 //rutas para las vistas 
 router.get('/', authController.isAuthenticated, (req, res) => {
       // Verificar si el rol del usuario es 'profesional' o 'administrador'
@@ -123,8 +123,8 @@ router.get('/altaCant/:id',authController.isAuthenticated,cantController.alta);
 
 
 //rutas Pasiente
-router.get('/crea_pasiente',authController.isAuthenticated,(req, res)=> {
-      res.render('pasiente/crear_pasiente',{alert: false});
+router.get('/atributos_obra',authController.isAuthenticated,(req, res)=> {
+      res.render('pasiente/atributosPas',{alert: false});
 });
 router.get('/altaBorrado',authController.isAuthenticated,(req, res)=> {
       res.render('pasiente/altaPasBorrado',{alert: false});
@@ -137,6 +137,37 @@ router.get('/buscarPas/:id',authController.isAuthenticated,pasienteController.fi
 router.post('/updatePas/:id',authController.isAuthenticated,pasienteController.update);
 router.get('/borrarPas/:id',authController.isAuthenticated,pasienteController.delete);
 router.get('/altaPas/:id',authController.isAuthenticated,pasienteController.altaPas);
+
+
+//rutas obra social
+router.get('/crea_pasiente',authController.isAuthenticated,(req, res)=> {
+      res.render('pasiente/crear_pasiente',{alert: false});
+});
+router.get('/buscar_obra0',authController.isAuthenticated,obraController.findAll0);
+router.get('/buscar_obra',authController.isAuthenticated,obraController.findAll);
+router.get('/buscarObra/:id',authController.isAuthenticated,obraController.findById);
+router.post('/guardar_obra',authController.isAuthenticated,obraController.create);
+router.get('/borrar_obra/:id',authController.isAuthenticated,obraController.delete);
+//router.get('/buscarFam',authController.isAuthenticated,familiaController.findById);
+router.post('/updateObra/:id',authController.isAuthenticated,obraController.update);
+router.get('/altaObra/:id',authController.isAuthenticated,obraController.alta);
+
+//rutas plan obra social
+
+router.get('/buscar_plan0',authController.isAuthenticated,planController.findAll0);
+router.get('/buscar_plan',authController.isAuthenticated,planController.findAll);
+router.get('/buscarPlan/:id',authController.isAuthenticated,planController.findById);
+router.post('/guardar_plan',authController.isAuthenticated,planController.create);
+router.get('/borrar_plan/:id',authController.isAuthenticated,planController.delete);
+router.post('/updatePlan/:id',authController.isAuthenticated,planController.update);
+router.get('/altaPlan/:id',authController.isAuthenticated,planController.alta);
+
+
+
+
+
+
+
 
 
 //rutas concentracion
@@ -168,7 +199,7 @@ router.get('/buscar_fam',authController.isAuthenticated,familiaController.findAl
 router.get('/buscarFam/:id',authController.isAuthenticated,familiaController.findById);
 router.post('/guardar_fam',authController.isAuthenticated,familiaController.create);
 router.get('/borrar_fam/:id',authController.isAuthenticated,familiaController.delete);
-router.get('/buscarFam',authController.isAuthenticated,familiaController.findById);
+//router.get('/buscarFam',authController.isAuthenticated,familiaController.findById);
 router.post('/updateFam/:id',authController.isAuthenticated,familiaController.update);
 router.get('/altaFam/:id',authController.isAuthenticated,familiaController.altaForm);
 
